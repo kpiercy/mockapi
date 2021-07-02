@@ -3,7 +3,6 @@ require('dotenv').config()
 const express = require('express')
 var cors = require('cors')
 const app = express()
-anewline
 
 
 //rate limiter
