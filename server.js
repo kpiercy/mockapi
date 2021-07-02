@@ -55,7 +55,7 @@ app.post('/api/files/upload', limiter, authenticateToken, upload.array('file'), 
 
 
 //get all users
-app.get('/api/users', authenticateToken, (req, res) => {
+app.get('/api/users', limiter, authenticateToken, (req, res) => {
     dboperations.getUsers().then(result => {
         //console.log(result);
         res.json(result);
@@ -63,7 +63,7 @@ app.get('/api/users', authenticateToken, (req, res) => {
 })
 
 //get all proofs
-app.get('/api/proofs', authenticateToken, (req, res) => {
+app.get('/api/proofs', limiter, authenticateToken, (req, res) => {
     dboperations.getProofs().then(result => {
         //console.log(result);
         res.json(result[0]);
@@ -71,7 +71,7 @@ app.get('/api/proofs', authenticateToken, (req, res) => {
 })
 
 //get single proof by id
-app.get('/api/proofs/:id', authenticateToken, (req,res) => {
+app.get('/api/proofs/:id', limiter, authenticateToken, (req,res) => {
     dboperations.getProof(req.params.id).then(result => {
         //console.log(result);
         res.status(200).json(result[0]);
@@ -79,7 +79,7 @@ app.get('/api/proofs/:id', authenticateToken, (req,res) => {
 })
 
 //insert new proof
-app.post('/api/proofs', authenticateToken, (req,res) => {
+app.post('/api/proofs', limiter, authenticateToken, (req,res) => {
 
     let proof = {...req.body}
     dboperations.addProof(proof).then(result => {
@@ -89,7 +89,7 @@ app.post('/api/proofs', authenticateToken, (req,res) => {
 })
 
 //update proof
-app.patch('/api/proofs', authenticateToken, (req,res) => {
+app.patch('/api/proofs', limiter, authenticateToken, (req,res) => {
 
     let proofresult = {...req.body}
     dboperations.updateProof(proofresult).then(result => {
