@@ -1,0 +1,16 @@
+{
+    "proofs": [{
+        "proofID": "int",
+        "runSeq": "int",
+        "client": "clientName",
+        "result": "approve/reject"
+    },
+    {
+        "proofID": "int",
+        "runSeq": "int",
+        "client": "clientName",
+        "result": "approve/reject"
+    }
+    
+    ]
+}

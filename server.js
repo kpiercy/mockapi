@@ -10,7 +10,7 @@ const rateLimit = require('express-rate-limit')
 const limiter = rateLimit({
     windowMs: process.env.svrLimit, //30 min
     max: process.env.svrMax, //limit each IP to 100 requests per 30min
-    message: "Too many requests from this IP in the last 30 min, please try again later."
+    message: "429 : Too many requests from this IP in the last 30 min, please try again later."
 })
 
 //auth
@@ -18,9 +18,9 @@ const jwt = require('jsonwebtoken')
 
 //db 
 const dboperations = require('./dboperations')
-var configJobData = require('./JobData_dbconfig')
-var configEliteMaster = require('./EliteMaster_dbconfig')
-const dbclasses = require('./classes')
+var configJobData = require('./configs/JobData_dbconfig')
+var configEliteMaster = require('./configs/EliteMaster_dbconfig')
+const dbclasses = require('./models/db/classes')
 
 //file uploads
 const uuid = require('uuid').v4
@@ -28,7 +28,7 @@ const multer = require('multer')
 const path = require('path')
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads')
+        cb(null, 'public/uploads')
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname)
@@ -50,7 +50,7 @@ app.use(express.static('public'))
 
 //upload single or multiple files
 app.post('/api/files/upload', limiter, authenticateToken, upload.array('file'), (req,res) => {
-    return res.json({ status: 'File upload successful', uploaded: req.files.length })
+    return res.status(202).json({ status: 'File upload successful', uploaded: req.files.length })
 })
 
 
@@ -58,15 +58,16 @@ app.post('/api/files/upload', limiter, authenticateToken, upload.array('file'), 
 app.get('/api/users', limiter, authenticateToken, (req, res) => {
     dboperations.getUsers().then(result => {
         //console.log(result);
-        res.json(result);
+        res.status(200).json(result);
     })
 })
 
 //get all proofs
 app.get('/api/proofs', limiter, authenticateToken, (req, res) => {
+
     dboperations.getProofs().then(result => {
         //console.log(result);
-        res.json(result[0]);
+        res.status(200).json(result[0]);
     })
 })
 
@@ -80,8 +81,7 @@ app.get('/api/proofs/:id', limiter, authenticateToken, (req,res) => {
 
 //insert new proof
 app.post('/api/proofs', limiter, authenticateToken, (req,res) => {
-
-    let proof = {...req.body}
+    let proof = { ...req.body }
     dboperations.addProof(proof).then(result => {
         //console.log(result);
         res.status(201).json(result);
@@ -91,7 +91,7 @@ app.post('/api/proofs', limiter, authenticateToken, (req,res) => {
 //update proof
 app.patch('/api/proofs', limiter, authenticateToken, (req,res) => {
 
-    let proofresult = {...req.body}
+    let proofresult = { ...req.body }
     dboperations.updateProof(proofresult).then(result => {
         //console.log(result);
         res.status(201).json(result);
