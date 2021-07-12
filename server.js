@@ -1,10 +1,8 @@
 require('dotenv').config()
-
 const express = require('express')
 var cors = require('cors')
 const app = express()
-
-
+const sql = require('mssql/msnodesqlv8')
 //rate limiter
 const rateLimit = require('express-rate-limit')
 const limiter = rateLimit({
@@ -12,16 +10,13 @@ const limiter = rateLimit({
     max: process.env.svrMax, //limit each IP to 100 requests per 30min
     message: "429 : Too many requests from this IP in the last 30 min, please try again later."
 })
-
 //auth
 const jwt = require('jsonwebtoken')
-
 //db 
 const dboperations = require('./dboperations')
-var configJobData = require('./configs/JobData_dbconfig')
-var configEliteMaster = require('./configs/EliteMaster_dbconfig')
-const dbclasses = require('./models/db/classes')
-
+const configJobData = require('./configs/JobData_dbconfig')
+const configEliteMaster = require('./configs/EliteMaster_dbconfig')
+const models = require('./models/db/classes')
 //file uploads
 const uuid = require('uuid').v4
 const multer = require('multer')
@@ -40,6 +35,9 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
+
+
+
 //app
 app.use(express.json())
 app.use(cors())
@@ -48,32 +46,29 @@ app.use(express.static('public'))
 
 ////////////endpoints//////////////////////
 
+
+
+
 //upload single or multiple files
 app.post('/api/files/upload', limiter, authenticateToken, upload.array('file'), (req,res) => {
     return res.status(202).json({ status: 'File upload successful', uploaded: req.files.length })
 })
 
-
-//get all users
-app.get('/api/users', limiter, authenticateToken, (req, res) => {
-    dboperations.getUsers().then(result => {
-        //console.log(result);
-        res.status(200).json(result);
-    })
-})
+// /paginatedResults(dbclasses.proofs)
 
 //get all proofs
 app.get('/api/proofs', limiter, authenticateToken, (req, res) => {
 
     dboperations.getProofs().then(result => {
         //console.log(result);
-        res.status(200).json(result[0]);
+        res.status(200).json(result);
     })
 })
 
 //get single proof by id
-app.get('/api/proofs/:id', limiter, authenticateToken, (req,res) => {
-    dboperations.getProof(req.params.id).then(result => {
+app.get('/api/proofs', limiter, authenticateToken, (req,res) => {
+    const id = req.query.id
+    dboperations.getProof(id).then(result => {
         //console.log(result);
         res.status(200).json(result[0]);
     })
@@ -112,6 +107,35 @@ function authenticateToken(req, res, next){
     })
 }
 
-var port = process.env.PORT || 8090
+// function paginatedResults(model) {
+//     return (req, res, next) => {
+//         const page = parseInt(req.query.page)
+//         const limit = parseInt(req.query.limit)
+//         const startIndex = (page -1) * limit
+//         const endIndex = page * limit
+    
+//         const results = {}
+    
+//         if( endIndex < model.length ) {
+//         results.next = {
+//             page: page + 1,
+//             limit: limit
+//             }
+//         }
+//         if( startIndex > 0) {
+//         results.previous = {
+//             page: page -1,
+//             limit: limit
+//             }
+//         }
+
+//         results.results = sql.query("SELECT TOP " +limit+ " from Proofs ORDER BY ID")
+//         res.paginatedResults = results
+//         next()
+
+//     }
+// }
+
+var port = process.env.PORT || 3000
 app.listen(port)
 console.log('server is running at port ' + port)
