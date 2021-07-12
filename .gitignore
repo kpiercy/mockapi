@@ -5,5 +5,5 @@ dboperations.js
 JobData_dbconfig.js
 EliteMaster_dbconfig.js
 authServer.js
-./admin/routes/usersAdmin.js
+./admin/routes
 ./public/uploads
