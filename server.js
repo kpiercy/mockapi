@@ -14,8 +14,8 @@ const limiter = rateLimit({
 const jwt = require('jsonwebtoken')
 //db 
 const dboperations = require('./dboperations')
-const configJobData = require('./configs/JobData_dbconfig')
-const configEliteMaster = require('./configs/EliteMaster_dbconfig')
+const configJobData = require('./public/models/db/JobData_dbconfig')
+const configEliteMaster = require('./public/models/db/EliteMaster_dbconfig')
 const models = require('./public/models/db/classes')
 //file uploads
 const uuid = require('uuid').v4
@@ -56,7 +56,18 @@ app.post('/api/files/upload', limiter, authenticateToken, upload.array('file'), 
 
 // /paginatedResults(dbclasses.proofs)
 
-//get all proofs
+
+//get all users >>>>>>>> REQUIRE ADMIN
+app.get('/api/users', limiter, authenticateToken, (req, res) => {
+    dboperations.getUsers().then(result => {
+        //console.log(result);
+        res.status(200).json(result);
+    })
+})
+
+
+
+//get all proofs >>>>>>>>> REQUIRE ADMIN
 app.get('/api/proofs', limiter, authenticateToken, (req, res) => {
 
     dboperations.getProofs().then(result => {

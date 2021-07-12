@@ -5,5 +5,4 @@ dboperations.js
 JobData_dbconfig.js
 EliteMaster_dbconfig.js
 authServer.js
-./internal
 ./public/uploads
