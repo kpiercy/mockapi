@@ -16,7 +16,7 @@ const jwt = require('jsonwebtoken')
 const dboperations = require('./dboperations')
 const configJobData = require('./configs/JobData_dbconfig')
 const configEliteMaster = require('./configs/EliteMaster_dbconfig')
-const models = require('./models/db/classes')
+const models = require('./public/models/db/classes')
 //file uploads
 const uuid = require('uuid').v4
 const multer = require('multer')
