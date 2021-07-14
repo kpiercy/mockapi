@@ -35,12 +35,20 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ 
     storage: storage,
+    limits: (req, file, cb) => {
+        if (file.size > process.env.maxFileSize) {
+            cb(null, false)
+            return cb(new Error('File is larger than allowed max size of 5MB!'))
+        } else {
+            cb(null, true)
+        }
+    },
     fileFilter: (req, file, cb) => {
         if (file.mimetype == "application/vnd.ms-excel" || file.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.mimetype == "application/zip" || file.mimetype == "text/plain" || file.mimetype == "application/pdf" || file.mimetype == "application/json" || file.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype == "application/msword" || file.mimetype == "text/csv") {
-          cb(null, true);
+          cb(null, true)
         } else {
-          cb(null, false);
-          return cb(new Error('Only .txt, .csv, .pdf, .xls, .xlsx, .zip, .json, .doc & .docx formats are allowed!'));
+          cb(null, false)
+          return cb(new Error('Only .txt, .csv, .pdf, .xls, .xlsx, .zip, .json, .doc & .docx formats are allowed!'))
         }
       }
 })
