@@ -3,10 +3,11 @@ const express = require('express')
 var cors = require('cors')
 const app = express()
 const sql = require('mssql/msnodesqlv8')
+
 //rate limiter
 const rateLimit = require('express-rate-limit')
 const limiter = rateLimit({
-    windowMs: process.env.svrLimit, //30 min
+    windowMs: 30 * 60 * 1000, //30 min
     max: process.env.svrMax, //limit each IP to 100 requests per 30min
     message: "429 : Too many requests from this IP in the last 30 min, please try again later."
 })
@@ -28,20 +29,17 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname)
         const id = uuid()
-        //const filePath = `/uploads/${id}${ext}`
+        const filePath = `/uploads/${id}${ext}`
         //setup file storage to DB
         cb(null, `${id}${ext}`)
+
     }
 })
+
 const upload = multer({ 
     storage: storage,
-    limits: (req, file, cb) => {
-        if (file.size > process.env.maxFileSize) {
-            cb(null, false)
-            return cb(new Error('File is larger than allowed max size of 5MB!'))
-        } else {
-            cb(null, true)
-        }
+    limits: {
+        fileSize: 5 * 1024 * 1024
     },
     fileFilter: (req, file, cb) => {
         if (file.mimetype == "application/vnd.ms-excel" || file.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.mimetype == "application/zip" || file.mimetype == "text/plain" || file.mimetype == "application/pdf" || file.mimetype == "application/json" || file.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype == "application/msword" || file.mimetype == "text/csv") {
@@ -65,11 +63,9 @@ app.use(express.static('public'))
 ////////////endpoints//////////////////////
 
 
-
-
 //upload single or multiple files
 app.post('/api/files', limiter, authenticateToken, upload.array('file'), (req,res) => {
-    return res.status(202).json({ status: 'File upload successful', uploaded: req.files.length })
+    return res.status(202).json({ fileID: 'null', status: 'File upload successful', uploaded: req.files.length })
 })
 
 // /paginatedResults(dbclasses.proofs)
