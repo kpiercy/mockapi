@@ -6,3 +6,7 @@ JobData_dbconfig.js
 EliteMaster_dbconfig.js
 authServer.js
 ./public/uploads
+authlimiter.js
+authToken.js
+publimiter.js
+paginatedResults.js
