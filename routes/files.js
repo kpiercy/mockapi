@@ -8,7 +8,7 @@ const sql = require('mssql/msnodesqlv8')
 const publimiter = require('../functions/publimiter')
 const authenticateToken = require('../functions/authToken')
 
-//db 
+
 //const dboperations = require('./dboperations')
 //var configJobData = require('./configs/JobData_dbconfig')
 //var configEliteMaster = require('./configs/EliteMaster_dbconfig')
@@ -30,7 +30,18 @@ const storage = multer.diskStorage({
         cb(null, `${id}${ext}`)
     }
 })
-const upload = multer({ storage: storage })
+const upload = multer({ 
+    storage: storage,
+    limits:  { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "application/vnd.ms-excel" || file.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.mimetype == "application/zip" || file.mimetype == "text/plain" || file.mimetype == "application/pdf" || file.mimetype == "application/json" || file.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype == "application/msword" || file.mimetype == "text/csv") {
+          cb(null, true);
+        } else {
+          cb(null, false);
+          return cb(new Error('Only .txt, .csv, .pdf, .xls, .xlsx, .zip, .json, .doc & .docx formats are allowed!'));
+        }
+      }
+})
 
 
 router.use(express.json())

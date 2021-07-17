@@ -21,10 +21,12 @@ const fileRoutes = require('./routes/files')
 const proofRoutes = require('./routes/proofs')
 
 
-////////////endpoints//////////////////////
+///////////////endpoint routes////////////////
 
 app.use('/api/files', fileRoutes)
 app.use('/api/proofs', proofRoutes)
+
+///////////////endpoint routes////////////////
 
 
 var port = process.env.PORT || 3000
