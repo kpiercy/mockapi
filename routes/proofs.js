@@ -1,9 +1,9 @@
 require('dotenv').config()
 const express = require('express')
 const router = express.Router()
-const publimiter = require('../functions/publimiter')
-const authenticateToken = require('../functions/authToken')
-const dboperations = require('../functions/dboperations')
+const publimiter = require('../middleware/publimiter')
+const authenticateToken = require('../middleware/authToken')
+const dboperations = require('../middleware/dboperations')
 
 
 //get single proof by id
@@ -26,15 +26,15 @@ router.get('/', publimiter, authenticateToken, (req, res) => {
 
 //insert new proof
 router.post('/', publimiter, authenticateToken, (req,res) => {
-    let proof = { ...req.body }
-    dboperations.addProof(proof).then(result => {
-        //console.log(result);
-        res.status(201).json(result);
+    let proof = JSON.stringify(req.body)
+            dboperations.addProof(proof).then(result => {
+            //console.log(result);
+            res.status(201).json(result);
     })
 })
 
 //update proof
-router.patch('/', publimiter, authenticateToken, (req,res) => {
+router.put('/', publimiter, authenticateToken, (req,res) => {
 
     let proofresult = { ...req.body }
     dboperations.updateProof(proofresult).then(result => {
