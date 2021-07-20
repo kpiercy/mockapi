@@ -3,7 +3,9 @@ const express = require('express')
 const router = express.Router()
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
+const paginate = require('../middleware/paginatedResults')
 const dboperations = require('../middleware/dboperations')
+const model = require('../public/models/db/proofModel')
 
 
 //get single proof by id
@@ -16,12 +18,8 @@ router.get('/:id', publimiter, authenticateToken, (req,res) => {
 })
 
 //get all proofs >>>>>>>>> REQUIRE ADMIN
-router.get('/', publimiter, authenticateToken, (req, res) => {
-
-    dboperations.getProofs().then(result => {
-        //console.log(result);
-        res.status(200).json(result);
-    })
+router.get('/', publimiter, authenticateToken, paginate(model), (req, res) => {
+    res.status(200).json(res.paginatedResults)
 })
 
 //insert new proof
