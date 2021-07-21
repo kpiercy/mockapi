@@ -12,3 +12,6 @@ publimiter.js
 paginateProofs.js
 proofModel.js
 authLvl.js
+file.js
+proof.js
+user.js

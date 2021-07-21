@@ -5,7 +5,7 @@ const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
 const paginate = require('../middleware/paginateProofs')
 const dboperations = require('../middleware/dboperations')
-const model = require('../models/proofModel')
+const model = require('../models/proof')
 
 
 //get single proof by id
