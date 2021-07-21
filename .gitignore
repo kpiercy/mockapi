@@ -9,4 +9,6 @@ authServer.js
 authlimiter.js
 authToken.js
 publimiter.js
-paginatedResults.js
+paginateProofs.js
+proofModel.js
+authLvl.js

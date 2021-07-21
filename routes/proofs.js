@@ -3,9 +3,9 @@ const express = require('express')
 const router = express.Router()
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
-const paginate = require('../middleware/paginatedResults')
+const paginate = require('../middleware/paginateProofs')
 const dboperations = require('../middleware/dboperations')
-const model = require('../public/models/db/proofModel')
+const model = require('../models/proofModel')
 
 
 //get single proof by id
@@ -34,7 +34,8 @@ router.post('/', publimiter, authenticateToken, (req,res) => {
 //update proof
 router.put('/', publimiter, authenticateToken, (req,res) => {
 
-    let proofresult = { ...req.body }
+    let proofresult = JSON.stringify(req.body)
+    console.log(proofresult)
     dboperations.updateProof(proofresult).then(result => {
         //console.log(result);
         res.status(201).json(result);
