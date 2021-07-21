@@ -7,6 +7,7 @@ var cors = require('cors')
 const sql = require('mssql/msnodesqlv8')
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
+const dboperations = require('../middleware/dbops_files')
 
 
 const uuid = require('uuid').v4
@@ -52,6 +53,14 @@ router.post('/:type', publimiter, authenticateToken, (req, res) => {
         return res.status(202).json(res.req.files)
     })
     })
+
+    // router.get('/status', publimiter, authenticateToken, (req,res) => {
+    //     let statusReq = JSON.stringify(req.body)
+    //     dboperations.getStatus(statusReq).then(result => {
+    //     //console.log(result);
+    //     res.status(201).json(result);
+    // })
+    // })
 
 
 module.exports = router;

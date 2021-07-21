@@ -4,7 +4,7 @@ const router = express.Router()
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
 const paginate = require('../middleware/paginateProofs')
-const dboperations = require('../middleware/dboperations')
+const dboperations = require('../middleware/dbops_proofs')
 const model = require('../models/proof')
 
 
