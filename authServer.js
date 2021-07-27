@@ -1,25 +1,22 @@
 require('dotenv').config()
 const express = require('express')
 var cors = require('cors')
-const router = express.Router()
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 
-const fileRoutes = require('./routes/files')
-const proofRoutes = require('./routes/proofs')
+const userRoutes = require('./routes/users')
 
 
 ///////////////endpoint routes////////////////
 
-app.use('/api/v1/files', fileRoutes)
-app.use('/api/v1/proofs', proofRoutes)
+app.use('/api/v1/users', userRoutes)
 
 ///////////////endpoint routes////////////////
 
 
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 4000
 app.listen(port)
-console.log('server is running at port ' + port)
+console.log('authServer is running at port ' + port)

@@ -7,7 +7,7 @@ var cors = require('cors')
 const sql = require('mssql/msnodesqlv8')
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
-const dboperations = require('../middleware/dbops_files')
+const dboperations = require('../services/dbops_files')
 
 
 const uuid = require('uuid').v4
