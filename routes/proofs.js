@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
+const authLvl = require('../middleware/authLvl')
 const paginate = require('../middleware/paginateProofs')
 const dboperations = require('../services/dbops_proofs')
 const model = require('../models/proof')
@@ -17,13 +18,13 @@ router.get('/:id', publimiter, authenticateToken, (req,res) => {
     })
 })
 
-//get all proofs >>>>>>>>> REQUIRE ADMIN
-router.get('/', publimiter, authenticateToken, paginate(model), (req, res) => {
+//get all proofs
+router.get('/', publimiter, authenticateToken, paginate(model), authLvl, (req, res) => {
     res.status(200).json(res.paginatedResults)
 })
 
 //insert new proof
-router.post('/', publimiter, authenticateToken, (req,res) => {
+router.post('/', publimiter, authenticateToken, authLvl, (req,res) => {
     let proof = JSON.stringify(req.body)
             dboperations.addProof(proof).then(result => {
             //console.log(result);
