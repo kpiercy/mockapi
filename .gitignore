@@ -5,7 +5,6 @@ dbops_proofs.js
 dbops_users.js
 JobData_dbconfig.js
 EliteMaster_dbconfig.js
-users.js
 ./public/uploads
 authlimiter.js
 authToken.js

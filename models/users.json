@@ -1,0 +1,9 @@
+{
+    "users": [
+        {
+            "username": "foo",
+            "password": "bar",
+            "permissionLvl": "Basic"
+        }
+    ]
+}
