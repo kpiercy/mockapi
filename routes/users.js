@@ -12,7 +12,7 @@ var configJobData = require('../config/JobData_dbconfig')
 //var configEliteMaster = require('../config/EliteMaster_dbconfig')
 const sql = require('mssql/msnodesqlv8')
 const uuid = require('uuid').v4
-const { json } = require('express')
+//const { json } = require('express')
 
 const router = express.Router()
 
@@ -22,9 +22,6 @@ router.post('/auth', authlimiter, async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const username = req.body.username
     const user = { name: req.body.name, password: hashedPassword }
-    //escape variables to avoid sql injection, double tick variable to ensure treated as string
-    //procedure for queries using single param
-    //faster and more efficient, precompiled
     //add 2FA
     //IP address check in limiter?
     if (user == null){
@@ -35,8 +32,7 @@ router.post('/auth', authlimiter, async (req, res) => {
             let pool = await sql.connect(configJobData)
             let users = await pool.request()
             .input('username', sql.VarChar, username)  
-            .execute('UserExists')  
-            //.query("SELECT GUID,username,hashedPassword from Users WHERE username = '" +username+ "'")
+            .execute('UserExists')
             var thisUser = users.recordset[0].username
             var thisPass = users.recordset[0].hashedPassword
             if( await bcrypt.compare(req.body.password, thisPass) && thisUser == username) {
@@ -73,7 +69,6 @@ router.post('/refresh', authlimiter, async (req,res) => {
         let users = await pool.request()
             .input('refToken', sql.VarChar, refreshToken)
             .execute('RefreshAccess')
-            //.query("SELECT refreshToken from Users WHERE refreshToken = '" +refreshToken+ "'")
         var thisRefTok = users.recordset[0].refreshToken
         if ( thisRefTok == refreshToken){
             jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -107,7 +102,6 @@ router.get('/me', authlimiter, authenticateToken, async (req, res) => {
         let permLvl = await pool.request()
             .input('token', sql.VarChar, token)
             .execute('UsersMe')
-            //.query("SELECT GUID,username,permissionLvl from JobData2.dbo.Users WHERE accessToken = '" +token+ "'")
             res.json(permLvl.recordset[0])
     } catch {
         res.status(500).json('Unable to retrieve user.')
