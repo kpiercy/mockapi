@@ -28,6 +28,7 @@
     "openssl": "^1.1.0",
     "path": "^0.12.7",
     "tedious": "^11.4.0",
+    "xmldom": ">=0.7.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
