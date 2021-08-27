@@ -22,17 +22,18 @@ async function getUsers(){
 }
 
 //insert new user to DB, SHA256 encrypt password provided
-async function addUser(user){
+async function addUser(users){
     try{
         //const hashedPassword = await bcrypt.hash(req.body.password, 10)
         let pool = await sql.connect(configJobData);
         let insertUser = await pool.request()
-            .input('guid', sql.VarChar, user.GUID)
-            .input('name', sql.VarChar, user.name)
-            .input('password', sql.VarChar, user.password)
-            .input('permissionLvl', sql.VarChar, user.permissionLvl)
-            .input('hashedPassword', sql.VarChar, user.hashedPassword)
-            .execute('addUser');
+            .input('users', sql.NVarChar, users)
+            // .input('guid', sql.VarChar, user.GUID)
+            // .input('name', sql.VarChar, user.name)
+            // .input('password', sql.VarChar, user.password)
+            // .input('permissionLvl', sql.VarChar, user.permissionLvl)
+            // .input('hashedPassword', sql.VarChar, user.hashedPassword)
+            .execute('addUsers');
 
         return insertUser.recordsets;
     }
@@ -64,7 +65,7 @@ async function updateAccToken(userUp){
         let updateToken = await pool.request()
             .input('refToken', sql.VarChar, userUp.refToken)
             .input('accToken', sql.VarChar, userUp.accToken)
-            .execute('updateAccToken');
+            .execute('UpdateAccToken');
 
         //return updateToken.recordsets;
     }

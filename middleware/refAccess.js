@@ -14,8 +14,8 @@ async function refAccess(req, res, next) {
             .input('token', sql.VarChar, token)
             .execute('CanAccessAPI')
         var thisUserAccess = canAccess.recordset[0].apiAccess
-            if (thisUserAccess !== '1') {
-                res.status(401).json('Requesting user does not have API access.')
+            if (thisUserAccess !== 'true') {
+                res.status(401).json('Requesting user does not have API access. Please contact ElitePS for more information.')
             } else {
                 next()
             }

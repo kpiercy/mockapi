@@ -119,9 +119,11 @@ router.get('/', authlimiter, authenticateToken, authLvl, authAccess, (req, res) 
 router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        //const user = JSON.stringify(req.body)
-        const user = { GUID: uuid(), name: req.body.name, password: req.body.password, permissionLvl: req.body.permissionLvl, hashedPassword: hashedPassword }
-        dboperations.addUser(user).then(result => {
+        const user = req.body
+        Object.assign(user, { GUID: uuid(), hashedPassword: hashedPassword })
+        const users = JSON.stringify(user)
+        console.log(users)
+        dboperations.addUser(users).then(result => {
             res.status(201).json(result);
         })
 
