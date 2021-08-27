@@ -5,12 +5,15 @@ const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl')
 const paginate = require('../middleware/paginateProofs')
+const authAccess = require('../middleware/access')
 const dboperations = require('../services/dbops_proofs')
 const model = require('../models/proof')
 
+router.all('/', publimiter, authenticateToken, authAccess)
 
 //get single proof by id
-router.get('/:id', publimiter, authenticateToken, (req,res) => {
+router.get('/:id', (req,res) => {
+    //add query to only show proofs associated to this user/client
     const id = req.params.id
     dboperations.getProof(id).then(result => {
         //console.log(result);
@@ -19,12 +22,12 @@ router.get('/:id', publimiter, authenticateToken, (req,res) => {
 })
 
 //get all proofs
-router.get('/', publimiter, authenticateToken, paginate(model), authLvl, (req, res) => {
+router.get('/', paginate(model), authLvl, (req, res) => {
     res.status(200).json(res.paginatedResults)
 })
 
 //insert new proof
-router.post('/', publimiter, authenticateToken, authLvl, (req,res) => {
+router.post('/', authLvl, (req,res) => {
     let proof = JSON.stringify(req.body)
             dboperations.addProof(proof).then(result => {
             //console.log(result);
@@ -33,7 +36,7 @@ router.post('/', publimiter, authenticateToken, authLvl, (req,res) => {
 })
 
 //update proof
-router.put('/', publimiter, authenticateToken, (req,res) => {
+router.put('/', (req,res) => {
 
     let proofresult = JSON.stringify(req.body)
     console.log(proofresult)

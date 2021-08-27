@@ -4,9 +4,10 @@ const router = express.Router()
 
 var cors = require('cors')
 
-const sql = require('mssql/msnodesqlv8')
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
+const authAccess = require('../middleware/access')
+const sql = require('mssql/msnodesqlv8')
 const dboperations = require('../services/dbops_files')
 
 
@@ -41,9 +42,10 @@ const upload = multer({
 router.use(express.json())
 router.use(cors())
 router.use(express.static('public'))
+router.all('/', publimiter, authenticateToken, authAccess)
 
 
-router.post('/:type', publimiter, authenticateToken, (req, res) => {
+router.post('/:type', (req, res) => {
     upload(req, res, function(err){
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
@@ -54,7 +56,8 @@ router.post('/:type', publimiter, authenticateToken, (req, res) => {
     })
     })
 
-    // router.get('/status', publimiter, authenticateToken, (req,res) => {
+    // router.get('/status', (req,res) => {
+    //      const id = req.body.fileid
     //     let statusReq = JSON.stringify(req.body)
     //     dboperations.getStatus(statusReq).then(result => {
     //     //console.log(result);

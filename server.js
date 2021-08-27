@@ -8,6 +8,7 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 
+const authAccess = require('./middleware/access')
 const fileRoutes = require('./routes/files')
 const proofRoutes = require('./routes/proofs')
 

@@ -2,6 +2,7 @@ require('dotenv').config()
 
 var configJobData = require('../config/JobData_dbconfig');
 const sql = require('mssql/msnodesqlv8');
+const express = require('express');
 
 
 
@@ -11,7 +12,8 @@ async function getUsers(){
         let pool = await sql.connect(configJobData);
         let users = await pool.request()
             .execute('GetAllUsers')
-    return users.recordsets;
+    
+    return users.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B'];
     }
 
     catch (error){

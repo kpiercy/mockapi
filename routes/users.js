@@ -7,12 +7,13 @@ const jwt = require('jsonwebtoken')
 const authlimiter = require('../middleware/authlimiter')
 const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl')
+const authAccess = require('../middleware/access')
+const authRefAccess= require('../middleware/refAccess')
 const dboperations = require('../services/dbops_users')
 var configJobData = require('../config/JobData_dbconfig')
 //var configEliteMaster = require('../config/EliteMaster_dbconfig')
 const sql = require('mssql/msnodesqlv8')
 const uuid = require('uuid').v4
-//const { json } = require('express')
 
 const router = express.Router()
 
@@ -22,8 +23,6 @@ router.post('/auth', authlimiter, async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const username = req.body.username
     const user = { name: req.body.name, password: hashedPassword }
-    //add 2FA
-    //IP address check in limiter?
     if (user == null){
         return res.status(400).send('Please enter proper credentials')
     }
@@ -35,7 +34,8 @@ router.post('/auth', authlimiter, async (req, res) => {
             .execute('UserExists')
             var thisUser = users.recordset[0].username
             var thisPass = users.recordset[0].hashedPassword
-            if( await bcrypt.compare(req.body.password, thisPass) && thisUser == username) {
+            var thisAccess = users.recordset[0].apiAccess
+            if( await bcrypt.compare(req.body.password, thisPass) && thisUser === username && thisAccess === '1') {
                 const accessToken = generateAccessToken(user)
                 const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
                 res.json({accessToken: accessToken, refreshToken: refreshToken})
@@ -52,14 +52,14 @@ router.post('/auth', authlimiter, async (req, res) => {
             res.status(401).send('Credentials do not exist in DB')
         }
     
-    } catch {
-        res.status(500).send()
+    } catch (error){
+        res.status(500).send(error)
 
     }
 })
 
 //takes in refresh token from req body, confirms that matches stored refresh token, returns new access token, updates DB with new access token
-router.post('/refresh', authlimiter, async (req,res) => {
+router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
     const refreshToken = req.body.token
 
     if (refreshToken == null) return res.sendStatus(401)
@@ -86,14 +86,14 @@ router.post('/refresh', authlimiter, async (req,res) => {
             res.status(401).send('Refresh token does not match DB')
         }
 
-    } catch {
-        res.status(500).send()
+    } catch (error){
+        res.status(500).send(error)
     }
 
 })
 
 //get your userid, username and permissionLvl
-router.get('/me', authlimiter, authenticateToken, async (req, res) => {
+router.get('/me', authlimiter, authenticateToken, authAccess, async (req, res) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
@@ -109,14 +109,14 @@ router.get('/me', authlimiter, authenticateToken, async (req, res) => {
 })
 
 //get all users 
-router.get('/', authlimiter, authenticateToken, authLvl, (req, res) => {
+router.get('/', authlimiter, authenticateToken, authLvl, authAccess, (req, res) => {
     dboperations.getUsers().then(result => {
         //console.log(result);
-        res.status(200).json(result);
+        res.status(200).json(JSON.parse(result));
     })
 })
 
-router.post('/', authlimiter, authenticateToken, authLvl, async (req, res) => {
+router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         //const user = JSON.stringify(req.body)
@@ -125,15 +125,31 @@ router.post('/', authlimiter, authenticateToken, authLvl, async (req, res) => {
             res.status(201).json(result);
         })
 
-    } catch {
-        res.status(500).send()
+    } catch (error){
+        res.status(500).send(error)
     }
 })
 
+router.delete('/', authlimiter, authenticateToken, authLvl, authAccess, async (req, res) =>{
+    try{
+        const client = req.body.clientid
+        let pool = await sql.connect(configJobData)
+        let clients = await pool.request()
+            .input('client', sql.VarChar, client)
+            .execute('ClientExists')
+        if(clients.recordset[0]['count'] > 0.5) {
+            let pool2 = await sql.connect(configJobData)
+            let revoke = await pool2.request()
+                .input('client', sql.VarChar, client)
+                .execute('RevokeAPIAccess')
+            res.status(202).send(revoke.recordsets)
+        } else{
+            res.status(400).send('No client by that name exists')
+            }
 
-router.delete('/', authlimiter, authenticateToken, authLvl, (req, res) => {
-    refreshToken = refreshTokens.filter(token => token !== req.body.token)
-    res.status(200).send('Logged out')
+    } catch (error) {
+        res.status(500).send(error)
+    }
 })
 
 function generateAccessToken(user){
