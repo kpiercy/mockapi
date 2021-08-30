@@ -102,7 +102,7 @@ router.get('/me', authlimiter, authenticateToken, authAccess, async (req, res) =
         let permLvl = await pool.request()
             .input('token', sql.VarChar, token)
             .execute('UsersMe')
-            res.json(permLvl.recordset[0])
+            res.json(JSON.parse(permLvl.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     } catch {
         res.status(500).json('Unable to retrieve user.')
     }
