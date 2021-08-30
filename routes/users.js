@@ -123,7 +123,6 @@ router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req
             const hashedPassword = await bcrypt.hash(user[i].password, 10)
             Object.assign(user[i], { GUID: uuid(), hashedPassword: hashedPassword })
          }
-
         const users = JSON.stringify(user)
         dboperations.addUser(users).then(result => {
             res.status(201).json(result);

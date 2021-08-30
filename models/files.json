@@ -1,13 +1,16 @@
-{"filestoprocess":[
-    {"file1": "filepath",
-    "file2": "filepath"}
-    ],
-    "messages":[
-    {"msg1":"filepath",
-    "msg2":"filepath"}
-    ],
-    "inserts":[
-    {"insert1":"filepath",
-    "insert2":"filepath"}
-    ]
+{
+	"data": [{
+		"filestoprocess": [{
+			"file1": "filepath",
+			"file2": "filepath"
+		}],
+		"messages": [{
+			"msg1": "filepath",
+			"msg2": "filepath"
+		}],
+		"inserts": [{
+			"insert1": "filepath",
+			"insert2": "filepath"
+		}]
+	}]
 }

@@ -1,9 +1,11 @@
 {
-    "users": [
+    "data": [
         {
+            "gid":"",
             "username": "foo",
             "password": "bar",
-            "permissionLvl": "Basic"
+            "permissionLvl": "Basic|Admin",
+            "apiaccess":"false"
         }
     ]
 }
