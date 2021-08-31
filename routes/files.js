@@ -26,18 +26,41 @@ const storage = multer.diskStorage({
         cb(null, `${id}${ext}`)
     }
 })
-const upload = multer({ 
+const files = multer({ 
     storage: storage,
     limits:  { fileSize: 5 * 1024 * 1024 }, //5MB
     fileFilter: (req, file, cb) => {
-        if (file.mimetype == "application/vnd.ms-excel" || file.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.mimetype == "application/zip" || file.mimetype == "text/plain" || file.mimetype == "application/pdf" || file.mimetype == "application/json" || file.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype == "application/msword" || file.mimetype == "text/csv") {
-          cb(null, true);
-        } else {
-          cb('Only .txt, .csv, .pdf, .xls, .xlsx, .zip, .json, .doc & .docx formats are allowed!', false);
+        let type = req.params.type
+        if(type === "filestoprocess") {
+            if (file.mimetype == "application/vnd.ms-excel" || file.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.mimetype == "application/zip" || file.mimetype == "text/plain" || file.mimetype == "application/pdf" || file.mimetype == "application/json" || file.mimetype == "text/csv") {
+                cb(null, true);
+              } else {
+                cb('Only .txt, .csv, .pdf, .xls, .xlsx, .zip, & .json formats are allowed!', false);
+              }
         }
+
+        if(type === "messages") {
+            if (file.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype == "application/msword" || file.mimetype == "application/pdf") {
+                cb(null, true);
+              } else {
+                cb('Only .pdf, .doc & .docx formats are allowed!', false);
+              }
+        }
+
+        if(type === "inserts") {
+            if (file.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype == "application/msword" || file.mimetype == "application/pdf") {
+                cb(null, true);
+              } else {
+                cb('Only .pdf, .doc & .docx formats are allowed!', false);
+              }
+        }
+
+        if(type !== "filestoprocess" || type !== "messages" || type !== "inserts") {
+            cb('Unrecognized file type in uri, allowed values are filestoprocess, messages, or inserts.', false)
+        } 
+        
       }
 }).array('files')
-
 
 router.use(express.json())
 router.use(cors())
@@ -46,7 +69,7 @@ router.all('/', publimiter, authenticateToken, authAccess)
 
 
 router.post('/:type', (req, res) => {
-    upload(req, res, function(err){
+    files(req, res, function(err){
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
