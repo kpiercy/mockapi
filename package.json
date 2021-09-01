@@ -8,6 +8,7 @@
     "devStartAuth": "nodemon authServer.js"
   },
   "dependencies": {
+    "@xmldom/xmldom": "github:xmldom/xmldom",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -16,19 +17,16 @@
     "express-fileupload": "^1.2.1",
     "express-jwt": "^6.0.0",
     "express-rate-limit": "^5.3.0",
-    "git": "^0.1.5",
     "gitignore": "^0.7.0",
     "jose": "^3.14.3",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.4",
-    "mime": "^2.5.2",
     "msnodesqlv8": "^2.2.0",
-    "mssql": "^7.2.0",
+    "mssql": "^7.2.1",
     "multer": "^1.4.2",
     "openssl": "^1.1.0",
     "path": "^0.12.7",
-    "tedious": "^11.4.0",
-    "xmldom": ">=0.7.0",
+    "tar": "^6.1.11",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
