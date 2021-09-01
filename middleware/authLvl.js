@@ -14,7 +14,7 @@ async function authLvl(req, res, next) {
         let permLvl = await pool.request()
             .input('token', sql.VarChar, token)
             .execute('AuthPermLvl')
-        var thisUserLvl = permLvl.recordset[0].permissionLvl
+        var thisUserLvl = permLvl.recordset[0].permissions
             if (thisUserLvl != 'Admin') {
                 res.status(401).json('Requesting user does not have permission necesssary.')
             } else {

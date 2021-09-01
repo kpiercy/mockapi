@@ -33,8 +33,8 @@ router.post('/auth', authlimiter, async (req, res) => {
             .input('username', sql.VarChar, username)  
             .execute('UserExists')
             var thisUser = users.recordset[0].username
-            var thisPass = users.recordset[0].hashedPassword
-            var thisAccess = users.recordset[0].apiAccess
+            var thisPass = users.recordset[0].hashedpassword
+            var thisAccess = users.recordset[0].apiaccess
             if( await bcrypt.compare(req.body.password, thisPass) && thisUser === username && thisAccess === 'true') {
                 const accessToken = generateAccessToken(user)
                 const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
@@ -60,23 +60,23 @@ router.post('/auth', authlimiter, async (req, res) => {
 
 //takes in refresh token from req body, confirms that matches stored refresh token, returns new access token, updates DB with new access token
 router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
-    const refreshToken = req.body.token
+    const refreshtoken = req.body.token
 
-    if (refreshToken == null) return res.sendStatus(401)
+    if (refreshtoken == null) return res.sendStatus(401)
 
     try{
         let pool = await sql.connect(configJobData)
         let users = await pool.request()
-            .input('refToken', sql.VarChar, refreshToken)
+            .input('refToken', sql.VarChar, refreshtoken)
             .execute('RefreshAccess')
-        var thisRefTok = users.recordset[0].refreshToken
-        if ( thisRefTok == refreshToken){
-            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        var thisRefTok = users.recordset[0].refreshtoken
+        if ( thisRefTok == refreshtoken){
+            jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
                 if (err) return res.sendStatus(403)
-                const accessToken = generateAccessToken({ name: user.username})
-                res.status(201).json ({ accessToken: accessToken })
+                const accesstoken = generateAccessToken({ name: user.username})
+                res.status(201).json ({ accessToken: accesstoken })
 
-                let userUp = { refToken: refreshToken, accToken: accessToken}
+                let userUp = { refToken: refreshtoken, accToken: accesstoken}
                 dboperations.updateAccToken(userUp).then(result => {
                     res.status(201).json(result);
                 })
@@ -120,8 +120,8 @@ router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req
     try {
         const user = req.body
         for(let i = 0; i < user.length; i++){
-            const hashedPassword = await bcrypt.hash(user[i].password, 10)
-            Object.assign(user[i], { GUID: uuid(), hashedPassword: hashedPassword })
+            const hashedpassword = await bcrypt.hash(user[i].password, 10)
+            Object.assign(user[i], { hashedpassword: hashedpassword })
          }
         const users = JSON.stringify(user)
         dboperations.addUser(users).then(result => {
@@ -147,7 +147,7 @@ router.delete('/', authlimiter, authenticateToken, authLvl, authAccess, async (r
                 .execute('RevokeAPIAccess')
             res.status(202).send(revoke.recordsets)
         } else{
-            res.status(400).send('No client by that name exists')
+            res.status(400).send('No users by that clientid found.')
             }
 
     } catch (error) {

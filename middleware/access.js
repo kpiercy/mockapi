@@ -14,7 +14,7 @@ async function apiAccess(req, res, next) {
         let canAccess = await pool.request()
             .input('token', sql.VarChar, token)
             .execute('CanAccessAPI')
-        var thisUserAccess = canAccess.recordset[0].apiAccess
+        var thisUserAccess = canAccess.recordset[0].apiaccess
             if (thisUserAccess !== 'true') {
                 res.status(401).json('Requesting user does not have API access. Please contact ElitePS for more information.')
             } else {
