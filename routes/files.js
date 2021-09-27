@@ -75,7 +75,9 @@ router.post('/:type', (req, res) => {
         } else if (err) {
             return res.status(500).json(err)
         }
-        return res.status(202).json(res.req.files)
+        
+        res.status(202).json(res.req.files)
+
     })
     })
 

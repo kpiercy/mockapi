@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+//2FA notes: store pubIP to DB during registration/setup, if requesting pubIP does not match stored value, send email during /auth or /refresh to user email with link containing /me/confirm route and token that expires in 1 day, during /me/confirm route, append the new pubIp to their pubIp field, ALSO add windows scheduler script that reset each users "confirmed" status to false every xx days to make them redo 2FA
 
 const bcrypt = require('bcrypt')
 const express = require('express')
@@ -11,8 +12,9 @@ const authAccess = require('../middleware/access')
 const authRefAccess= require('../middleware/refAccess')
 const dboperations = require('../services/dbops_users')
 var configJobData = require('../config/JobData_dbconfig')
-//var configEliteMaster = require('../config/EliteMaster_dbconfig')
+var configEliteMaster = require('../config/EliteMaster_dbconfig')
 const sql = require('mssql/msnodesqlv8')
+// const speakeasy = require('speakeasy')
 const uuid = require('uuid').v4
 
 const router = express.Router()
@@ -121,6 +123,7 @@ router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req
         const user = req.body
         for(let i = 0; i < user.length; i++){
             const hashedpassword = await bcrypt.hash(user[i].password, 10)
+            // const totpSecret = speakeasy.generateSecret()
             Object.assign(user[i], { hashedpassword: hashedpassword })
          }
         const users = JSON.stringify(user)

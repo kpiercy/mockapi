@@ -26,8 +26,10 @@
     "multer": "^1.4.2",
     "openssl": "^1.1.0",
     "path": "^0.12.7",
+    "speakeasy": "^2.0.0",
     "tar": "^6.1.11",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "axios": ">=0.21.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
