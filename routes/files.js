@@ -7,9 +7,10 @@ var cors = require('cors')
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
 const authAccess = require('../middleware/access')
+const authIP = require('../middleware/ipAccess')
 const sql = require('mssql/msnodesqlv8')
 const dboperations = require('../services/dbops_files')
-
+const pubip = require('express-ip')
 
 const uuid = require('uuid').v4
 const multer = require('multer')
@@ -65,7 +66,8 @@ const files = multer({
 router.use(express.json())
 router.use(cors())
 router.use(express.static('public'))
-router.all('/', publimiter, authenticateToken, authAccess)
+router.use(pubip().getIpInfoMiddleware)
+router.all('/', publimiter, authenticateToken, authAccess, authIP)
 
 
 router.post('/:type', (req, res) => {

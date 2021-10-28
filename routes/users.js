@@ -10,14 +10,17 @@ const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl')
 const authAccess = require('../middleware/access')
 const authRefAccess= require('../middleware/refAccess')
+const authIP = require('../middleware/ipAccess')
 const dboperations = require('../services/dbops_users')
 var configJobData = require('../config/JobData_dbconfig')
 var configEliteMaster = require('../config/EliteMaster_dbconfig')
 const sql = require('mssql/msnodesqlv8')
-// const speakeasy = require('speakeasy')
-const uuid = require('uuid').v4
+const pubip = require('express-ip')
+//const speakeasy = require('speakeasy')
+//const uuid = require('uuid').v4
 
 const router = express.Router()
+router.use(pubip().getIpInfoMiddleware)
 
 
 //takes in req body, SHA256 ecrypts the password, verifies user exists in DB and compares SHA256 password to stored value, returns accessToken and refreshToken
@@ -37,18 +40,32 @@ router.post('/auth', authlimiter, async (req, res) => {
             var thisUser = users.recordset[0].username
             var thisPass = users.recordset[0].hashedpassword
             var thisAccess = users.recordset[0].apiaccess
-            if( await bcrypt.compare(req.body.password, thisPass) && thisUser === username && thisAccess === 'true') {
-                const accessToken = generateAccessToken(user)
-                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-                res.json({accessToken: accessToken, refreshToken: refreshToken})
-                
-                let userUp = { usernm: req.body.username, refToken: refreshToken, accToken: accessToken}
-                dboperations.addTokens(userUp).then(result => {
-                    res.status(201).json(result);
-                })
-                //res.send('Success')
+            var thisIp = users.recordset[0].allowedips
+            let str = thisIp
+            let lookup = str.search(req.ipInfo.ip)
+            //console.log(req.ipInfo.ip)
+
+            if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
+                if ( thisAccess === 'true' ) {
+                    if ( lookup != -1 ) {
+                        const accessToken = generateAccessToken(user)
+                        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                        res.json({accessToken: accessToken, refreshToken: refreshToken})
+
+                        let userUp = { usernm: req.body.username, refToken: refreshToken, accToken: accessToken}
+                        dboperations.addTokens(userUp).then(result => {
+                            res.status(201).json(result);
+                        })
+
+                    } else {
+                        res.status(403).send('Access not allowed from this IP')
+                        //perform 2fa here
+                    }
+                } else {
+                    res.status(403).send('User does not have API access at this time, please check with your admin and contact Elite Services if necessary')
+                }
             } else {
-                res.status(403).send('Not allowed')
+                res.status(403).send('Username or password incorrect')
             }
         } catch {
             res.status(401).send('Credentials do not exist in DB')
@@ -72,20 +89,29 @@ router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
             .input('refToken', sql.VarChar, refreshtoken)
             .execute('RefreshAccess')
         var thisRefTok = users.recordset[0].refreshtoken
-        if ( thisRefTok == refreshtoken){
-            jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-                if (err) return res.sendStatus(403)
-                const accesstoken = generateAccessToken({ name: user.username})
-                res.status(201).json ({ accessToken: accesstoken })
-
-                let userUp = { refToken: refreshtoken, accToken: accesstoken}
-                dboperations.updateAccToken(userUp).then(result => {
-                    res.status(201).json(result);
+        var thisIp = users.recordset[0].allowedips
+        let str = thisIp
+        let lookup = str.search(req.ipInfo.ip)
+        //console.log(req.ipInfo.ip)
+        if ( thisRefTok == refreshtoken ){
+            if ( lookup != -1 ){
+                jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                    if (err) return res.sendStatus(403)
+                    const accesstoken = generateAccessToken({ name: user.username})
+                    res.status(201).json ({ accessToken: accesstoken })
+    
+                    let userUp = { refToken: refreshtoken, accToken: accesstoken}
+                    dboperations.updateAccToken(userUp).then(result => {
+                        res.status(201).json(result);
+                    })
+                
                 })
-            
-            })
+            } else {
+                res.status(401).send('Access not allowed from this IP')
+                //perform 2fa here
+            }
         } else {
-            res.status(401).send('Refresh token does not match DB')
+            res.status(401).send('Refresh token does not match our records')
         }
 
     } catch (error){
@@ -95,7 +121,7 @@ router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
 })
 
 //get your userid, username and permissionLvl
-router.get('/me', authlimiter, authenticateToken, authAccess, async (req, res) => {
+router.get('/me', authlimiter, authenticateToken, authAccess, authIP, async (req, res) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
@@ -111,19 +137,18 @@ router.get('/me', authlimiter, authenticateToken, authAccess, async (req, res) =
 })
 
 //get all users 
-router.get('/', authlimiter, authenticateToken, authLvl, authAccess, (req, res) => {
+router.get('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, (req, res) => {
     dboperations.getUsers().then(result => {
         //console.log(result);
         res.status(200).json(JSON.parse(result));
     })
 })
 
-router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req, res) => {
+router.post('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, async (req, res) => {
     try {
         const user = req.body
         for(let i = 0; i < user.length; i++){
             const hashedpassword = await bcrypt.hash(user[i].password, 10)
-            // const totpSecret = speakeasy.generateSecret()
             Object.assign(user[i], { hashedpassword: hashedpassword })
          }
         const users = JSON.stringify(user)
@@ -136,7 +161,7 @@ router.post('/', authlimiter, authenticateToken, authLvl, authAccess, async (req
     }
 })
 
-router.delete('/', authlimiter, authenticateToken, authLvl, authAccess, async (req, res) =>{
+router.delete('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, async (req, res) =>{
     try{
         const client = req.body.clientid
         let pool = await sql.connect(configJobData)

@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "@xmldom/xmldom": "github:xmldom/xmldom",
+    "axios": ">=0.21.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
+    "express-ip": "^1.0.4",
     "express-jwt": "^6.0.0",
     "express-rate-limit": "^5.3.0",
     "gitignore": "^0.7.0",
@@ -28,9 +30,7 @@
     "path": "^0.12.7",
     "speakeasy": "^2.0.0",
     "tar": "^6.1.11",
-    "uuid": "^8.3.2",
-    "axios": ">=0.21.2",
-    "ansi-regex": ">=5.0.1"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"

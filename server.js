@@ -19,7 +19,6 @@ app.use('/api/v1/files', fileRoutes)
 app.use('/api/v1/proofs', proofRoutes)
 
 ///////////////endpoint routes////////////////
-//testing
 
 var port = process.env.PORT || 3000
 app.listen(port)
