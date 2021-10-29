@@ -27,21 +27,21 @@ const detailRoutes = require('./routes/details')
 
 ///////////////endpoint routes////////////////
 
-//app.use('/api/v1/clients', clientRoutes)
-//app.use('/api/v1/clients/jobs', jobRoutes)
+app.use('/api/v1/clients', clientRoutes)
+app.use('/api/v1/clients/jobs', jobRoutes)
 app.use('/api/v1/clients/jobs/files', fileRoutes)
 app.use('/api/v1/clients/jobs/files/proofs', proofRoutes)
-//app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
-//app.use('/api/v1/clients/jobs/contacts', contactRoutes)
-//app.use('/api/v1/clients/jobs/payments', paymentRoutes)
-//app.use('/api/v1/clients/jobs/orders', orderRoutes)
-//app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes) // uses files.js like jobs/files does
-//app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
-//app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes)
-//app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
-//app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
-//app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
+app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
+app.use('/api/v1/clients/jobs/contacts', contactRoutes)
+app.use('/api/v1/clients/jobs/payments', paymentRoutes)
+app.use('/api/v1/clients/jobs/orders', orderRoutes)
+app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes) // uses files.js like /clients/jobs/files does
+app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
 
 ///////////////endpoint routes////////////////
 
