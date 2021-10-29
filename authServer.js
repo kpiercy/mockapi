@@ -12,7 +12,7 @@ const userRoutes = require('./routes/users')
 
 ///////////////endpoint routes////////////////
 
-app.use('/api/v1/users', userRoutes)
+app.use('/api/v1/clients/users', userRoutes)
 
 ///////////////endpoint routes////////////////
 

@@ -9,30 +9,28 @@ const paginate = require('../middleware/paginateProofs')
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
 const dboperations = require('../services/dbops_proofs')
-const model = require('../models/proof')
 const pubip = require('express-ip')
 
 router.use(pubip().getIpInfoMiddleware)
 router.all('/', publimiter, authenticateToken, authAccess, authIP)
 
-//get all jobs
+//get all versions, paginate
 router.get('/', (req, res) => {
 
 })
 
-//get single job by id
+//get single version by id
 router.get('/:id', (req,res) => {
     const id = req.params.id
 
 })
 
-//create new job
+//create new version
 router.post('/', (req, res) => {
 
 })
 
-//delete job
+//delete version
 router.delete('/', (req, res) => {
 
 })
-

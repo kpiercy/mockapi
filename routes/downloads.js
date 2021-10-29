@@ -15,24 +15,23 @@ const pubip = require('express-ip')
 router.use(pubip().getIpInfoMiddleware)
 router.all('/', publimiter, authenticateToken, authAccess, authIP)
 
-//get all jobs
+//get all downloads for this job
 router.get('/', (req, res) => {
 
 })
 
-//get single job by id
+//get single download for this job by id
 router.get('/:id', (req,res) => {
     const id = req.params.id
 
 })
 
-//create new job
+//create new download by job
 router.post('/', (req, res) => {
 
 })
 
-//delete job
+//delete download for this job
 router.delete('/', (req, res) => {
 
 })
-

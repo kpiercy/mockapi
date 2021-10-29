@@ -13,26 +13,25 @@ const model = require('../models/proof')
 const pubip = require('express-ip')
 
 router.use(pubip().getIpInfoMiddleware)
-router.all('/', publimiter, authenticateToken, authAccess, authIP)
+router.all('/', publimiter, authenticateToken, authAccess, authIP, authLvl)
 
-//get all jobs
+//get all clients, paginate
 router.get('/', (req, res) => {
 
 })
 
-//get single job by id
+//get single client by id
 router.get('/:id', (req,res) => {
     const id = req.params.id
 
 })
 
-//create new job
+//create new client
 router.post('/', (req, res) => {
 
 })
 
-//delete job
+//delete client
 router.delete('/', (req, res) => {
 
 })
-

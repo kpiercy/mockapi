@@ -15,24 +15,23 @@ const pubip = require('express-ip')
 router.use(pubip().getIpInfoMiddleware)
 router.all('/', publimiter, authenticateToken, authAccess, authIP)
 
-//get all jobs
+//get all orders for this job by client
 router.get('/', (req, res) => {
 
 })
 
-//get single job by id
+//get single order for this job by client
 router.get('/:id', (req,res) => {
     const id = req.params.id
 
 })
 
-//create new job
+//create new order for this job by client
 router.post('/', (req, res) => {
 
 })
 
-//delete job
+//delete order for this job by client
 router.delete('/', (req, res) => {
 
 })
-

@@ -15,24 +15,23 @@ const pubip = require('express-ip')
 router.use(pubip().getIpInfoMiddleware)
 router.all('/', publimiter, authenticateToken, authAccess, authIP)
 
-//get all jobs
+//get all patients in file for this version
 router.get('/', (req, res) => {
 
 })
 
-//get single job by id
+//get single patient by id from this file for this version
 router.get('/:id', (req,res) => {
     const id = req.params.id
 
 })
 
-//create new job
+//create new patient in this file for this version
 router.post('/', (req, res) => {
 
 })
 
-//delete job
+//delete patient in this file for this version
 router.delete('/', (req, res) => {
 
 })
-

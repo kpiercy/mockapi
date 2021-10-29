@@ -15,24 +15,23 @@ const pubip = require('express-ip')
 router.use(pubip().getIpInfoMiddleware)
 router.all('/', publimiter, authenticateToken, authAccess, authIP)
 
-//get all jobs
+//get all services, paginate
 router.get('/', (req, res) => {
 
 })
 
-//get single job by id
+//get single service by id
 router.get('/:id', (req,res) => {
     const id = req.params.id
 
 })
 
-//create new job
+//create new service
 router.post('/', (req, res) => {
 
 })
 
-//delete job
+//delete service
 router.delete('/', (req, res) => {
 
 })
-
