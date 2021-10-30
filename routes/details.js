@@ -13,7 +13,7 @@ const model = require('../models/proof')
 const pubip = require('express-ip')
 
 router.use(pubip().getIpInfoMiddleware)
-router.all('/', publimiter, authenticateToken, authAccess, authIP)
+router.all('/', publimiter, authenticateToken, authAccess, authIP, authLvl)
 
 //get all detail for this encounter of this patient for this file version
 router.get('/', (req, res) => {
