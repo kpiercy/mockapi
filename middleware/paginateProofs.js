@@ -7,6 +7,8 @@ const model = require('../models/proof')
 
 function paginatedResults(model) {
     return async (req, res, next) => {
+        req.params.cid = req.cid //retrieve cid from originalUrl
+        var cid = req.params.cid
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
         const startIndex = (page -1) * limit
@@ -16,18 +18,19 @@ function paginatedResults(model) {
     
         if( endIndex < model.length ) {
             var nextPage = page + 1
-        results.next = "http://localhost:3000/clients/jobs/files/proofs?page="+nextPage+"&limit="+limit+""
+        results.next = "http://localhost:3000/clients/"+`${cid}`+"/jobs/files/proofs?page="+nextPage+"&limit="+limit+""
             
         }
         if( startIndex > 0) {
             var prevPage = page - 1
-        results.previous = "http://localhost:3000/clients/jobs/files/proofs?page="+prevPage+"&limit="+limit+""
+        results.previous = "http://localhost:3000/clients/"+`${cid}`+"/jobs/files/proofs?page="+prevPage+"&limit="+limit+""
         }
         try{
             let pool = await sql.connect(configJobData)
             results.results = await pool.request()
                 .input('startindex', sql.Int, startIndex)
                 .input('limit', sql.Int, limit)
+                //.input('client', sql.VarChar, cid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this req users clientid
                 .execute('GetPaginatedProofs')
             res.paginatedResults = results
             next()
