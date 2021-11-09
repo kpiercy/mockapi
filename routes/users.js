@@ -21,10 +21,11 @@ const pubip = require('express-ip')
 
 const router = express.Router()
 router.use(pubip().getIpInfoMiddleware)
+router.all('/', authlimiter)
 
 
 //takes in req body, SHA256 ecrypts the password, verifies user exists in DB and compares SHA256 password to stored value, returns accessToken and refreshToken
-router.post('/auth', authlimiter, async (req, res) => {
+router.post('/auth', authIP, async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const username = req.body.username
     const user = { name: req.body.username, password: hashedPassword }
@@ -40,14 +41,9 @@ router.post('/auth', authlimiter, async (req, res) => {
             var thisUser = users.recordset[0].username
             var thisPass = users.recordset[0].hashedpassword
             var thisAccess = users.recordset[0].apiaccess
-            var thisIp = users.recordset[0].allowedips
-            let str = thisIp
-            let lookup = str.search(req.ipInfo.ip)
-            //console.log(req.ipInfo.ip)
 
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
                 if ( thisAccess === 'true' ) {
-                    if ( lookup != -1 ) {
                         const accessToken = generateAccessToken(user)
                         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
                         res.json({accessToken: accessToken, refreshToken: refreshToken})
@@ -58,15 +54,11 @@ router.post('/auth', authlimiter, async (req, res) => {
                         })
 
                     } else {
-                        res.status(403).send('Access not allowed from this IP')
-                        //perform 2fa here
+                        res.status(403).send('User does not have API access at this time, please check with your admin and contact Elite Services if necessary')
                     }
                 } else {
-                    res.status(403).send('User does not have API access at this time, please check with your admin and contact Elite Services if necessary')
+                    res.status(403).send('Username or password incorrect')
                 }
-            } else {
-                res.status(403).send('Username or password incorrect')
-            }
         } catch {
             res.status(401).send('Credentials do not exist in DB')
         }
@@ -78,7 +70,7 @@ router.post('/auth', authlimiter, async (req, res) => {
 })
 
 //takes in refresh token from req body, confirms that matches stored refresh token, returns new access token, updates DB with new access token
-router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
+router.post('/refresh', authRefAccess, async (req,res) => {
     const refreshtoken = req.body.token
 
     if (refreshtoken == null) return res.sendStatus(401)
@@ -89,12 +81,7 @@ router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
             .input('refToken', sql.VarChar, refreshtoken)
             .execute('RefreshAccess')
         var thisRefTok = users.recordset[0].refreshtoken
-        var thisIp = users.recordset[0].allowedips
-        let str = thisIp
-        let lookup = str.search(req.ipInfo.ip)
-        //console.log(req.ipInfo.ip)
         if ( thisRefTok == refreshtoken ){
-            if ( lookup != -1 ){
                 jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
                     if (err) return res.sendStatus(403)
                     const accesstoken = generateAccessToken({ name: user.username})
@@ -107,12 +94,8 @@ router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
                 
                 })
             } else {
-                res.status(401).send('Access not allowed from this IP')
-                //perform 2fa here
+                res.status(401).send('Refresh token does not match our records')
             }
-        } else {
-            res.status(401).send('Refresh token does not match our records')
-        }
 
     } catch (error){
         res.status(500).send(error)
@@ -121,7 +104,7 @@ router.post('/refresh', authlimiter, authRefAccess, async (req,res) => {
 })
 
 //get your userid, username and permissionLvl
-router.get('/me', authlimiter, authenticateToken, authAccess, authIP, async (req, res) => {
+router.get('/me', authenticateToken, authAccess, authIP, async (req, res) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
@@ -136,15 +119,21 @@ router.get('/me', authlimiter, authenticateToken, authAccess, authIP, async (req
     }
 })
 
+//get your userid, username and permissionLvl
+router.post('/me/confirm', authenticateToken, authAccess, async (req, res) => {
+    console.log('Successful')
+    res.status(200).send('Successful')
+})
+
 //get all users 
-router.get('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, (req, res) => {
+router.get('/', authenticateToken, authLvl, authAccess, authIP, (req, res) => {
     dboperations.getUsers().then(result => {
         //console.log(result);
         res.status(200).json(JSON.parse(result));
     })
 })
 
-router.post('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, async (req, res) => {
+router.post('/', authenticateToken, authLvl, authAccess, authIP, async (req, res) => {
     try {
         const user = req.body
         for(let i = 0; i < user.length; i++){
@@ -161,7 +150,7 @@ router.post('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, as
     }
 })
 
-router.delete('/', authlimiter, authenticateToken, authLvl, authAccess, authIP, async (req, res) =>{
+router.delete('/', authenticateToken, authLvl, authAccess, authIP, async (req, res) =>{
     try{
         const client = req.body.clientid
         let pool = await sql.connect(configJobData)
