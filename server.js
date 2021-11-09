@@ -11,7 +11,7 @@ app.use(express.static('public'))
 const authAccess = require('./middleware/access')
 const fileRoutes = require('./routes/files')
 const proofRoutes = require('./routes/proofs')
-const clientRoutes = require('./routes/clients')
+const clientRoutes = require('./routes/api/v1/clients')
 const jobRoutes = require('./routes/jobs')
 const downloadRoutes = require('./routes/downloads')
 const contactRoutes = require('./routes/contacts')
@@ -24,6 +24,17 @@ const patientRoutes = require('./routes/patients')
 const encounterRoutes = require('./routes/encounters')
 const detailRoutes = require('./routes/details')
 
+//log the following for all requests
+app.all('*', function (req, res, next) {
+ 
+    console.log('*** A request ***')
+    console.log('method: ' + req.method)
+    console.log('url: ' + req.url)
+    console.log('*****************')
+ 
+    next()
+ 
+})
 
 ///////////////endpoint routes////////////////
 
@@ -36,7 +47,7 @@ app.use('/api/v1/clients/jobs/contacts', contactRoutes)
 app.use('/api/v1/clients/jobs/payments', paymentRoutes)
 app.use('/api/v1/clients/jobs/orders', orderRoutes)
 app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes) // uses files.js like /clients/jobs/files does
+app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes) // uses files.js like /api/v1/clients/jobs/files does
 app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
 app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes)
 app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
@@ -44,6 +55,19 @@ app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encoun
 app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
 
 ///////////////endpoint routes////////////////
+
+
+//log this for any request not handled above
+app.all('*', function (req, res) {
+ 
+    console.log('*** 404 ***')
+    console.log('404 for url: ' + req.url)
+    console.log('***********')
+ 
+    res.status(404).send('Invalid URL')
+ 
+})
+
 
 var port = process.env.PORT || 3000
 app.listen(port)
