@@ -29,7 +29,7 @@ const reachlimiter = require('./middleware/reachlimiter')
 //log the following for all requests
 app.all('*', function (req, res, next) {
  
-    console.log('*** A request ***')
+    console.log('*** Server request ***')
     console.log('method: ' + req.method)
     console.log('url: ' + req.url)
     console.log('*****************')
@@ -64,9 +64,10 @@ app.use('/api/v1/clients/:cid/jobs/:jid/files', function(req,res,next){
     req.cid = req.params.cid
     req.jid = req.params.jid
     next()}, fileRoutes)
-app.use('/api/v1/clients/:cid/jobs/files/proofs', function(req,res,next){
+app.use('/api/v1/clients/:cid/jobs/:jid/files/:fid/proofs', function(req,res,next){
     req.cid = req.params.cid
     req.jid = req.params.jid
+    req.fid = req.params.fid
     next()}, proofRoutes)
 app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
 app.use('/api/v1/clients/jobs/contacts', contactRoutes)
