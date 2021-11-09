@@ -7,6 +7,7 @@ const authLvl = require('../middleware/authLvl')
 const paginate = require('../middleware/paginateProofs')
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
+const checkReach = require('../middleware/reachlimiter')
 const dboperations = require('../services/dbops_proofs')
 const model = require('../models/proof')
 const pubip = require('express-ip')
@@ -24,8 +25,16 @@ router.get('/:id', (req,res) => {
     })
 })
 
-//get all proofs
-router.get('/', paginate(model), authLvl, (req, res) => {
+// //get all proofs regardless of clientid Admin required
+// router.get('/', paginate(model), authLvl, (req, res) => {
+//     console.log('int ep')
+//     res.status(200).json(res.paginatedResults)
+// })
+
+//get all proofs for this clientid
+router.get('/', paginate(model), checkReach, (req, res) => {
+    req.params.cid = req.cid //retrieve cid from originalUrl
+    console.log(req.params.cid)
     res.status(200).json(res.paginatedResults)
 })
 
@@ -48,5 +57,7 @@ router.put('/', (req,res) => {
         res.status(201).json(result);
     })
 })
+
+
 
 module.exports = router;
