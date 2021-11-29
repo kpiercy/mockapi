@@ -2,6 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const router = express.Router()
 
+var cors = require('cors')
+
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
 const authAccess = require('../middleware/access')
@@ -62,15 +64,13 @@ const files = multer({
 }).array('files')
 
 router.use(express.json())
+router.use(cors())
 router.use(express.static('public'))
 router.use(pubip().getIpInfoMiddleware)
-
-
 router.all('*', publimiter, authenticateToken, authAccess, authIP)
 
 
-router.route('/:type')
-    .post((req, res) => {
+router.post('/:type', (req, res) => {
     files(req, res, function(err){
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)

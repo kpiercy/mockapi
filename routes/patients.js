@@ -8,12 +8,12 @@ const authLvl = require('../middleware/authLvl')
 const paginate = require('../middleware/paginateProofs')
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
-const dboperations = require('../services/dbops_proofs')
+const dboperations = require('../controllers/dbops_proofs')
 const model = require('../models/proof')
 const pubip = require('express-ip')
 
 router.use(pubip().getIpInfoMiddleware)
-router.all('/', publimiter, authenticateToken, authAccess, authIP, authLvl)
+router.all('*', publimiter, authenticateToken, authAccess, authIP, authLvl)
 
 //get all patients in file for this version
 router.get('/', (req, res) => {
