@@ -151,7 +151,7 @@ const user_client_revoke = async (req,res) => {
             let pool2 = await sql.connect(configJobData)
             let revoke = await pool2.request()
                 .input('client', sql.VarChar, client)
-                .execute('RevokeAPIAccess')
+                .execute('RevokeUserAccess')
             res.status(202).json(revoke.recordsets)
         } else{
             res.status(400).json('Error:No users by that clientid found.')
