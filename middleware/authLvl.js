@@ -15,9 +15,11 @@ async function authLvl(req, res, next) {
             .input('token', sql.VarChar, token)
             .execute('AuthPermLvl')
         var thisUserLvl = permLvl.recordset[0].permissions
+        var thisUser = permLvl.recordset[0].username
             if (thisUserLvl != 'Admin') {
                 res.status(401).json('Requesting user does not have permission necesssary.')
             } else {
+                console.log('Request generated from ElitePS Admin user: '+`${thisUser}`)
                 next()
             }
     } catch {
