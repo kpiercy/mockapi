@@ -13,7 +13,7 @@ async function apiAccess(req, res, next) {
         let pool = await sql.connect(configJobData)
         let canAccess = await pool.request()
             .input('token', sql.VarChar, token)
-            .execute('CanAccessAPI')
+            .execute('UserAccessAPI')
             var thisUserAccess = canAccess.recordset[0].apiaccess
             var thisUserClient = canAccess.recordset[0].clientid
         let pool2 = await sql.connect(configJobData)
