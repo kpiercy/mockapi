@@ -12,7 +12,7 @@ async function refAccess(req, res, next) {
         let pool = await sql.connect(configJobData)
         let canAccess = await pool.request()
             .input('token', sql.VarChar, token)
-            .execute('CanAccessAPI')
+            .execute('UserAccessAPI')
         var thisUserAccess = canAccess.recordset[0].apiaccess
             if (thisUserAccess !== 'true') {
                 res.status(401).json('Requesting user does not have API access. Please contact ElitePS for more information.')
