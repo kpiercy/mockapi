@@ -1,4 +1,6 @@
-require('dotenv').config()
+if ( process.env.ENVIRONMENT !== 'production' ) {
+    require('dotenv').config()
+}
 
 var configJobData = require('../config/JobData_dbconfig')
 const sql = require('mssql/msnodesqlv8')
@@ -18,6 +20,7 @@ const clients_all = async (req, res) => {
 }
 
 const clients_client_all = async (req, res) => {
+    //add query param for paginate=Y/N do additional logic off that for situations where a single client is being queried
     req.clientid = req.params.clientid
     req.params.clientid = req.clientid
     var cid = req.params.clientid
@@ -46,7 +49,7 @@ const clients_client_all = async (req, res) => {
             results.data = await pool.request()
                 .input('startindex', sql.Int, startIndex)
                 .input('limit', sql.Int, limit)
-                .input('cid', sql.VarChar, cid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this req users clientid
+                .input('cid', sql.VarChar, cid)
                 //.input('job', sql.UniqueIdentifier, jid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this jobid
                 //.input('file', sql.UniqueIdentifier, fid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this fileid
                 .execute('GetPaginatedClients')
@@ -73,10 +76,51 @@ const clients_create = async (req,res) => {
     }
 }
 
+const clients_delete = async (req,res) => {
+    try {
+        const clients = req.body
+        if ( clients == null ) res.status(400).json('Please provide at least one client or parent client id')
+        const results = {}
+            for( let i = 0; i < clients.length; i++ ){
+                try {
+                    let pool = await sql.connect(configJobData)
+                    let revokeClient = await pool.request()
+                        .input('client', sql.VarChar, clients[i].clientid)
+                        .execute('RevokeClientAccess')
+                    console.log(revokeClient.recordsets)
+                    Object.assign(results, revokeClient.recordsets)
+                }
+                catch (error) {
+                    console.log(error);
+                }
+                res.status(200).json(results)
+             }
+    } catch (error){
+        res.status(500).send(error)
+    } 
+}
+
+const clients_client_mn = async (req,res) => {
+    const clients = JSON.stringify(req.body)
+    try {
+        let pool = await sql.connect(configJobData)
+        let insertClient = await pool.request()
+            .input('clients', sql.NVarChar, clients)
+            .execute('CreateClients')
+
+        res.status(200).json(insertClient.recordsets)
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 module.exports = {
+    clients_client_mn,
     clients_all,
     clients_client_all,
-    clients_create
+    clients_create,
+    clients_delete
 }

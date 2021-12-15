@@ -1,4 +1,6 @@
-require('dotenv').config()
+if ( process.env.ENVIRONMENT !== 'production' ) {
+    require('dotenv').config()
+}
 
 var configJobData = require('../config/JobData_dbconfig');
 const configEliteMaster = require('../config/EliteMaster_dbconfig')
