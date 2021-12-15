@@ -38,5 +38,9 @@
   },
   "keywords": [],
   "author": "Kraig Piercy, Elite Services Inc, 6/16/2021",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kpiercy/mockapi.git"
+  }
 }
