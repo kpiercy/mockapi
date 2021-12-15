@@ -1,5 +1,7 @@
-"use strict";
-require('dotenv').config()
+if ( process.env.ENVIRONMENT !== 'production' ) {
+    require('dotenv').config()
+}
+
 const express = require('express')
 var cors = require('cors')
 const router = express.Router()
@@ -11,6 +13,7 @@ app.use(express.static('public'))
 
 const authAccess = require('./middleware/access')
 const fileRoutes = require('./routes/files')
+const versfileRoutes = require('./routes/versfiles')
 const proofRoutes = require('./routes/proofs')
 const clientRoutes = require('./routes/clients')
 const jobRoutes = require('./routes/jobs')
@@ -38,6 +41,8 @@ app.all('*', function (req, res, next) {
  
 })
 
+//app.use('/api/v1', router)
+
 // req.cid = req.params.cid //clientid
 // req.jid = req.params.jid //jobid
 // req.fid = req.params.fid //fileid
@@ -57,29 +62,32 @@ app.all('*', function (req, res, next) {
 ///////////////endpoint routes////////////////
 
 app.use('/api/v1/clients', clientRoutes)
-app.use('/api/v1/clients/:cid/jobs', function(req,res,next){
-    req.cid = req.params.cid
+app.use('/api/v1/clients/:clientid/jobs', function(req,res,next){
+    req.clientid = req.params.clientid
     next()}, jobRoutes)
-app.use('/api/v1/clients/:cid/jobs/:jid/files', function(req,res,next){
-    req.cid = req.params.cid
-    req.jid = req.params.jid
+app.use('/api/v1/clients/:clientid/jobs/:jobid/files', function(req,res,next){
+    req.clientid = req.params.clientid
+    req.jobid = req.params.jobid
     next()}, fileRoutes)
-app.use('/api/v1/clients/:cid/jobs/:jid/files/:fid/proofs', function(req,res,next){
-    req.cid = req.params.cid
-    req.jid = req.params.jid
-    req.fid = req.params.fid
+app.use('/api/v1/clients/:clientid/jobs/files/proofs', function(req,res,next){
+        req.clientid = req.params.clientid
+        next()}, proofRoutes)
+app.use('/api/v1/clients/:clientid/jobs/:jobid/files/:fileid/proofs', function(req,res,next){
+    req.clientid = req.params.clientid
+    req.jobid = req.params.jobid
+    req.fileid = req.params.fileid
     next()}, proofRoutes)
-app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
-app.use('/api/v1/clients/jobs/contacts', contactRoutes)
-app.use('/api/v1/clients/jobs/payments', paymentRoutes)
-app.use('/api/v1/clients/jobs/orders', orderRoutes)
-app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes) // uses files.js like /api/v1/clients/jobs/files does
-app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
+app.use('/api/v1/clients/:cid/jobs/downloads', downloadRoutes)
+app.use('/api/v1/clients/:cid/jobs/contacts', contactRoutes)
+app.use('/api/v1/clients/:cid/jobs/payments', paymentRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders', orderRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions', versionRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions/vfiles', versfileRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions/services', serviceRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions/files/inserts', insertRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients', patientRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters', encounterRoutes)
+app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
 
 ///////////////endpoint routes////////////////
 
