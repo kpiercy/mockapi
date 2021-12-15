@@ -1,4 +1,6 @@
-require('dotenv').config()
+if ( process.env.ENVIRONMENT !== 'production' ) {
+    require('dotenv').config()
+}
 
 const sql = require('mssql/msnodesqlv8')
 const configJobData = require('../config/JobData_dbconfig')

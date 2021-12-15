@@ -1,4 +1,3 @@
-require('dotenv').config()
 const rateLimit = require('express-rate-limit')
 const publimiter = rateLimit({
     windowMs: 30 * 60 * 1000, //30 min
