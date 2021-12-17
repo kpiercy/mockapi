@@ -1,6 +1,4 @@
-if ( process.env.ENVIRONMENT !== 'production' ) {
-    require('dotenv').config()
-}
+require('dotenv').config()
 
 //2FA notes: store pubIP to DB during registration/setup, if requesting pubIP does not match stored value, send email during /auth or /refresh to user email with link containing /me/confirm route and token that expires in 1 day, during /me/confirm route, append the new pubIp to their pubIp field, ALSO add windows scheduler script that reset each users "confirmed" status to false every xx days to make them redo 2FA
 
