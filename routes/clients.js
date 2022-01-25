@@ -20,7 +20,7 @@ router.all('*', publimiter, authenticateToken, authAccess, authIP)
 
 
 //get all clients, paginate
-router.get('/', checkReach, authLvl, dboperations.clients_all)
+router.get('/', authLvl, dboperations.clients_all)
 
 //get all clients by clientid, paginate (for use in parent-child relationships), will otherwise return single client in pagination form
 router.get('/:clientid', checkReach, dboperations.clients_client_all)
@@ -29,7 +29,7 @@ router.get('/:clientid', checkReach, dboperations.clients_client_all)
 router.get('/:mnid', checkReach, dboperations.clients_client_mn)
 
 //create new client
-router.post('/', authLvl, dboperations.clients_create)
+router.post('/', authLvl, dboperations.clients_create) 
 
 //set client and any children as inactive if parentclientid is provided
 router.delete('/', authLvl, dboperations.clients_delete)

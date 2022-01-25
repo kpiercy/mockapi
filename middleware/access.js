@@ -1,6 +1,4 @@
-if ( process.env.ENVIRONMENT !== 'production' ) {
-    require('dotenv').config()
-}
+require('dotenv').config()
 
 const sql = require('mssql/msnodesqlv8')
 const configJobData = require('../config/JobData_dbconfig')
@@ -22,7 +20,7 @@ async function apiAccess(req, res, next) {
         let clientAccess = await pool.request()
             .input('clientid', sql.VarChar, thisUserClient)
             .execute('ClientAccessAPI')
-            var thisClientAccess = clientAccess.recordset[0].status
+            var thisClientAccess = clientAccess.recordset[0].Status
         if (thisUserAccess === 'true' && thisClientAccess === 'Active') {
             next()
         } else {

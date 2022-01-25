@@ -142,13 +142,13 @@ const user_create = async (req,res) => {
 
 const user_client_revoke = async (req,res) => {
     const client = req.body.clientid
-    console.log(client)
+    console.log('Clientid provided for RevokeAPIAccess call: '+client)
     try{
         let pool = await sql.connect(configJobData)
         let clients = await pool.request()
             .input('client', sql.VarChar, client)
             .execute('ClientExists')
-            console.log(clients.recordset[0]['count'])
+            console.log('Records found by clientid that will now be disabled: '+clients.recordset[0]['count'])
         if( clients.recordset[0]['count'] > 0.5 ) {
             let pool2 = await sql.connect(configJobData)
             let revoke = await pool2.request()

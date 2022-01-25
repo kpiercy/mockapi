@@ -87,7 +87,6 @@ const clients_delete = async (req,res) => {
                     let revokeClient = await pool.request()
                         .input('client', sql.VarChar, clients[i].clientid)
                         .execute('RevokeClientAccess')
-                    console.log(revokeClient.recordsets)
                     Object.assign(results, revokeClient.recordsets)
                 }
                 catch (error) {
