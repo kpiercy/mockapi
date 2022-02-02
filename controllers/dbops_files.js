@@ -1,43 +1,23 @@
 require('dotenv').config()
 
-var configJobData = require('../config/JobData_dbconfig');
-const sql = require('mssql/msnodesqlv8');
+var configJobData = require('../config/JobData_dbconfig')
+const sql = require('mssql/msnodesqlv8')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
-//get all files by clientID
-async function getFiles(clientID){
-    try{
-
-    }
-
-    catch (error){
-        console.log(error);
-    }
+const all_files = async (req,res) => {
+    console.log('dbops_files.all_files was reached')
+    console.log('Clientid used: '+req.params.clientid)
+    console.log('Jobid used: '+req.params.jobid)
 }
 
-//get file status by id
-async function getStatus(fileID){
-    try{
-
-    }
-
-    catch (error){
-        console.log(error);
-    }
-}
-
-//get clientID to add to filename
-async function clientID(){
-    try{
-
-    }
-
-    catch (error){
-        console.log(error);
-    }
+const one_file = async (req,res) => {
+    console.log('dbops_files.one_file was reached')
+    console.log('Clientid used: '+req.params.clientid)
+    console.log('Jobid used: '+req.params.jobid)
 }
 
 module.exports = {
-    getFiles: getFiles,
-    getStatus: getStatus,
-    clientID: clientID
+    all_files,
+    one_file
 }
