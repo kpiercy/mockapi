@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js",
-    "devStartAuth": "nodemon authServer.js"
+    "start": "nodemon server.js",
+    "startAuth": "nodemon authServer.js"
   },
   "dependencies": {
     "@xmldom/xmldom": "github:xmldom/xmldom",

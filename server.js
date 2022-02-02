@@ -37,6 +37,14 @@ app.all('*', function (req, res, next) {
 })
 
 ///////////////endpoint routes ////////////////
+
+/*
+Dynamic routes are handled via split routing starting inside ./routes/clients, using router.use for any appended sub-path. For example, if you call the /clients/:clientid/jobs/:jobid/orders/ endpoint, the program hits the clientRoutes, then using the router, identifies the req.url has /jobs/:jobid and then goes into the jobRoutes, inside jobs.js it then identifies that the req.url has /orders in the path and then uses the orders module to fulfill the request.
+
+Static routes are handled via the list of app.use below, whereby it calls the given module directly. Routes are wrapped in an if statement that determine if the req.url is static or dynamic based on the path, thus allowing interaction via either method.
+
+All of the same capabilities are open to Static and Dynamic requests. The difference being that when using the static routes, you will need to provide details like the clientid, orderid, ... params via JSON body in most cases. 
+*/
  
 app.use('/api/v1/clients', clientRoutes)
 app.use('/api/v1/clients/jobs', jobRoutes)
@@ -53,33 +61,6 @@ app.use('/api/v1/clients/jobs/orders/versions/vfiles/inserts', insertRoutes)
 app.use('/api/v1/clients/jobs/orders/versions/vfiles/patients', patientRoutes)
 app.use('/api/v1/clients/jobs/orders/versions/vfiles/patients/encounters', encounterRoutes)
 app.use('/api/v1/clients/jobs/orders/versions/vfiles/patients/encounters/details', detailRoutes)
-
-// app.use('/api/v1/clients/:clientid/jobs', function(req,res,next){
-//     req.clientid = req.params.clientid
-//     next()}, jobRoutes)
-// app.use('/api/v1/clients/:clientid/jobs/:jobid/files', function(req,res,next){
-//     req.clientid = req.params.clientid
-//     req.jobid = req.params.jobid
-//     next()}, fileRoutes)
-// app.use('/api/v1/clients/:clientid/jobs/files/proofs', function(req,res,next){
-//         req.clientid = req.params.clientid
-//         next()}, proofRoutes)
-// app.use('/api/v1/clients/:clientid/jobs/:jobid/files/:fileid/proofs', function(req,res,next){
-//     req.clientid = req.params.clientid
-//     req.jobid = req.params.jobid
-//     req.fileid = req.params.fileid
-//     next()}, proofRoutes)
-// app.use('/api/v1/clients/:cid/jobs/downloads', downloadRoutes)
-// app.use('/api/v1/clients/:cid/jobs/contacts', contactRoutes)
-// app.use('/api/v1/clients/:cid/jobs/payments', paymentRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders', orderRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions', versionRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions/vfiles', versfileRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions/services', serviceRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/inserts', insertRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients', patientRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters', encounterRoutes)
-// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
 
 ///////////////endpoint routes////////////////
 
