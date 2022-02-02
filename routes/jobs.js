@@ -2,61 +2,45 @@ require('dotenv').config()
 
 const express = require('express')
 const router = express.Router({mergeParams: true})
-
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authLvl = require('../middleware/authLvl')
-const paginate = require('../middleware/paginateProofs')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const checkReach = require('../middleware/reachlimiter')
-
-const dboperations = require('../controllers/dbops_proofs')
-const model = require('../models/proof')
 const pubip = require('express-ip')
 
-// //**********************
-// const fileRoutes = require('./files')
-// const downloadRoutes = require('./downloads')
-// const uploadRoutes = require('./uploads')
-// const contactRoutes = require('./contacts')
-// const paymentRoutes = require('./payments')
-// const orderRoutes = require('./orders')
-// router.use('/files', fileRoutes)
-// router.use('/downloads', downloadRoutes)
-// router.use('/uploads', uploadRoutes)
-// router.use('/contacts', contactRoutes)
-// router.use('/payments', paymentRoutes)
-// router.use('/orders', orderRoutes)
-// //**********************
+//additional middleware
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
 
+//child routes
+const fileRoutes = require('./files')
+const downloadRoutes = require('./downloads')
+const contactRoutes = require('./contacts')
+const paymentRoutes = require('./payments')
+const orderRoutes = require('./orders')
+
+//controller
+const dboperations = require('../controllers/dbops_jobs')
+
+//model
+const model = require('../models/proof')
+
+//router options and children
 router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
+router.use('/:jobid/files', fileRoutes)
+router.use('/:jobid/downloads', downloadRoutes)
+router.use('/:jobid/contacts', contactRoutes)
+router.use('/:jobid/orders', orderRoutes)
+router.use('/:jobid/payments', paymentRoutes)
 
 //get all jobs
-router.route('/')
-    .get(checkReach, (req, res) => {
-        res.send('router get')
-})
+router.get('/', checkReach, authLvl, dboperations.all_jobs)
 
 //get single job by id
-router.route('/:jobid')
-    .get((req,res) => {
-        const id = req.params.jobid
-
-})
+router.get('/:jobid', checkReach, dboperations.one_job)
 
 //create new job
-router.route('/')
-    .post((req, res) => {
-
-})
+//router.post('/', checkReach, authLvl, dboperations.jobs_create)
 
 //delete job
-router.route('/')
-    .delete((req, res) => {
-
-})
+//router.delete('/', checkReach, authLvl, dboperations.jobs_delete)
 
 module.exports = router;
 

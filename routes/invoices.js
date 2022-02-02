@@ -11,25 +11,24 @@ const checkReach = require('../middleware/reachlimiter')
 //child routes
 
 //controller
-const dboperations = require('../controllers/dbops_proofs')
+const dboperations = require('../controllers/dbops_invoices')
 
 //model
-const model = require('../models/proof')
 
-//router options and children
+//router options and children 
 router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
-//get single proof by id
-router.get('/:proofid', checkReach, dboperations.proof_client_getOne)
-    
-//get all proofs for this clientid
-router.get('/', checkReach, dboperations.proofs_client_all)
+//get all invoices, paginate
+router.get('/', dboperations.all_invoices)
 
-//insert new proof
-router.post('/', authLvl, checkReach, dboperations.proof_create)
+//get single invoice by id
+router.get('/:id', dboperations.one_invoice)
 
-//update proof
-router.put('/', authLvl, checkReach, dboperations.proof_update)
+//create new invoice
+router.post('/', dboperations.create_invoice)
+
+//delete invoice
+router.delete('/', dboperations.delete_invoice)
 
 module.exports = router;

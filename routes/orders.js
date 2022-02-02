@@ -1,39 +1,36 @@
 require('dotenv').config()
 
 const express = require('express')
-const router = express.Router()
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authLvl = require('../middleware/authLvl')
-const paginate = require('../middleware/paginateProofs')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const dboperations = require('../controllers/dbops_proofs')
-const model = require('../models/proof')
+const router = express.Router({mergeParams: true})
 const pubip = require('express-ip')
 
+//additional middleware
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
+
+//child routes
+const versionRoutes = require('./versions')
+
+//controller
+const dboperations = require('../controllers/dbops_orders')
+
+//model
+
+//router options and children 
 router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
+router.use('/:orderid/versions', versionRoutes)
 
 //get all orders for this job by client
-router.get('/', (req, res) => {
-
-})
+router.get('/', dboperations.all_orders)
 
 //get single order for this job by client
-router.get('/:id', (req,res) => {
-    const id = req.params.id
-
-})
+router.get('/:id', dboperations.one_order)
 
 //create new order for this job by client
-router.post('/', (req, res) => {
-
-})
+router.post('/', dboperations.create_order)
 
 //delete order for this job by client
-router.delete('/', (req, res) => {
-
-})
+router.delete('/', dboperations.delete_order)
 
 module.exports = router;

@@ -2,14 +2,12 @@ require('dotenv').config()
 
 const express = require('express')
 var cors = require('cors')
-const router = express.Router()
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 
-const authAccess = require('./middleware/access')
 const fileRoutes = require('./routes/files')
 const versfileRoutes = require('./routes/versfiles')
 const proofRoutes = require('./routes/proofs')
@@ -25,7 +23,6 @@ const insertRoutes = require('./routes/inserts')
 const patientRoutes = require('./routes/patients')
 const encounterRoutes = require('./routes/encounters')
 const detailRoutes = require('./routes/details')
-const reachlimiter = require('./middleware/reachlimiter')
 
 //log the following for all requests
 app.all('*', function (req, res, next) {
@@ -39,53 +36,50 @@ app.all('*', function (req, res, next) {
  
 })
 
-//app.use('/api/v1', router)
-
-// req.cid = req.params.cid //clientid
-// req.jid = req.params.jid //jobid
-// req.fid = req.params.fid //fileid
-// req.pid = req.params.pid //proofid
-// req.did = req.params.did //downloadid
-// req.csid = req.params.csid //contactid
-// req.pyid = req.params.pyid //paymentid
-// req.oid = req.params.oid //orderid
-// req.vid = req.params.vid //versionid
-// req.vfid = req.params.vfid //versionfileid
-// req.vsid = req.params.vsid //versionserviceid
-// req.vfiid = req.params.vfiid //versionfileinsertid
-// req.vfpid = req.params.vfpid //versionfilepatientid
-// req.vfpeid = req.params.vfpeid //versionfilepatientencounterid
-// req.vfpedid = req.params.vfpedid //versionfilepatientencounterdetailid
-
-///////////////endpoint routes////////////////
-
+///////////////endpoint routes ////////////////
+ 
 app.use('/api/v1/clients', clientRoutes)
-app.use('/api/v1/clients/:clientid/jobs', function(req,res,next){
-    req.clientid = req.params.clientid
-    next()}, jobRoutes)
-app.use('/api/v1/clients/:clientid/jobs/:jobid/files', function(req,res,next){
-    req.clientid = req.params.clientid
-    req.jobid = req.params.jobid
-    next()}, fileRoutes)
-app.use('/api/v1/clients/:clientid/jobs/files/proofs', function(req,res,next){
-        req.clientid = req.params.clientid
-        next()}, proofRoutes)
-app.use('/api/v1/clients/:clientid/jobs/:jobid/files/:fileid/proofs', function(req,res,next){
-    req.clientid = req.params.clientid
-    req.jobid = req.params.jobid
-    req.fileid = req.params.fileid
-    next()}, proofRoutes)
-app.use('/api/v1/clients/:cid/jobs/downloads', downloadRoutes)
-app.use('/api/v1/clients/:cid/jobs/contacts', contactRoutes)
-app.use('/api/v1/clients/:cid/jobs/payments', paymentRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders', orderRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions', versionRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions/vfiles', versfileRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions/services', serviceRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions/files/inserts', insertRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients', patientRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters', encounterRoutes)
-app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
+app.use('/api/v1/clients/jobs', jobRoutes)
+app.use('/api/v1/clients/jobs/files', fileRoutes)
+app.use('/api/v1/clients/jobs/files/proofs', proofRoutes)
+app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
+app.use('/api/v1/clients/jobs/contacts', contactRoutes)
+app.use('/api/v1/clients/jobs/payments', paymentRoutes)
+app.use('/api/v1/clients/jobs/orders', orderRoutes)
+app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/vfiles', versfileRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/vfiles/inserts', insertRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/vfiles/patients', patientRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/vfiles/patients/encounters', encounterRoutes)
+app.use('/api/v1/clients/jobs/orders/versions/vfiles/patients/encounters/details', detailRoutes)
+
+// app.use('/api/v1/clients/:clientid/jobs', function(req,res,next){
+//     req.clientid = req.params.clientid
+//     next()}, jobRoutes)
+// app.use('/api/v1/clients/:clientid/jobs/:jobid/files', function(req,res,next){
+//     req.clientid = req.params.clientid
+//     req.jobid = req.params.jobid
+//     next()}, fileRoutes)
+// app.use('/api/v1/clients/:clientid/jobs/files/proofs', function(req,res,next){
+//         req.clientid = req.params.clientid
+//         next()}, proofRoutes)
+// app.use('/api/v1/clients/:clientid/jobs/:jobid/files/:fileid/proofs', function(req,res,next){
+//     req.clientid = req.params.clientid
+//     req.jobid = req.params.jobid
+//     req.fileid = req.params.fileid
+//     next()}, proofRoutes)
+// app.use('/api/v1/clients/:cid/jobs/downloads', downloadRoutes)
+// app.use('/api/v1/clients/:cid/jobs/contacts', contactRoutes)
+// app.use('/api/v1/clients/:cid/jobs/payments', paymentRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders', orderRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions', versionRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions/vfiles', versfileRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions/services', serviceRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/inserts', insertRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients', patientRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters', encounterRoutes)
+// app.use('/api/v1/clients/:cid/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
 
 ///////////////endpoint routes////////////////
 

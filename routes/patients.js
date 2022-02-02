@@ -1,39 +1,36 @@
 require('dotenv').config()
 
 const express = require('express')
-const router = express.Router()
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authLvl = require('../middleware/authLvl')
-const paginate = require('../middleware/paginateProofs')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const dboperations = require('../controllers/dbops_proofs')
-const model = require('../models/proof')
+const router = express.Router({mergeParams: true})
 const pubip = require('express-ip')
 
+//additional middleware
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
+
+//child routes
+const encounterRoutes = require('./encounters')
+
+//controller
+const dboperations = require('../controllers/dbops_patients')
+
+//model
+
+//router options and children 
 router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP, authLvl)
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
+router.use('/:patientid/encounters', encounterRoutes)
 
-//get all patients in file for this version
-router.get('/', (req, res) => {
+//get all patients, paginate
+router.get('/', dboperations.all_patients)
 
-})
+//get single patient by id
+router.get('/:id', dboperations.one_patient)
 
-//get single patient by id from this file for this version
-router.get('/:id', (req,res) => {
-    const id = req.params.id
+//create new patient
+router.post('/', dboperations.create_patient)
 
-})
-
-//create new patient in this file for this version
-router.post('/', (req, res) => {
-
-})
-
-//delete patient in this file for this version
-router.delete('/', (req, res) => {
-
-})
+//delete patient
+router.delete('/', dboperations.delete_patient)
 
 module.exports = router;

@@ -1,39 +1,34 @@
 require('dotenv').config()
 
 const express = require('express')
-const router = express.Router()
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authLvl = require('../middleware/authLvl')
-const paginate = require('../middleware/paginateProofs')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const dboperations = require('../controllers/dbops_proofs')
-const model = require('../models/proof')
+const router = express.Router({mergeParams: true})
 const pubip = require('express-ip')
 
+//additional middleware
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
+
+//child routes
+
+//controller
+const dboperations = require('../controllers/dbops_payments')
+
+//model
+
+//router options and children
 router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
-//get all payers, paginate
-router.get('/', (req, res) => {
+//get all payments for this job
+router.get('/', dboperations.all_payments)
 
-})
+//get single payment for this job by id
+router.get('/:id', dboperations.one_payment)
 
-//get single payer by id
-router.get('/:id', (req,res) => {
-    const id = req.params.id
+//create new payment by job
+router.post('/', dboperations.create_payment)
 
-})
-
-//create new payer
-router.post('/', (req, res) => {
-
-})
-
-//delete payer
-router.delete('/', (req, res) => {
-
-})
+//delete payment for this job
+router.delete('/', dboperations.delete_payment)
 
 module.exports = router;

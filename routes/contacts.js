@@ -1,39 +1,34 @@
 require('dotenv').config()
 
 const express = require('express')
-const router = express.Router()
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authLvl = require('../middleware/authLvl')
-const paginate = require('../middleware/paginateProofs')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const dboperations = require('../controllers/dbops_proofs')
-const model = require('../models/proof')
+const router = express.Router({mergeParams: true})
 const pubip = require('express-ip')
 
+//additional middleware
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
+
+//child routes
+
+//controller
+const dboperations = require('../controllers/dbops_contacts')
+
+//model
+
+//router options and children
 router.use(pubip().getIpInfoMiddleware)
-router.all('/', publimiter, authenticateToken, authAccess, authIP)
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
-//get all contacts for this job by client
-router.get('/', (req, res) => {
+//get all contacts for this job
+router.get('/', dboperations.all_contacts)
 
-})
+//get single contact for this job by id
+router.get('/:id', dboperations.one_contact)
 
-//get single contact for this job by client using id
-router.get('/:id', (req,res) => {
-    const id = req.params.id
+//create new contact by job
+router.post('/', dboperations.create_contact)
 
-})
-
-//create new contact for this job by client
-router.post('/', (req, res) => {
-
-})
-
-//delete contact for this job by client
-router.delete('/', (req, res) => {
-
-})
+//delete contact for this job
+router.delete('/', dboperations.delete_contact)
 
 module.exports = router;

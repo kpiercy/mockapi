@@ -1,21 +1,27 @@
 require('dotenv').config()
 
 const express = require('express')
-const router = express.Router()
-
-var cors = require('cors')
-
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const sql = require('mssql/msnodesqlv8')
-const dboperations = require('../controllers/dbops_files')
+const router = express.Router({mergeParams: true})
 const pubip = require('express-ip')
-
+const sql = require('mssql/msnodesqlv8')
 const uuid = require('uuid').v4
 const multer = require('multer')
 const path = require('path')
+
+//additional middleware
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
+
+//child routes
+const insertRoutes = require('./inserts')
+const patientRoutes = require('./patients')
+
+//controller
+const dboperations = require('../controllers/dbops_files')
+
+//model
+
+//file specific
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let type = req.params.type
@@ -64,12 +70,18 @@ const files = multer({
       }
 }).array('files')
 
+//router options and children
 router.use(express.json())
-router.use(cors())
-router.use(express.static('public'))
 router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
+//router.use(express.static('public')) //breaks nested routing
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
+router.use('/:vfileid/inserts', insertRoutes)
+router.use('/:vfileid/patients', patientRoutes)
 
+
+router.get('/', dboperations.all_files)
+
+router.get('/', dboperations.one_file)
 
 router.post('/:type', (req, res) => {
     files(req, res, function(err){
