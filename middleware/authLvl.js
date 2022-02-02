@@ -19,7 +19,7 @@ async function authLvl(req, res, next) {
             if (thisUserLvl != 'Admin') {
                 res.status(401).json('Requesting user does not have permission necesssary.')
             } else {
-                console.log('Request generated from ElitePS Admin user: '+`${thisUser}`)
+                console.log('***top-level rights verified for: '+`${thisUser.substring(0, 3)}`+'***')
                 next()
             }
     } catch {

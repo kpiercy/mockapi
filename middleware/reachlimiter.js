@@ -16,7 +16,7 @@ async function limitReach(req, res, next) {
     }
 
     let text2 = cid
-    var cid = text2.toUpperCase()
+    var cid = text2.toLowerCase()
 
 
     if (token == null) return res.status(401)
@@ -30,18 +30,18 @@ async function limitReach(req, res, next) {
         var thisReach = limit.recordset[0].clientid
         var thisUser = limit.recordset[0].username
         try {
-            if ( thisReach.toUpperCase() === process.env.EPS_CLIENT_ID ) { 
+            if ( thisReach.toLowerCase() === process.env.EPS_CLIENT_ID ) { 
                 var master = true
-                console.log('ElitePS user: '+`${thisUser}`+' invoked master reach')
+                console.log('***user: '+`${thisUser.substring(0, 3)}`+' invoked master reach***')
                 next()
             } else if ( thisReach !== cid && master === false ) {
                     res.status(401).json('Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.')
             } else {
-                console.log('User reach verified')
+                console.log('***User reach verified***')
                 next()
             }
         } catch {
-            res.status(401).json('Error: unable to call next()')
+            res.status(401).json('Error: unexpected exception in reach verification encountered')
         }    
 
     } catch {

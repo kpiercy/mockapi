@@ -1,8 +1,4 @@
 require('dotenv').config()
-<<<<<<< HEAD
-
-=======
->>>>>>> 828d531583cfe6276c29058c5223d13c97f9814f
 const jwt = require('jsonwebtoken')
 
 function authenticateToken(req, res, next){
@@ -15,6 +11,8 @@ function authenticateToken(req, res, next){
         req.user = user
         next()
     })
+
+    console.log('***token was verified***')
 }
 
 module.exports = authenticateToken;

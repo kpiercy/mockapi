@@ -17,6 +17,7 @@ async function refAccess(req, res, next) {
             if (thisUserAccess !== 'true') {
                 res.status(401).json('Requesting user does not have API access. Please contact ElitePS for more information.')
             } else {
+                console.log('***refresh access verified***')
                 next()
             }
     } catch {
