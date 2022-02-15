@@ -1,7 +1,5 @@
 .env
 node_modules
-JobData_dbconfig.js
-EliteMaster_dbconfig.js
 ./public/uploads
 proofModel.js
 file.js
