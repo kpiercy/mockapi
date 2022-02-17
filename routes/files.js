@@ -13,7 +13,8 @@ const authLvl = require('../middleware/authLvl')
 const checkReach = require('../middleware/reachlimiter')
 
 //child routes
-const proofRoutes = require('./proofs')
+const insertRoutes = require('./inserts')
+const patientRoutes = require('./patients')
 
 //controller
 const dboperations = require('../controllers/dbops_files')
@@ -74,7 +75,8 @@ router.use(express.json())
 router.use(pubip().getIpInfoMiddleware)
 //router.use(express.static('public')) //breaks nested routing
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
-router.use('/:fileid/proofs', proofRoutes)
+router.use('/:vfileid/inserts', insertRoutes)
+router.use('/:vfileid/patients', patientRoutes)
 
 
 router.get('/', dboperations.all_files)
