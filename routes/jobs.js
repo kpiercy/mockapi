@@ -14,6 +14,7 @@ const downloadRoutes = require('./downloads')
 const contactRoutes = require('./contacts')
 const paymentRoutes = require('./payments')
 const orderRoutes = require('./orders')
+const proofRoutes = require('./proofs')
 
 //controller
 const dboperations = require('../controllers/dbops_jobs')
@@ -29,6 +30,7 @@ router.use('/:jobid/downloads', downloadRoutes)
 router.use('/:jobid/contacts', contactRoutes)
 router.use('/:jobid/orders', orderRoutes)
 router.use('/:jobid/payments', paymentRoutes)
+router.use('/:jobid/proofs', proofRoutes)
 
 //get all jobs
 router.get('/', checkReach, authLvl, dboperations.all_jobs)
