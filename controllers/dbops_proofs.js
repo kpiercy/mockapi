@@ -3,7 +3,7 @@ require('dotenv').config()
 var configJobData = require('../config/JobData_dbconfig');
 const configEliteMaster = require('../config/EliteMaster_dbconfig')
 const sql = require('mssql/msnodesqlv8');
-const model = require('../models/proof')
+const model = require('../classes/proof')
 
 
 //get single proof by proofid and clientid

@@ -20,7 +20,7 @@ const proofRoutes = require('./proofs')
 const dboperations = require('../controllers/dbops_jobs')
 
 //model
-const model = require('../models/proof')
+const model = require('../classes/proof')
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)
