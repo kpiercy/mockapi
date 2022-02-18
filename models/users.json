@@ -1,11 +1,17 @@
 {
-    "data": [
-        {
-            "gid":"",
-            "username": "foo",
-            "password": "bar",
-            "permissionLvl": "Basic|Admin",
-            "apiaccess":"false"
-        }
-    ]
+    "users": [{
+			"user": [{
+				"gid": "",
+				"pub_gid": "",
+				"clientid": "",
+				"email": "",
+				"username": "foo",
+				"password": "bar",
+				"permissions": "Basic|Admin",
+				"accesstoken": "",
+				"refreshtoken": "",
+				"apiaccess": "false",
+				"allowedips": ""
+			}]
+		}]
 }
