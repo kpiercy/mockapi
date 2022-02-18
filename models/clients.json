@@ -1,0 +1,25 @@
+{
+	"clients": [{
+		"client": [{
+			"gid": "",
+			"pub_gid": "",
+			"parentid": "",
+			"CustomerName": "",
+			"Status": "",
+			"ERP_ID": "",
+			"ERP_ParentID": "",
+			"ERP_Code": "",
+			"ERP_AltCode": "",
+			"ERP_PosCode": "",
+			"CustomerType": "",
+			"Terms": "",
+			"Taxable": "",
+			"TaxExempt": "",
+			"PostageCost": "",
+			"PostageSell": "",
+			"AioInvoice": "",
+			"CostOnly": "",
+			"BulkBill": ""
+		}]
+	}]
+}
