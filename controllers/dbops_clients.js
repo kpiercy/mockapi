@@ -18,7 +18,6 @@ const clients_all = async (req, res) => {
 }
 
 const clients_client_all = async (req, res) => {
-    //add query param for paginate=Y/N do additional logic off that for situations where a single client is being queried
     req.clientid = req.params.clientid
     req.params.clientid = req.clientid
     var cid = req.params.clientid
@@ -50,8 +49,6 @@ const clients_client_all = async (req, res) => {
                     .input('startindex', sql.Int, startIndex)
                     .input('limit', sql.Int, limit)
                     .input('cid', sql.VarChar, cid)
-                    //.input('job', sql.UniqueIdentifier, jid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this jobid
-                    //.input('file', sql.UniqueIdentifier, fid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this fileid
                     .execute('GetPaginatedClients')
                 res.paginatedResults = results
                 res.status(200).json(res.paginatedResults)
