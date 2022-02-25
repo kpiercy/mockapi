@@ -39,10 +39,10 @@ router.get('/', checkReach, authLvl, dboperations.all_jobs)
 router.get('/:jobid', checkReach, dboperations.one_job)
 
 //create new job
-//router.post('/', checkReach, authLvl, dboperations.jobs_create)
+router.post('/', checkReach, authLvl, dboperations.jobs_create)
 
 //delete job
-//router.delete('/', checkReach, authLvl, dboperations.jobs_delete)
+router.delete('/', checkReach, authLvl, dboperations.jobs_delete)
 
 module.exports = router;
 
