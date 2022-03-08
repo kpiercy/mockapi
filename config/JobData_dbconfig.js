@@ -15,6 +15,8 @@ const configJobData = {
     options: {
         trustedconnection: true,
         enableArithAort: true,
+        abortTransactionOnError: true,
+        appName: 'ElitePS REST API'
     },
     port: process.env.SQL_PORT1
 }
