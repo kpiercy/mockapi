@@ -32,16 +32,16 @@ async function limitReach(req, res, next) {
         try {
             if ( thisReach.toLowerCase() === process.env.EPS_CLIENT_ID ) { 
                 var master = true
-                console.log('***user: '+`${thisUser.substring(0, 3)}`+' invoked master reach***')
+                console.log('***master reach for user: '+`${thisUser.substring(0, 3)}`+': verified***')
                 next()
             } else if ( thisParent.toLowerCase() === cid ) {
                 var parent = true
-                console.log('***user: '+`${thisUser.substring(0, 3)}`+' invoked parent reach***')
+                console.log('***parent reach for user '+`${thisUser.substring(0, 3)}`+': verified***')
                 next()
             } else if ( thisReach.toLowerCase() !== cid && master === false  && parent === false) {
                     res.status(401).json({ Error: 'Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.' })
             } else {
-                console.log('***User reach verified***')
+                console.log('***Basic user reach: verified***')
                 next()
             }
         } catch {

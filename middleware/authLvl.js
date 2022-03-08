@@ -19,7 +19,7 @@ async function authLvl(req, res, next) {
             if (thisUserLvl != 'Admin') {
                 res.status(401).json({ Error: 'Requesting user does not have permission necesssary.' })
             } else {
-                console.log('***top-level rights verified for: '+`${thisUser.substring(0, 3)}`+'***')
+                console.log('***authLvl for '+`${thisUser.substring(0, 3)}`+': verified***')
                 next()
             }
     } catch (e) {

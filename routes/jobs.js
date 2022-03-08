@@ -36,7 +36,7 @@ router.use('/:jobid/proofs', proofRoutes)
 router.get('/', checkReach, authLvl, dboperations.all_jobs)
 
 //get single job by id
-router.get('/:jobid', checkReach, dboperations.one_job)
+router.get('/:jobid', checkReach, authLvl, dboperations.one_job)
 
 //create new job
 router.post('/', checkReach, authLvl, dboperations.jobs_create)

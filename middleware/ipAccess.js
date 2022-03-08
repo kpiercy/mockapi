@@ -54,7 +54,7 @@ async function authIP(req, res, next){
                 sendemail().catch(console.error)
                 } 
              else {
-                 console.log('***ip address was verified***')
+                 console.log('***ipAccess: verified***')
                 next()
             }
     } catch (e) {

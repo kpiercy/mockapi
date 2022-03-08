@@ -12,7 +12,7 @@ function authenticateToken(req, res, next){
         next()
     })
 
-    console.log('***token was verified***')
+    console.log('***authToken: verified***')
 }
 
 module.exports = authenticateToken;
