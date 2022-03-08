@@ -1,9 +1,10 @@
 {
     "users": [{
 			"user": [{
-				"gid": "",
-				"pub_gid": "",
-				"clientid": "",
+				"gid": "PK",
+				"pub_gid": "UK",
+				"parent_clientid": "FK",
+				"clientid": "FK",
 				"email": "",
 				"username": "foo",
 				"password": "bar",

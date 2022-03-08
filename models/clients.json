@@ -1,9 +1,9 @@
 {
 	"clients": [{
 		"client": [{
-			"gid": "",
-			"pub_gid": "",
-			"parentid": "",
+			"gid": "PK",
+			"pub_gid": "UK",
+			"parentid": "FK",
 			"CustomerName": "",
 			"Status": "",
 			"ERP_ID": "",

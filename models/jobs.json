@@ -3,7 +3,8 @@
 		"job": [{
 			"gid": "",
 			"pub_gid": "",
-			"client_id": "",
+			"job_parent_clientid": "",
+			"job_clientid": "",
 			"JobName": "",
 			"Facility": "",
 			"Client_Root_Path": "",

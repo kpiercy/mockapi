@@ -1,0 +1,12 @@
+{
+	"parents": [{
+		"parent": [{
+			"gid": "PK",
+			"pub_gid": "UK",
+			"ParentName": "text",
+            "Status": "Live|Hold|..",
+            "ERP_ID": "int",
+            "ERP_Code": "text"
+		}]
+	}]
+}
