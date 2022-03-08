@@ -29,7 +29,7 @@
 				"email": "",
 				"username": "foo",
 				"password": "bar",
-				"permissions": "Basic|Admin",
+				"permissions": "Basic|Admin|Parent",
 				"accesstoken": "",
 				"refreshtoken": "",
 				"apiaccess": "false",
