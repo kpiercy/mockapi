@@ -178,7 +178,7 @@ const user_get_all = async (req,res) => {
 
 
 function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '25m' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300m' })
 }
 
 
