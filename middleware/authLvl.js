@@ -22,7 +22,8 @@ async function authLvl(req, res, next) {
                 console.log('***top-level rights verified for: '+`${thisUser.substring(0, 3)}`+'***')
                 next()
             }
-    } catch {
+    } catch (e) {
+        console.log(e)
         res.status(500).json('Unable to retrieve authLvl for user.')
     }
 

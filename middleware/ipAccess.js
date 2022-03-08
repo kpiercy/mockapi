@@ -57,7 +57,8 @@ async function authIP(req, res, next){
                  console.log('***ip address was verified***')
                 next()
             }
-    } catch {
+    } catch (e) {
+        console.log(e)
         res.status(500).json('Unable to verify IP')
     }
     

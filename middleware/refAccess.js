@@ -20,7 +20,8 @@ async function refAccess(req, res, next) {
                 console.log('***refresh access verified***')
                 next()
             }
-    } catch {
+    } catch (e) {
+        console.log(e)
         res.status(500).json('Unable to retrieve apiAccess for user.')
     }
 

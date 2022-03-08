@@ -19,8 +19,9 @@ const proof_client_getOne = async (req, res) => {
             .execute('GetProofbyID')
         res.json(JSON.parse(proof.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     }
-    catch (error) {
-        console.log(error);
+    catch (e) {
+        res.status(500).json({ message: e.message })
+        console.log(e);
     }
 }
 
@@ -43,8 +44,9 @@ const proof_create = async (req, res) => {
 
         res.status(200).json(insertProof.recordsets)
     }
-    catch (error) {
-        console.log(error);
+    catch (e) {
+        res.status(500).json({ message: e.message })
+        console.log(e);
     }
 }
 
@@ -59,8 +61,9 @@ const proof_update = async (req, res) => {
 
         return updateProof.recordsets;
     }
-    catch (error) {
-        console.log(error);
+    catch (e) {
+        res.status(500).json({ message: e.message })
+        console.log(e);
     }
 }
 
@@ -100,6 +103,7 @@ const proofs_client_all = async (req, res) => {
             res.paginatedResults = results
             res.status(200).json(res.paginatedResults)
         } catch (e) {
+            console.log(e)
             res.status(500).json({ message: e.message })
         }
     }

@@ -40,8 +40,9 @@ const user_auth = async (req,res) => {
                     
                             //res.status(200).json(updateToken.recordsets);
                         }
-                        catch (error){
-                            console.log(error);
+                        catch (e){
+                            res.status(500).json({ message: e.message })
+                            console.log(e);
                         }
 
                     } else {
@@ -51,10 +52,10 @@ const user_auth = async (req,res) => {
                     res.status(403).json('Error:Username or password incorrect')
                 }
         } catch {
-            res.status(401).json('Error:Credentials do not exist in DB')
+            res.status(404).json('Error:Credentials do not exist in DB')
         }
-    } catch (error){
-        res.status(500).send(error)
+    } catch (e){
+        res.status(500).json({ message: e.message })
     }
 }
 
@@ -84,8 +85,9 @@ const user_refresh = async (req,res) => {
                 
                         //return updateToken.recordsets;
                     }
-                    catch (error){
-                        console.log(error);
+                    catch (e){
+                        res.status(500).json({ message: e.message })
+                        console.log(e);
                     }
                 
                 })
@@ -93,8 +95,9 @@ const user_refresh = async (req,res) => {
                 res.status(401).json('Error:Refresh token does not match our records')
             }
 
-    } catch (error){
-        res.status(500).send(error)
+    } catch (e){
+        res.status(500).json({ message: e.message })
+        consolee.log(e)
     }
 }
 
@@ -108,8 +111,9 @@ const user_me = async (req,res) => {
             .input('token', sql.VarChar, token)
             .execute('UsersMe')
             res.json(JSON.parse(permLvl.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
-    } catch {
+    } catch (e) {
         res.status(500).json('Error:Unable to retrieve user.')
+        console.log(e)
     }
 }
 
@@ -129,12 +133,14 @@ const user_create = async (req,res) => {
     
             res.status(200).json(insertUser.recordsets);
         }
-        catch (error){
-            console.log(error);
+        catch (e){
+            res.status(500).json({ message: e.message })
+            console.log(e);
         }
 
-    } catch (error){
-        res.status(500).send(error)
+    } catch (e){
+        res.status(500).json({ message: e.message })
+        console.log(e);
     }
 }
 
@@ -157,8 +163,9 @@ const user_client_revoke = async (req,res) => {
             res.status(400).json('Error:No users by that clientid found.')
             }
 
-    } catch (error) {
-        res.status(500).send(error)
+    } catch (e) {
+        res.status(500).json({ message: e.message })
+        console.log(e);
     }
 }
 
@@ -169,10 +176,9 @@ const user_get_all = async (req,res) => {
             .execute('GetAllUsers')
     
     res.status(200).json(JSON.parse(users.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
-    }
-
-    catch (error){
-        console.log(error);
+    } catch (e){
+        res.status(500).json({ message: e.message })
+        console.log(e);
     }
 }
 
