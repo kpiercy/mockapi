@@ -39,17 +39,17 @@ async function limitReach(req, res, next) {
                 console.log('***user: '+`${thisUser.substring(0, 3)}`+' invoked parent reach***')
                 next()
             } else if ( thisReach.toLowerCase() !== cid && master === false  && parent === false) {
-                    res.status(401).json('Error: Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.')
+                    res.status(401).json({ Error: 'Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.' })
             } else {
                 console.log('***User reach verified***')
                 next()
             }
         } catch {
-            res.status(400).json('Error: unexpected exception in reach limit verification encountered')
+            res.status(400).json({ Error: 'unexpected exception in reach limit verification encountered' })
         }    
 
     } catch {
-        res.status(500).json('Error: Unable to verify user reach by client id specified')
+        res.status(500).json({ Error: 'Unable to verify user reach by client id specified' })
     }
 
 }

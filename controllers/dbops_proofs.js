@@ -20,7 +20,7 @@ const proof_client_getOne = async (req, res) => {
         res.json(JSON.parse(proof.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     }
     catch (e) {
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
         console.log(e);
     }
 }
@@ -45,7 +45,7 @@ const proof_create = async (req, res) => {
         res.status(200).json(insertProof.recordsets)
     }
     catch (e) {
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
         console.log(e);
     }
 }
@@ -62,7 +62,7 @@ const proof_update = async (req, res) => {
         return updateProof.recordsets;
     }
     catch (e) {
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
         console.log(e);
     }
 }
@@ -78,7 +78,7 @@ const proofs_client_all = async (req, res) => {
     const endIndex = page * limit
 
     if (cid == null) {
-        res.status(406).json('Error: clientid must be specified in either the URL as a query param or in the request body.')
+        res.status(406).json({ Error: 'clientid must be specified in either the URL as a query param or in the request body.' })
     } else {
         const results = {}
 
@@ -104,7 +104,7 @@ const proofs_client_all = async (req, res) => {
             res.status(200).json(res.paginatedResults)
         } catch (e) {
             console.log(e)
-            res.status(500).json({ message: e.message })
+            res.status(500).json({ Error: e.message })
         }
     }
 }

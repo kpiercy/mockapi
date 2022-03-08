@@ -25,11 +25,11 @@ async function apiAccess(req, res, next) {
             console.log('***user access was verified***')
             next()
         } else {
-                res.status(403).json('Requesting user does not have API access. Please contact ElitePS for more information.')
+                res.status(403).json({Error: 'Requesting user does not have API access. Please contact ElitePS for more information.'})
             }
     } catch (e) {
         console.log(e);
-        res.status(500).json('Unable to retrieve apiAccess for user.')
+        res.status(500).json({ Error: 'Unable to retrieve apiAccess for user.' })
     }
 
 }

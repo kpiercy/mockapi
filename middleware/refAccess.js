@@ -15,14 +15,14 @@ async function refAccess(req, res, next) {
             .execute('UserAccessAPI')
         var thisUserAccess = canAccess.recordset[0].apiaccess
             if (thisUserAccess !== 'true') {
-                res.status(401).json('Requesting user does not have API access. Please contact ElitePS for more information.')
+                res.status(401).json({ Error: 'Requesting user does not have API access. Please contact ElitePS for more information.' })
             } else {
                 console.log('***refresh access verified***')
                 next()
             }
     } catch (e) {
         console.log(e)
-        res.status(500).json('Unable to retrieve apiAccess for user.')
+        res.status(500).json({ Error: 'Unable to retrieve apiAccess for user.' })
     }
 
 }

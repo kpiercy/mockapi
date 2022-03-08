@@ -17,7 +17,7 @@ async function authIP(req, res, next){
         let str = thisIp
         let lookup = str.search(req.ipInfo.ip)
             if (lookup == -1) {
-                res.status(403).send('Access not allowed from this IP. Please check your email to perform additional verification.')
+                res.status(403).json({ Error: 'Access not allowed from this IP. Please check your email to perform additional verification.' })
                 //perform 2fa here
                 async function sendemail() {
                     // create reusable transporter object using the default SMTP transport
@@ -59,7 +59,7 @@ async function authIP(req, res, next){
             }
     } catch (e) {
         console.log(e)
-        res.status(500).json('Unable to verify IP')
+        res.status(500).json({ Error: 'Unable to verify IP' })
     }
     
 }

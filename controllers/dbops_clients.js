@@ -13,7 +13,7 @@ const clients_all = async (req, res) => {
     }
 
     catch (e){
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
         console.log(e);
     }
 }
@@ -55,7 +55,7 @@ const clients_client_all = async (req, res) => {
                 res.status(200).json(res.paginatedResults)
             } catch (e) {
                 console.log(e)
-                res.status(500).json({ message: e.message })
+                res.status(500).json({ Error: e.message })
         }
     }
     } else {
@@ -68,7 +68,7 @@ const clients_client_all = async (req, res) => {
                 res.json(JSON.parse(client.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
             } catch (e) {
                 console.log(e)
-                res.status(500).json({ message: e.message })
+                res.status(500).json({ Error: e.message })
         }
     }
 }
@@ -84,7 +84,7 @@ const clients_create = async (req,res) => {
         res.status(200).json(insertClient.recordsets)
     }
     catch (e) {
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
         console.log(e);
     }
 }
@@ -103,14 +103,14 @@ const clients_delete = async (req,res) => {
                     Object.assign(results, revokeClient.recordsets)
                 }
                 catch (e) {
-                    res.status(500).json({ message: e.message })
+                    res.status(500).json({ Error: e.message })
                     console.log(e);
                 }
                 res.status(200).json(results)
              }
     } catch (e) {
         console.log(e)
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
     } 
 }
 
@@ -125,7 +125,7 @@ const clients_client_mn = async (req,res) => {
         res.status(200).json(insertClient.recordsets)
     }
     catch (e) {
-        res.status(500).json({ message: e.message })
+        res.status(500).json({ Error: e.message })
         console.log(e);
     }
 }

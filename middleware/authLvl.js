@@ -17,14 +17,14 @@ async function authLvl(req, res, next) {
         var thisUserLvl = permLvl.recordset[0].permissions
         var thisUser = permLvl.recordset[0].username
             if (thisUserLvl != 'Admin') {
-                res.status(401).json('Requesting user does not have permission necesssary.')
+                res.status(401).json({ Error: 'Requesting user does not have permission necesssary.' })
             } else {
                 console.log('***top-level rights verified for: '+`${thisUser.substring(0, 3)}`+'***')
                 next()
             }
     } catch (e) {
         console.log(e)
-        res.status(500).json('Unable to retrieve authLvl for user.')
+        res.status(500).json({ Error: 'Unable to retrieve authLvl for user.' })
     }
 
 }

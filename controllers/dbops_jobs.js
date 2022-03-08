@@ -14,7 +14,7 @@ const all_jobs = async (req,res) => {
 
         res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']));
         } catch (e) {
-            res.status(500).json('Error: '+e.message)
+            res.status(500).json({ Error: +e.message })
             console.log(e);
     }
 }
@@ -34,7 +34,7 @@ const one_job = async (req,res) => {
 
             res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']));
             } catch (e) {
-                res.status(500).json('Error: '+e.message)
+                res.status(500).json({ Error: +e.message })
                 console.log(e);
         } 
     } else {
@@ -49,7 +49,7 @@ const one_job = async (req,res) => {
                 .execute('GetJob');
             res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']));
             } catch (e) {
-                res.status(500).json('Error: '+e.message)
+                res.status(500).json({ Error: +e.message })
                 console.log(e);
         }
     }
