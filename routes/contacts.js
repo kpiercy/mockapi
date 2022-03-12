@@ -25,6 +25,9 @@ router.get('/', dboperations.all_contacts)
 //get single contact for this job by id
 router.get('/:id', dboperations.one_contact)
 
+//update single contact for this job by id
+router.put('/:id', dboperations.update_contact)
+
 //create new contact by job
 router.post('/', dboperations.create_contact)
 

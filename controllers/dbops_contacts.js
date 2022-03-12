@@ -17,6 +17,12 @@ const one_contact = async (req,res) => {
     console.log('Jobid used: '+req.params.jobid)
 }
 
+const update_contact = async (req,res) => {
+    console.log('dbops_contacts.update_contact was reached')
+    console.log('Clientid used: '+req.params.clientid)
+    console.log('Jobid used: '+req.params.jobid)
+}
+
 const create_contact = async (req,res) => {
     console.log('dbops_contacts.create_contact was reached')
     console.log('Clientid used: '+req.params.clientid)
@@ -32,6 +38,7 @@ const delete_contact = async (req,res) => {
 module.exports = {
     all_contacts,
     one_contact,
+    update_contact,
     create_contact,
     delete_contact
 }

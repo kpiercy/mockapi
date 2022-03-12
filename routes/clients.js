@@ -32,6 +32,9 @@ router.get('/:clientid', checkReach, dboperations.clients_client_all)
 //get single client by mn_id
 router.get('/:mnid', checkReach, dboperations.clients_client_mn)
 
+//udpate client by clientid or all if providing parent_clientid
+//router.get('/:clientid', checkReach, dboperations.clients_client_mn)
+
 //create new client
 router.post('/', authLvl, dboperations.clients_create) 
 
