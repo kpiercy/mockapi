@@ -22,37 +22,18 @@ const all_jobs = async (req,res) => {
 const one_job = async (req,res) => {
     const jobid = req.params.jobid
     const clientid = req.params.clientid
-    if (Object.keys(req.query).length !== 0) {
-        const queries = JSON.stringify(req.query)
         try{
             let pool = await sql.connect(configJobData);
             let job = await pool.request()
                 .input ('jobid', sql.VarChar, jobid)
                 .input ('clientid', sql.VarChar, clientid)
-                .input('queries', sql.NVarChar, queries)
                 .execute('GetJob');
 
             res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']));
             } catch (e) {
                 res.status(500).json({ Error: +e.message })
                 console.log(e);
-        } 
-    } else {
-        //logic for no parameters given, return only Jobs table related info
-        const queries = {"planetpress":"false","workorders":"false","automation":"false","filereqs":"false"}
-        try{
-            let pool = await sql.connect(configJobData);
-            let job = await pool.request()
-                .input ('jobid', sql.VarChar, jobid)
-                .input ('clientid', sql.VarChar, clientid)
-                .input('queries', sql.NVarChar, JSON.stringify(queries))
-                .execute('GetJob');
-            res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']));
-            } catch (e) {
-                res.status(500).json({ Error: +e.message })
-                console.log(e);
         }
-    }
 }
 
 const jobs_create = async (req,res) => {
