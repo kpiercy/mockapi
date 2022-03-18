@@ -1,18 +1,18 @@
 {
-    "users": [{
-			"user": [{
-				"gid": "PK",
-				"pub_gid": "UK",
-				"parent_clientid": "FK",
-				"clientid": "FK",
-				"email": "",
-				"username": "foo",
-				"password": "bar",
-				"permissions": "Basic|Admin",
-				"accesstoken": "",
-				"refreshtoken": "",
-				"apiaccess": "false",
-				"allowedips": ""
-			}]
-		}]
+  "users": [
+    {
+      "gid": "PK",
+      "pub_gid": "UK",
+      "parent_clientid": "FK",
+      "clientid": "FK",
+      "email": "",
+      "username": "foo",
+      "password": "bar",
+      "permissions": "Basic|Admin",
+      "accesstoken": "",
+      "refreshtoken": "",
+      "apiaccess": "false",
+      "allowedips": ""
+    }
+  ]
 }

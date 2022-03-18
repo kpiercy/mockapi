@@ -1,6 +1,6 @@
 {
-	"clients": [{
-		"client": [{
+	"clients": [
+		{
 			"gid": "PK",
 			"pub_gid": "UK",
 			"parentid": "FK",
@@ -20,6 +20,6 @@
 			"AioInvoice": "",
 			"CostOnly": "",
 			"BulkBill": ""
-		}]
-	}]
+		}
+	]
 }
