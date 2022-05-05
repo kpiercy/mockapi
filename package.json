@@ -17,7 +17,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-ip": "^1.0.4",
-    "express-jwt": "^6.0.0",
+    "express-jwt": "^6.1.2",
     "express-rate-limit": "^5.5.1",
     "gitignore": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
