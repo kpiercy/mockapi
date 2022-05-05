@@ -53,14 +53,48 @@
               "JobName": "",
               "Facility": "",
               "Client_Root_Path": "",
-              "filereqs": {
+              "requirements": {
                 "gid": "",
                 "pub_gid": "",
                 "jobid": "",
                 "filemask": "",
                 "numberOfMasksReq": ""
               },
-              "automation": {
+              "contacts": [
+                {
+                  "gid": "",
+                  "pub_gid": "",
+                  "clientid": "",
+                  "Type": "Processing",
+                  "FirstName": "",
+                  "LastName": "",
+                  "PhoneNumber1": "",
+                  "PhoneNumber2": "",
+                  "Email": ""
+                }
+              ],
+              "downloads": [
+                {
+                  "gid": "",
+                  "pub_gid": "",
+                  "jobid": "",
+                  "RemoteDirectory": "",
+                  "Mask": "",
+                  "AdditionalTask": "",
+                  "LocalDirectory": "",
+                  "Server": "",
+                  "IgnoreMask": "",
+                  "Timestamped": "",
+                  "Renamed": "",
+                  "NewName": "",
+                  "AppendValue": "",
+                  "Convert": "",
+                  "ConvertDelimter": "",
+                  "ConvertExtension": "",
+                  "ConvertColumns": ""
+                }
+              ],
+              "processes": {
                 "gid": "",
                 "pub_gid": "",
                 "jobid": "",
@@ -85,7 +119,7 @@
                 "OnceaDay": "",
                 "RanToday": ""
               },
-              "planetpress": {
+              "workflows": {
                 "gid": "",
                 "pub_gid": "",
                 "jobid": "",
