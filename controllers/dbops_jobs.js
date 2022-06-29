@@ -37,7 +37,25 @@ const one_job = async (req,res) => {
 }
 
 const jobs_create = async (req,res) => {
-    console.log('dbops_jobs.jobs_create was reached') 
+    //console.log('dbops_jobs.jobs_create was reached')
+    try {
+      const jobs = JSON.stringify(req.body);
+      try {
+        let pool = await sql.connect(configJobData);
+        let insertJob = await pool
+          .request()
+          .input("jobs", sql.NVarChar, jobs)
+          .execute("PostJobs");
+
+        res.status(200).json(insertJob.recordsets);
+      } catch (e) {
+        res.status(500).json({ Error: e.message });
+        console.log(e);
+      }
+    } catch (e) {
+      res.status(500).json({ Error: e.message });
+      console.log(e);
+    } 
 }
 
 const jobs_delete = async (req,res) => {
