@@ -11,8 +11,7 @@ const path = require("path");
 //file specific
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let path =
-      "//DESKTOP-43BAVT3/SQLFilestream/Filestream/Specs_FS/inserts";
+    let path = "//DESKTOP-43BAVT3/SQLFilestream/Filestream/Specs_FS/messages";
     cb(null, `${path}`);
   },
   filename: (req, file, cb) => {
@@ -20,42 +19,42 @@ const storage = multer.diskStorage({
     const id = uuid();
     const cid = req.params.clientid; //setup for loop to handle numerous file uploads at once
     const jid = req.params.jobid;
-    cb(null, "inserts_"+`${cid}_${jid}_${id}${ext}`);
+    cb(null, "messages_" +`${cid}_${jid}_${id}${ext}`);
   },
 });
 
 //set filters for each type of file and return error when non-allowable filetype is sent
-const inserts = multer({
+const messages = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, //5MB
+  limits: { fileSize: 2 * 1024 * 1024 }, //2MB
   fileFilter: (req, file, cb) => {
     if (
-        file.mimetype ==
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        file.mimetype == "application/msword" ||
-        file.mimetype == "application/pdf"
-      ) {
-        cb(null, true);
-      } else {
-        cb("Only .pdf, .doc & .docx formats are allowed!", false);
-      }
-  }
-}).array("inserts", 6);
+      file.mimetype ==
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      file.mimetype == "application/msword" ||
+      file.mimetype == "application/pdf"
+    ) {
+      cb(null, true);
+    } else {
+      cb("Only .pdf, .doc & .docx formats are allowed for /messages route!", false);
+    }
+  },
+}).array("messages", 6);
 
-const get_inserts = async (req, res) => {
-  console.log("dbops_inserts.all_inserts was reached");
+const get_messages = async (req, res) => {
+  console.log("dbops_messages.all_messages was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);
 };
 
-const get_insert = async (req, res) => {
-  console.log("dbops_inserts.one_insert was reached");
+const get_message = async (req, res) => {
+  console.log("dbops_messages.one_message was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);
 };
 
-const post_insert = async (req, res) => {
-  inserts(req, res, function (err) {
+const post_message = async (req, res) => {
+  messages(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
     } else if (err) {
@@ -71,12 +70,12 @@ const post_insert = async (req, res) => {
 //       try {
 //       console.log(req.body.file);
 //       let pool = await sql.connect(configJobData);
-//       let insertFile = await pool
+//       let messageFile = await pool
 //         .request()
 //         .input("path", sql.NVarChar, req.body.file)
 //         .execute("PostFilestream");
 
-//       res.status(200).json(insertFile.recordsets);
+//       res.status(200).json(messageFile.recordsets);
 
 //     } catch (e) {
 //       res.status(500).json({ Error: e.message });
@@ -85,15 +84,15 @@ const post_insert = async (req, res) => {
 
 // };
 
-const delete_insert = async (req, res) => {
-  console.log("dbops_inserts.delete_insert was reached");
+const delete_message = async (req, res) => {
+  console.log("dbops_messages.delete_message was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);
 };
 
 module.exports = {
-  get_inserts,
-  get_insert,
-  post_insert,
-  delete_insert
+  get_messages,
+  get_message,
+  post_message,
+  delete_message,
 };

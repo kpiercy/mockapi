@@ -14,23 +14,22 @@ const checkReach = require('../middleware/reachlimiter')
 const dboperations = require('../controllers/dbops_inserts')
 
 //model
-const model = require('../classes/proof')
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all inserts
-router.get('/', checkReach, authLvl, dboperations.all_inserts)
+router.get('/', checkReach, authLvl, dboperations.get_inserts)
 
 //get single insert by id
-router.get('/:insertid', checkReach, dboperations.one_insert)
+router.get('/:insertid', checkReach, dboperations.get_insert)
 
 //create new insert
-router.post('/', checkReach, authLvl, dboperations.create_insert)
+router.post('/', checkReach, authLvl, dboperations.post_insert)
 
 //delete insert
-router.delete('/', checkReach, authLvl, dboperations.delete_insert)
+router.delete('/:insertid', checkReach, authLvl, dboperations.delete_insert)
 
 module.exports = router;
 
