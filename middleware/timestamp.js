@@ -1,4 +1,4 @@
-//returns Promise {object}, need to get rid of promise still
+//returns Promise {object}, need to get rid of promise still kjhgliu
 const getStamp = async (req, res) => {
     try {
         const d = new Date()
