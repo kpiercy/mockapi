@@ -8,13 +8,15 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 
+const stamp  = require('./middleware/timestamp').getStamp()
 const userRoutes = require('./routes/users')
 
 //log the following for all requests
 app.all('*', function (req, res, next) {
  
     console.log("*****************");
-    console.log(' *** Auth server request ***' )
+    console.log(stamp)
+    console.log('AUTH SERVER REQUEST' )
     console.log('method: ' + req.method)
     console.log('url: ' + req.url)
     console.log('*****************')
