@@ -76,7 +76,7 @@ const user_refresh = async (req,res) => {
         if ( thisRefTok === refreshtoken ){
                 jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
                     if (err) return res.sendStatus(403)
-                    const accesstoken = generateAccessToken({ name: user.username})
+                    const accesstoken = jwt.sign({ name: user.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' })
                     res.status(201).json ({ accessToken: accesstoken })
     
                     let userUp = { refToken: refreshtoken, accToken: accesstoken}
