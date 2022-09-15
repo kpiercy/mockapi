@@ -1,17 +1,33 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
-function authenticateToken(req, res, next){
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+async function authenticateToken(req, res, next){
+
+    let y = req.headers["authorization"];
+    if ( y == null ) {
+        y = req.body.token;
+        cert = process.env.REFRESH_TOKEN_SECRET;
+    } else {
+        const authHeader = req.headers["authorization"];
+        y = authHeader && authHeader.split(" ")[1];
+        cert = process.env.ACCESS_TOKEN_SECRET;
+    }
+
+    const token = y;
+    const secret = cert;
+
     if (token == null) return res.status(401)
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(403)
-        req.user = user
-        next()
-    })
+    jwt.verify(token, secret,  (err, user) => {
+        if (err) {
+            res.status(403).json(err)
+        } else {
+            req.user = user
+            next()
+        }
 
+    })
+    
     console.log('***authToken: verified***')
 }
 

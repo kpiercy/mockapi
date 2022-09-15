@@ -7,7 +7,6 @@ const authlimiter = require('../middleware/authlimiter')
 const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl')
 const authAccess = require('../middleware/access')
-const authRefAccess= require('../middleware/refAccess')
 const authIP = require('../middleware/ipAccess')
 const dboperations = require('../controllers/dbops_users')
 const pubip = require('express-ip')
@@ -20,10 +19,10 @@ router.all('*', authlimiter)
 router.post('/auth', dboperations.user_auth)
 
 //takes in refresh token from req body, confirms that matches stored refresh token, returns new access token, updates DB with new access token
-router.post('/refresh', authRefAccess, dboperations.user_refresh)
+router.post('/refresh', authenticateToken, authAccess, authIP, dboperations.user_refresh)
 
 //get your userid, username and permissionLvl
-router.get('/me', authenticateToken, authAccess, authIP, dboperations.user_me)
+router.get('/me', authenticateToken, authLvl, authAccess, authIP, dboperations.user_me)
 
 //get all users 
 router.get('/', authenticateToken, authLvl, authAccess, authIP, dboperations.user_get_all)

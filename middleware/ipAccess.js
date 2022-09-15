@@ -5,9 +5,17 @@ const jwt = require('jsonwebtoken')
 
 async function authIP(req, res, next){
     try{
-        //setup handling for when req is from /refresh for the token assignment
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
+        //handling for when req is from /refresh for the token assignment
+        let y = req.headers["authorization"];
+        if (y == null) {
+        y = req.body.token;
+        } else {
+        const authHeader = req.headers["authorization"];
+        y = authHeader && authHeader.split(" ")[1];
+        }
+
+        const token = y;
+
         let pool = await sql.connect(configJobData)
         let goodIp = await pool.request()
             .input('token', sql.VarChar, token)
@@ -54,7 +62,7 @@ async function authIP(req, res, next){
                 sendemail().catch(console.error)
                 } 
              else {
-                 console.log('***ipAccess: verified***')
+                console.log('***ipAccess: verified***')
                 next()
             }
     } catch (e) {
