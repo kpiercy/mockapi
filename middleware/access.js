@@ -3,11 +3,18 @@ require('dotenv').config()
 const sql = require('mssql/msnodesqlv8')
 const configJobData = require('../config/JobData_dbconfig')
 
-
 async function apiAccess(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401)
+        let y = req.headers["authorization"];
+        if (y == null) {
+          y = req.body.token;
+        } else {
+          const authHeader = req.headers["authorization"];
+          y = authHeader && authHeader.split(" ")[1];
+        }
+
+        const token = y;
+
+        if (token == null) return res.status(401);
 
     try{
         let pool = await sql.connect(configJobData)
@@ -22,7 +29,7 @@ async function apiAccess(req, res, next) {
             .execute('ClientAccessAPI')
             var thisClientAccess = clientAccess.recordset[0].Status
         if (thisUserAccess === 'true' && thisClientAccess === 'Active') {
-            console.log('***apiAccess: verified***')
+            console.log('***User & Client apiAccess: verified***')
             next()
         } else {
                 res.status(403).json({Error: 'Requesting user does not have API access. Please contact ElitePS for more information.'})
