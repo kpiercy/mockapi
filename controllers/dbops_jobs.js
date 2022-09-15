@@ -4,7 +4,7 @@ var configJobData = require('../config/JobData_dbconfig')
 const sql = require('mssql/msnodesqlv8')
 
 const all_jobs = async (req,res) => {
-    console.log('dbops_jobs.all_jobs was reached')
+    //console.log('dbops_jobs.all_jobs was reached')
     const clientid = req.params.clientid
     try{
         let pool = await sql.connect(configJobData);
