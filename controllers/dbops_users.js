@@ -13,20 +13,27 @@ const user_auth = async (req,res) => {
     if ( user.name == null || user.password == null ){
         return res.status(400).json('Error:Please enter proper credentials')
     }
-    try {
         try{
             let pool = await sql.connect(configJobData)
             let users = await pool.request()
-            .input('username', sql.VarChar, username)  
-            .execute('UserExists')
-            var thisUser = users.recordset[0].username
-            var thisPass = users.recordset[0].hashedpassword
-            var thisAccess = users.recordset[0].apiaccess
+                .input('username', sql.VarChar, username)  
+                .execute('UserExists')
+                    var thisUser = users.recordset[0].username
+                    var thisPass = users.recordset[0].hashedpassword
+                    var thisAccess = users.recordset[0].apiaccess
 
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
                 if ( thisAccess === 'true' ) {
-                        const accessToken = generateAccessToken(user)
-                        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                        const accessToken = jwt.sign(
+                          user,
+                          process.env.ACCESS_TOKEN_SECRET,
+                          { expiresIn: "30m" }
+                        );
+                        const refreshToken = jwt.sign(
+                          user,
+                          process.env.REFRESH_TOKEN_SECRET,
+                          { expiresIn: "8hr" }
+                        );
                         res.json({accessToken: accessToken, refreshToken: refreshToken})
 
                         let userUp = { usernm: req.body.username, refToken: refreshToken, accToken: accessToken}
@@ -51,16 +58,13 @@ const user_auth = async (req,res) => {
                 } else {
                     res.status(403).json('Error:Username or password incorrect')
                 }
-        } catch {
-            res.status(404).json('Error:Credentials do not exist in DB')
+        } catch (e) {
+            res.status(500).json({ Error: e.message });
         }
-    } catch (e){
-        res.status(500).json({ Error: e.message })
-    }
 }
 
 const user_refresh = async (req,res) => {
-    const refreshtoken = req.body.token
+        const refreshtoken = req.body.token
     if (refreshtoken == null) return res.sendStatus(401)
 
     try{
@@ -184,7 +188,7 @@ const user_get_all = async (req,res) => {
 
 
 function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300m' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" })
 }
 
 
