@@ -20,15 +20,16 @@ async function authenticateToken(req, res, next){
 
     jwt.verify(token, secret,  (err, user) => {
         if (err) {
+            console.log(err)
             res.status(403).json(err)
         } else {
             req.user = user
+            console.log("***authToken: verified***");
             next()
         }
 
     })
     
-    console.log('***authToken: verified***')
 }
 
 module.exports = authenticateToken;
