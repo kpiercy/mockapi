@@ -23,12 +23,12 @@ router.use(pubip().getIpInfoMiddleware)
 router.get('/', checkReach, dboperations.all_downloads)
 
 //get single download for this job by id
-router.get('/:id', checkReach, dboperations.one_download)
+router.get('/:downloadid', checkReach, dboperations.one_download)
 
 //create new download by job
 router.post('/', checkReach, authLvl, dboperations.create_download)
 
 //delete download for this job
-router.delete('/', checkReach, authLvl, dboperations.delete_download)
+router.delete('/:downloadid', checkReach, authLvl, dboperations.delete_download)
 
 module.exports = router;
