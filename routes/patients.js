@@ -22,15 +22,15 @@ router.use(pubip().getIpInfoMiddleware)
 router.use('/:patientid/encounters', encounterRoutes)
 
 //get all patients, paginate
-router.get('/', dboperations.all_patients)
+router.get('/', checkReach, dboperations.all_patients)
 
 //get single patient by id
-router.get('/:id', dboperations.one_patient)
+router.get('/:id', checkReach, dboperations.one_patient)
 
 //create new patient
-router.post('/', dboperations.create_patient)
+router.post('/', checkReach, authLvl, dboperations.create_patient)
 
 //delete patient
-router.delete('/', dboperations.delete_patient)
+router.delete('/', checkReach, authLvl, dboperations.delete_patient)
 
 module.exports = router;

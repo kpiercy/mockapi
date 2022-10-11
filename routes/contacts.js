@@ -20,18 +20,18 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all contacts for this job
-router.get('/', dboperations.all_contacts)
+router.get('/', checkReach, dboperations.all_contacts)
 
 //get single contact for this job by id
-router.get('/:id', dboperations.one_contact)
+router.get('/:id', checkReach, dboperations.one_contact)
 
 //update single contact for this job by id
-router.put('/:id', dboperations.update_contact)
+router.put('/:id', checkReach, dboperations.update_contact)
 
 //create new contact by job
-router.post('/', dboperations.create_contact)
+router.post('/', checkReach, dboperations.create_contact)
 
 //delete contact for this job
-router.delete('/', dboperations.delete_contact)
+router.delete('/', checkReach, authLvl, dboperations.delete_contact)
 
 module.exports = router;

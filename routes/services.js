@@ -20,15 +20,15 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all services, paginate
-router.get('/', dboperations.all_services)
+router.get('/', checkReach, authLvl, dboperations.all_services)
 
 //get single service by id
-router.get('/:id', dboperations.one_service)
+router.get('/:id', checkReach, authLvl, dboperations.one_service)
 
 //create new service
-router.post('/', dboperations.create_service)
+router.post('/', checkReach, authLvl, dboperations.create_service)
 
 //delete service
-router.delete('/', dboperations.delete_service)
+router.delete('/', checkReach, authLvl, dboperations.delete_service)
 
 module.exports = router;

@@ -24,7 +24,7 @@ router.use('/:encounterid/details', detailRoutes)
 
 
 //get all encounters
-router.get('/', checkReach, authLvl, dboperations.all_encounters)
+router.get('/', checkReach, dboperations.all_encounters)
 
 //get single encounter by id
 router.get('/:encounterid', checkReach, dboperations.one_encounter)

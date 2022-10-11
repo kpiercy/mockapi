@@ -22,15 +22,15 @@ router.use(pubip().getIpInfoMiddleware)
 router.use('/:orderid/versions', versionRoutes)
 
 //get all orders for this job by client
-router.get('/', dboperations.all_orders)
+router.get('/', checkReach, dboperations.all_orders)
 
 //get single order for this job by client
-router.get('/:id', dboperations.one_order)
+router.get('/:id', checkReach, dboperations.one_order)
 
 //create new order for this job by client
-router.post('/', dboperations.create_order)
+router.post('/', checkReach, authLvl, dboperations.create_order)
 
 //delete order for this job by client
-router.delete('/', dboperations.delete_order)
+router.delete('/', checkReach, authLvl, dboperations.delete_order)
 
 module.exports = router;

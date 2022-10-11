@@ -20,15 +20,15 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all invoices, paginate
-router.get('/', dboperations.all_invoices)
+router.get('/', checkReach, dboperations.all_invoices)
 
 //get single invoice by id
-router.get('/:id', dboperations.one_invoice)
+router.get('/:id', checkReach, dboperations.one_invoice)
 
 //create new invoice
-router.post('/', dboperations.create_invoice)
+router.post('/', checkReach, authLvl, dboperations.create_invoice)
 
 //delete invoice
-router.delete('/', dboperations.delete_invoice)
+router.delete('/', checkReach, authLvl, dboperations.delete_invoice)
 
 module.exports = router;

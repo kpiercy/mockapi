@@ -33,16 +33,16 @@ router.use('/:jobid/payments', paymentRoutes)
 router.use('/:jobid/proofs', proofRoutes)
 
 //get all jobs
-router.get('/', checkReach, authLvl, dboperations.all_jobs)
+router.get('/', checkReach, dboperations.all_jobs) //authLvl????
 
 //get single job by id
-router.get('/:jobid', checkReach, authLvl, dboperations.one_job)
+router.get('/:jobid', checkReach, dboperations.one_job) //authLvl????
 
 //create new job
 router.post('/', checkReach, authLvl, dboperations.jobs_create)
 
 //delete job
-router.delete('/', checkReach, authLvl, dboperations.jobs_delete)
+router.delete('/:jobid', checkReach, authLvl, dboperations.jobs_delete)
 
 module.exports = router;
 

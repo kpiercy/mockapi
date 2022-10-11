@@ -20,15 +20,15 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all summaries, paginate
-router.get('/', dboperations.all_summaries)
+router.get('/', checkReach, dboperations.all_summaries)
 
 //get single summary by id
-router.get('/:id', dboperations.one_summary)
+router.get('/:id', checkReach, dboperations.one_summary)
 
 //create new summary
-router.post('/', dboperations.create_summary)
+router.post('/', checkReach, authLvl, dboperations.create_summary)
 
 //delete summary
-router.delete('/', dboperations.delete_summary)
+router.delete('/', checkReach, authLvl, dboperations.delete_summary)
 
 module.exports = router;

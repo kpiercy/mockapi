@@ -20,7 +20,7 @@ router.use(pubip().getIpInfoMiddleware);
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all messages
-router.get("/", checkReach, authLvl, dboperations.get_messages);
+router.get("/", checkReach, dboperations.get_messages);
 
 //get single message by id
 router.get("/:messageid", checkReach, dboperations.get_message);

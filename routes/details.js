@@ -21,7 +21,7 @@ router.use(pubip().getIpInfoMiddleware)
 
 
 //get all details
-router.get('/', checkReach, authLvl, dboperations.all_details)
+router.get('/', checkReach, dboperations.all_details)
 
 //get single detail by id
 router.get('/:detailid', checkReach, dboperations.one_detail)

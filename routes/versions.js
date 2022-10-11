@@ -26,15 +26,15 @@ router.use('/:versionid/files', fileRoutes)
 router.use('/:versionid/summaries', summaryRoutes)
 
 //get all versions, paginate
-router.get('/', dboperations.all_versions)
+router.get('/', checkReach, dboperations.all_versions)
 
 //get single version by id
-router.get('/:id', dboperations.one_version)
+router.get('/:id', checkReach, dboperations.one_version)
 
 //create new version
-router.post('/', dboperations.create_version)
+router.post('/', checkReach, authLvl, dboperations.create_version)
 
 //delete version
-router.delete('/', dboperations.delete_version)
+router.delete('/', checkReach, authLvl, dboperations.delete_version)
 
 module.exports = router;

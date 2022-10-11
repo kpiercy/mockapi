@@ -20,7 +20,7 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all inserts
-router.get('/', checkReach, authLvl, dboperations.get_inserts)
+router.get('/', checkReach, dboperations.get_inserts)
 
 //get single insert by id
 router.get('/:insertid', checkReach, dboperations.get_insert)
