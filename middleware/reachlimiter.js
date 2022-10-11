@@ -29,27 +29,49 @@ async function limitReach(req, res, next) {
         var thisReach = limit.recordset[0].clientid
         var thisUser = limit.recordset[0].username
         var thisParent = limit.recordset[0].parent_clientid
-        var thisPerm = limit.recordset[0].permissions
-        try {
+        var thisPerm = limit.recordset[0].securityGrp
+        
             if ( thisReach.toLowerCase() === process.env.EPS_CLIENT_ID ) { 
                 var master = true
                 console.log('***master reach for user: '+`${thisUser.substring(0, 3)}`+': verified***')
                 next()
-            } else if ( thisParent.toLowerCase() === cid && thisPerm.toLowerCase() === 'parent') {
-                var parent = true
-                console.log('***parent reach for user '+`${thisUser.substring(0, 3)}`+': verified***')
-                next()
-            } else if ( thisReach.toLowerCase() !== cid && master === false  && parent === false ) {
-                    res.status(401).json({ Error: 'Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.' })
-            } else if ( thisReach.toLowerCase() === cid ) {
-                console.log('***basic reach for user: '+`${thisUser.substring(0, 3)}`+': verified***')
-                next()
+            } else if (
+              thisParent.toLowerCase() === cid &&
+              thisPerm.toLowerCase() === "parent"
+            ) {
+              var parent = true;
+              console.log(
+                "***parent reach for user " +
+                  `${thisUser.substring(0, 3)}` +
+                  ": verified***"
+              );
+              next();
+            } else if (
+              thisReach.toLowerCase() === cid &&
+              thisPerm.toLowerCase() === "standard" &&
+              master === false &&
+              parent === false
+            ) {
+              console.log(
+                "***basic reach for user: " +
+                  `${thisUser.substring(0, 3)}` +
+                  ": verified***"
+              );
+              next();
+            } else if (
+              thisReach.toLowerCase() !== cid &&
+              master === false &&
+              parent === false
+            ) {
+              res.status(401).json({
+                Error:
+                  'Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.',
+              });
             } else {
-                res.status(500).json({ Error: 'Unhandled client reach limit exception encountered' })
-            }
-        } catch {
-            res.status(400).json({ Error: 'unexpected exception in reach limit verification encountered' })
-        }    
+              res.status(500).json({
+                Error: "Unhandled user reach limit exception encountered",
+              });
+            }               
 
     } catch {
         res.status(500).json({ Error: 'Unable to verify user reach by client id specified' })
