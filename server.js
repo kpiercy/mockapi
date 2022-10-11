@@ -80,6 +80,6 @@ app.all('*', function (req, res) {
 })
 
 
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 5000
 app.listen(port)
 console.log('server is running at port ' + port)
