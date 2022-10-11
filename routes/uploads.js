@@ -1,39 +1,35 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const express = require('express')
-const router = express.Router()
-const publimiter = require('../middleware/publimiter')
-const authenticateToken = require('../middleware/authToken')
-const authLvl = require('../middleware/authLvl')
-const paginate = require('../middleware/paginateProofs')
-const authAccess = require('../middleware/access')
-const authIP = require('../middleware/ipAccess')
-const dboperations = require('../services/dbops_proofs')
-const model = require('../models/proof')
-const pubip = require('express-ip')
+const express = require("express");
+const router = express.Router({ mergeParams: true });
+const pubip = require("express-ip");
 
-router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
+//additional middleware
+const authLvl = require("../middleware/authLvl");
+const checkReach = require("../middleware/reachlimiter");
+
+//child routes
+
+
+//controller
+const dboperations = require("../controllers/dbops_uploads");
+
+//model
+
+//router options and children
+router.use(pubip().getIpInfoMiddleware);
+//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all uploads, paginate
-router.get('/', (req, res) => {
-
-})
+router.get("/", checkReach, dboperations.all_uploads);
 
 //get single upload by id
-router.get('/:id', (req,res) => {
-    const id = req.params.id
-
-})
+router.get("/:id", checkReach, dboperations.one_upload);
 
 //create new upload
-router.post('/', (req, res) => {
-
-})
+router.post("/", checkReach, authLvl, dboperations.create_upload);
 
 //delete upload
-router.delete('/', (req, res) => {
-
-})
+router.delete("/", checkReach, authLvl, dboperations.delete_upload);
 
 module.exports = router;
