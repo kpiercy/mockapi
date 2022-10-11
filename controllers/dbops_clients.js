@@ -21,7 +21,7 @@ const clients_all = async (req, res) => {
 const clients_client_all = async (req, res) => {
     req.clientid = req.params.clientid
     req.params.clientid = req.clientid
-    var cid = req.params.clientid
+    var cid = req.params.clientid.toLowerCase()
     var pageIt = req.query.paginate.toLowerCase()
     
     if ( pageIt === 'true' ) {
@@ -52,7 +52,16 @@ const clients_client_all = async (req, res) => {
                     .input('cid', sql.VarChar, cid)
                     .execute('GetPaginatedClients')
                 res.paginatedResults = results
-                res.status(200).json(res.paginatedResults)
+                res
+                  .status(200)
+                  .json(
+                    JSON.parse(
+                      res.paginatedResults.data.recordset[0][
+                        "JSON_F52E2B61-18A1-11d1-B105-00805F49916B"
+                      ]
+                    )
+                  );
+                  //res.paginatedResults
             } catch (e) {
                 console.log(e)
                 res.status(500).json({ Error: e.message })
@@ -60,13 +69,18 @@ const clients_client_all = async (req, res) => {
     }
     } else {
         try {
-                let pool = await sql.connect(configJobData)
-                let client = await pool.request()
-                    .input('cid', sql.VarChar, cid)
-                    .execute('GetClient')
-                
-                res.json(JSON.parse(client.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
-            } catch (e) {
+          let pool = await sql.connect(configJobData);
+          let client = await pool
+            .request()
+            .input("cid", sql.VarChar, cid)
+            .execute("GetClient");
+
+          res.json(
+            JSON.parse(
+              client.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
+            )
+          ); 
+        } catch (e) {
                 console.log(e)
                 res.status(500).json({ Error: e.message })
         }
