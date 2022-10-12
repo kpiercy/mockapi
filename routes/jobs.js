@@ -12,7 +12,7 @@ const checkReach = require('../middleware/reachlimiter')
 const fileRoutes = require('./files')
 const downloadRoutes = require('./downloads')
 const contactRoutes = require('./contacts')
-const paymentRoutes = require('./payments')
+const paymentRoutes = require('./orbipays')
 const orderRoutes = require('./orders')
 const proofRoutes = require('./proofs')
 
