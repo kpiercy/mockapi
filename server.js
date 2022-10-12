@@ -15,7 +15,7 @@ const clientRoutes = require('./routes/clients')
 const jobRoutes = require('./routes/jobs')
 const downloadRoutes = require('./routes/downloads')
 const contactRoutes = require('./routes/contacts')
-const paymentRoutes = require('./routes/payments')
+const orbipayRoutes = require('./routes/orbipays')
 const orderRoutes = require('./routes/orders')
 const versionRoutes = require('./routes/versions')
 const serviceRoutes = require('./routes/services')
@@ -54,15 +54,19 @@ app.use('/api/v1/clients/jobs', jobRoutes)
 app.use('/api/v1/clients/jobs/proofs', proofRoutes)
 app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
 app.use('/api/v1/clients/jobs/contacts', contactRoutes)
-app.use('/api/v1/clients/jobs/payments', paymentRoutes)
+app.use('/api/v1/clients/jobs/payments', orbipayRoutes)
 app.use('/api/v1/clients/jobs/orders', orderRoutes)
-app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
-app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes) //should inserts belong to /jobs/orders/files??
-app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
-app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
+// app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
+// app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
+// app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
+// app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes) //should inserts belong to /jobs/orders/files??
+// app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
+// app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
+// app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
+
+//api/v1/clients/jobs/facilities/statements/encounters/charges/payments
+//api/v1/clients/jobs/facilities/statements/encounters/charges/adjustments
+//api/v1/clients/jobs/facilities/statements/encounters/charges/transfers
 
 
 ///////////////endpoint routes////////////////
