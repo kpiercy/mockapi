@@ -23,15 +23,15 @@ router.use(pubip().getIpInfoMiddleware)
 router.get('/', checkReach, dboperations.all_contacts)
 
 //get single contact for this job by id
-router.get('/:id', checkReach, dboperations.one_contact)
+router.get('/:contactid', checkReach, dboperations.one_contact)
 
 //update single contact for this job by id
-router.put('/:id', checkReach, dboperations.update_contact)
+router.put('/:contactid', checkReach, dboperations.update_contact)
 
 //create new contact by job
 router.post('/', checkReach, dboperations.create_contact)
 
 //delete contact for this job
-router.delete('/', checkReach, authLvl, dboperations.delete_contact)
+router.delete('/:contactid', checkReach, authLvl, dboperations.delete_contact)
 
 module.exports = router;
