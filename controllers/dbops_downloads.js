@@ -30,10 +30,11 @@ const all_downloads = async (req,res) => {
 const one_download = async (req,res) => {
     
     try {
+      const downloadid = req.params.downloadid;
       let pool = await sql.connect(configJobData);
       let getDL = await pool
         .request()
-        .input("downloadid", sql.NVarChar, req.params.downloadid)
+        .input("downloadid", sql.NVarChar, downloadid.toLowerCase())
         .execute("GetDownload");
 
       res
@@ -73,9 +74,10 @@ const create_download = async (req,res) => {
 const delete_download = async (req,res) => {
 
     try{
+      const downloadid = req.params.downloadid
         let pool = await sql.connect(configJobData);
         let deleted = await pool.request()
-            .input('downloadid', sql.VarChar, req.params.downloadid)
+            .input('downloadid', sql.VarChar, downloadid.toLowerCase())
             .execute('DeleteDownload')
     
         res.status(200).json(deleted.recordsets)

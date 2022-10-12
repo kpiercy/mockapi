@@ -7,10 +7,11 @@ const jwt = require('jsonwebtoken')
 
 const all_contacts = async (req,res) => {
     try {
+      const jobid = req.params.jobid
       let pool = await sql.connect(configJobData);
       let getContacts = await pool
         .request()
-        .input("jobid", sql.NVarChar, req.params.jobid)
+        .input("jobid", sql.NVarChar, jobid.toLowerCase())
         .execute("GetContacts");
 
       res
@@ -28,10 +29,11 @@ const all_contacts = async (req,res) => {
 
 const one_contact = async (req,res) => {
     try {
+      const contactid = req.params.contactid
       let pool = await sql.connect(configJobData);
       let getContact = await pool
         .request()
-        .input("contactid", sql.NVarChar, req.params.contactid)
+        .input("contactid", sql.NVarChar, contactid.toLowerCase())
         .execute("GetContact");
 
       res
@@ -52,12 +54,13 @@ const one_contact = async (req,res) => {
 //update or create dependent upon whether Contact_GUID is provided in req.body with a value
 const update_contact = async (req,res) => {
     try {
-        const contacts = JSON.stringify(req.body);
+      const contacts = JSON.stringify(req.body);
+      const contactid = req.params.contactid
       let pool = await sql.connect(configJobData);
       let getContacts = await pool
         .request()
         .input("contacts", sql.NVarChar, contacts)
-        .input("contactid", sql.NVarChar, req.params.contactid)
+        .input("contactid", sql.NVarChar, contactid.toLowerCase())
         .execute("PutContacts");
 
       res
@@ -93,10 +96,11 @@ const create_contact = async (req,res) => {
 //deactivate contact
 const delete_contact = async (req,res) => {
     try {
+      const contactid = req.params.contactid
       let pool = await sql.connect(configJobData);
       let delContact = await pool
         .request()
-        .input("contactid", sql.NVarChar, req.params.contactid)
+        .input("contactid", sql.NVarChar, contactid.toLowerCase())
         .execute("DeleteContact");
 
       res
