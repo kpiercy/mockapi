@@ -20,15 +20,18 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all payments for this job
-router.get('/', checkReach, dboperations.all_payments)
+router.get('/', checkReach, dboperations.all_orbipays)
 
 //get single payment for this job by id
-router.get('/:id', checkReach, dboperations.one_payment)
+router.get('/:orbipayid', checkReach, dboperations.one_orbipay)
 
 //create new payment by job
-router.post('/', checkReach, authLvl, dboperations.create_payment)
+router.post('/', checkReach, authLvl, dboperations.create_orbipay)
+
+//create new payment by job
+router.put('/:orbipayid', checkReach, authLvl, dboperations.update_orbipay)
 
 //delete payment for this job
-router.delete('/', checkReach, authLvl, dboperations.delete_payment)
+router.delete("/:orbipayid", checkReach, authLvl, dboperations.delete_orbipay);
 
 module.exports = router;
