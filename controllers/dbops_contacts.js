@@ -51,7 +51,7 @@ const one_contact = async (req,res) => {
     }
 }
 
-//update or create dependent upon whether Contact_GUID is provided in req.body with a value
+//updates fields to values provided or leaves field value as is if field is not provided in req.body, will also create a record if one is not found
 const update_contact = async (req,res) => {
     try {
       const contacts = JSON.stringify(req.body);
