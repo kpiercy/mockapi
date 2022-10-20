@@ -52,9 +52,9 @@ All of the same capabilities are open to Static and Dynamic requests. The differ
 app.use('/api/v1/clients', clientRoutes)
 app.use('/api/v1/clients/jobs', jobRoutes)
 app.use('/api/v1/clients/jobs/proofs', proofRoutes)
-app.use('/api/v1/clients/jobs/downloads', downloadRoutes)
-app.use('/api/v1/clients/jobs/contacts', contactRoutes)
-app.use('/api/v1/clients/jobs/payments', orbipayRoutes)
+app.use('/api/v1/clients/jobs/downloads', downloadRoutes) //crud done
+app.use('/api/v1/clients/jobs/contacts', contactRoutes) //crud done
+app.use('/api/v1/clients/jobs/orbipays', orbipayRoutes) //crud done
 app.use('/api/v1/clients/jobs/orders', orderRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
