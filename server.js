@@ -10,9 +10,14 @@ app.use(express.static('public'))
 
 const fileRoutes = require('./routes/files')
 //const versfileRoutes = require('./routes/versfiles')
-const proofRoutes = require('./routes/proofs')
 const clientRoutes = require('./routes/clients')
+const invoiceRoutes = require("./routes/invoices");
+const creditRoutes = require("./routes/credits");
+const depositRoutes = require("./routes/deposits");
+const contractRoutes = require("./routes/contracts");
 const jobRoutes = require('./routes/jobs')
+const facilityRoutes = require("./routes/facilities");
+const proofRoutes = require("./routes/proofs");
 const downloadRoutes = require('./routes/downloads')
 const contactRoutes = require('./routes/contacts')
 const orbipayRoutes = require('./routes/orbipays')
@@ -50,12 +55,18 @@ All of the same capabilities are open to Static and Dynamic requests. The differ
 */
  
 app.use('/api/v1/clients', clientRoutes)
+app.use('/api/v1/clients/invoices', invoiceRoutes)
+app.use('/api/v1/clients/invoices/credits', creditRoutes)
+app.use('/api/v1/clients/invoices/deposits', depositRoutes)
+app.use('/api/v1/clients/contracts', contractRoutes)
+app.use('/api/v1/clients/contracts/prices', priceRoutes)
 app.use('/api/v1/clients/jobs', jobRoutes)
 app.use('/api/v1/clients/jobs/proofs', proofRoutes)
 app.use('/api/v1/clients/jobs/downloads', downloadRoutes) //crud done
 app.use('/api/v1/clients/jobs/contacts', contactRoutes) //crud done
 app.use('/api/v1/clients/jobs/orbipays', orbipayRoutes) //crud done
-app.use('/api/v1/clients/jobs/orders', orderRoutes)
+app.use('/api/v1/clients/jobs/orders', orderRoutes) //cru done
+pp.use('/api/v1/clients/jobs/facilities', facilityRoutes) 
 // app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
 // app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
