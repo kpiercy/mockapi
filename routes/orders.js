@@ -25,12 +25,15 @@ router.use('/:orderid/versions', versionRoutes)
 router.get('/', checkReach, dboperations.all_orders)
 
 //get single order for this job by client
-router.get('/:id', checkReach, dboperations.one_order)
+router.get('/:orderid', checkReach, dboperations.one_order)
+
+//update single contact for this job by id
+router.put('/:orderid', checkReach, dboperations.update_order)
 
 //create new order for this job by client
 router.post('/', checkReach, authLvl, dboperations.create_order)
 
 //delete order for this job by client
-router.delete('/', checkReach, authLvl, dboperations.delete_order)
+router.delete('/:orderid', checkReach, authLvl, dboperations.delete_order)
 
 module.exports = router;
