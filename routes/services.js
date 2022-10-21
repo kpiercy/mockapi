@@ -6,7 +6,10 @@ const pubip = require('express-ip')
 
 //additional middleware
 const authLvl = require('../middleware/authLvl')
-const checkReach = require('../middleware/reachlimiter')
+const publimiter = require('../middleware/publimiter')
+const authenticateToken = require('../middleware/authToken')
+const authAccess = require('../middleware/access')
+const authIP = require('../middleware/ipAccess')
 
 //child routes
 
@@ -17,21 +20,21 @@ const dboperations = require('../controllers/dbops_services')
 
 //router options and children 
 router.use(pubip().getIpInfoMiddleware)
-//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
+router.all('*', publimiter, authenticateToken, authLvl, authAccess, authIP)
 
 //create new service
-router.post('/', authLvl, dboperations.create_service)
+router.post('/', dboperations.create_service)
 
 //get all services, paginate
-router.get('/', authLvl, dboperations.all_services)
+router.get('/', dboperations.all_services)
 
 //get single service by id
-router.get('/:serviceid', authLvl, dboperations.one_service)
+router.get('/:serviceid', dboperations.one_service)
 
 //update service based on fields provided or create a new one if it does nto exist already
-router.put('/:serviceid', authLvl, dboperations.update_service)
+router.put('/:serviceid', dboperations.update_service)
 
 //delete service
-router.delete('/:serviceid', authLvl, dboperations.delete_service)
+router.delete('/:serviceid', dboperations.delete_service)
 
 module.exports = router;
