@@ -18,10 +18,12 @@ const dboperations = require('../controllers/dbops_clients')
 //child routes
 const jobRoutes = require('./jobs')
 const invoiceRoutes = require('./invoices')
+const contractRoutes = require("./contracts");
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)
 router.all('*', publimiter, authenticateToken, authAccess, authIP)
+router.use("/:clientid/contracts", contractRoutes);
 router.use('/:clientid/invoices', invoiceRoutes)
 router.use('/:clientid/jobs', jobRoutes)
 

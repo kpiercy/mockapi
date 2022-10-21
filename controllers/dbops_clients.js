@@ -21,8 +21,8 @@ const clients_all = async (req, res) => {
 const clients_client_all = async (req, res) => {
     req.clientid = req.params.clientid
     req.params.clientid = req.clientid
-    var cid = req.params.clientid.toLowerCase()
-    var pageIt = req.query.paginate.toLowerCase()
+    var cid = req.params.clientid
+    var pageIt = req.query.paginate
     
     if ( pageIt === 'true' ) {
         const page = parseInt(req.query.page)
@@ -30,49 +30,63 @@ const clients_client_all = async (req, res) => {
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
 
-        if (cid == null) {
-        res.status(406).json('Error: clientid must be specified in either the URL as a query param or in the request body.')
+        if (cid.toLowerCase() == null) {
+          res
+            .status(406)
+            .json(
+              "Error: clientid must be specified in either the URL as a query param or in the request body."
+            );
         } else {
-        const results = {}
+          const results = {};
 
-            if (endIndex < model.length) {
-                var nextPage = page + 1
-                results.next = "http://localhost:3000/clients?page=" + nextPage + "&limit=" + limit + ""
-
-            }
-            if (startIndex > 0) {
-                var prevPage = page - 1
-                results.previous = "http://localhost:3000/clients?page=" + prevPage + "&limit=" + limit + ""
-            }
-            try {
-                let pool = await sql.connect(configJobData)
-                results.data = await pool.request()
-                    .input('startindex', sql.Int, startIndex)
-                    .input('limit', sql.Int, limit)
-                    .input('cid', sql.VarChar, cid)
-                    .execute('GetPaginatedClients')
-                res.paginatedResults = results
-                res
-                  .status(200)
-                  .json(
-                    JSON.parse(
-                      res.paginatedResults.data.recordset[0][
-                        "JSON_F52E2B61-18A1-11d1-B105-00805F49916B"
-                      ]
-                    )
-                  );
-                  //res.paginatedResults
-            } catch (e) {
-                console.log(e)
-                res.status(500).json({ Error: e.message })
+          if (endIndex < model.length) {
+            var nextPage = page + 1;
+            results.next =
+              "http://localhost:3000/clients?page=" +
+              nextPage +
+              "&limit=" +
+              limit +
+              "";
+          }
+          if (startIndex > 0) {
+            var prevPage = page - 1;
+            results.previous =
+              "http://localhost:3000/clients?page=" +
+              prevPage +
+              "&limit=" +
+              limit +
+              "";
+          }
+          try {
+            let pool = await sql.connect(configJobData);
+            results.data = await pool
+              .request()
+              .input("startindex", sql.Int, startIndex)
+              .input("limit", sql.Int, limit)
+              .input("cid", sql.VarChar, cid.toLowerCase())
+              .execute("GetPaginatedClients");
+            res.paginatedResults = results;
+            res
+              .status(200)
+              .json(
+                JSON.parse(
+                  res.paginatedResults.data.recordset[0][
+                    "JSON_F52E2B61-18A1-11d1-B105-00805F49916B"
+                  ]
+                )
+              );
+            //res.paginatedResults
+          } catch (e) {
+            console.log(e);
+            res.status(500).json({ Error: e.message });
+          }
         }
-    }
     } else {
         try {
           let pool = await sql.connect(configJobData);
           let client = await pool
             .request()
-            .input("cid", sql.VarChar, cid)
+            .input("cid", sql.VarChar, cid.toLowerCase())
             .execute("GetClient");
 
           res.json(
