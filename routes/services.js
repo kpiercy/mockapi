@@ -19,16 +19,19 @@ const dboperations = require('../controllers/dbops_services')
 router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
+//create new service
+router.post('/', authLvl, dboperations.create_service)
+
 //get all services, paginate
-router.get('/', checkReach, authLvl, dboperations.all_services)
+router.get('/', authLvl, dboperations.all_services)
 
 //get single service by id
-router.get('/:id', checkReach, authLvl, dboperations.one_service)
+router.get('/:serviceid', authLvl, dboperations.one_service)
 
-//create new service
-router.post('/', checkReach, authLvl, dboperations.create_service)
+//update service based on fields provided or create a new one if it does nto exist already
+router.put('/:serviceid', authLvl, dboperations.update_service)
 
 //delete service
-router.delete('/', checkReach, authLvl, dboperations.delete_service)
+router.delete('/:serviceid', authLvl, dboperations.delete_service)
 
 module.exports = router;
