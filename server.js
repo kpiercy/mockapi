@@ -11,10 +11,12 @@ app.use(express.static('public'))
 const fileRoutes = require('./routes/files')
 //const versfileRoutes = require('./routes/versfiles')
 const clientRoutes = require('./routes/clients')
+const serviceRoutes = require("./routes/services");
 const invoiceRoutes = require("./routes/invoices");
 const creditRoutes = require("./routes/credits");
 const depositRoutes = require("./routes/deposits");
 const contractRoutes = require("./routes/contracts");
+const priceRoutes = require("./routes/prices");
 const jobRoutes = require('./routes/jobs')
 const facilityRoutes = require("./routes/facilities");
 const proofRoutes = require("./routes/proofs");
@@ -23,7 +25,6 @@ const contactRoutes = require('./routes/contacts')
 const orbipayRoutes = require('./routes/orbipays')
 const orderRoutes = require('./routes/orders')
 const versionRoutes = require('./routes/versions')
-const serviceRoutes = require('./routes/services')
 const insertRoutes = require('./routes/inserts')
 const messageRoutes = require("./routes/messages")
 const logoRoutes = require("./routes/logos")
@@ -55,6 +56,7 @@ All of the same capabilities are open to Static and Dynamic requests. The differ
 */
  
 app.use('/api/v1/clients', clientRoutes)
+app.use("/api/v1/services", serviceRoutes);
 app.use('/api/v1/clients/invoices', invoiceRoutes)
 app.use('/api/v1/clients/invoices/credits', creditRoutes)
 app.use('/api/v1/clients/invoices/deposits', depositRoutes)
@@ -66,10 +68,9 @@ app.use('/api/v1/clients/jobs/downloads', downloadRoutes) //crud done
 app.use('/api/v1/clients/jobs/contacts', contactRoutes) //crud done
 app.use('/api/v1/clients/jobs/orbipays', orbipayRoutes) //crud done
 app.use('/api/v1/clients/jobs/orders', orderRoutes) //cru done
-pp.use('/api/v1/clients/jobs/facilities', facilityRoutes) 
+app.use('/api/v1/clients/jobs/facilities', facilityRoutes) 
 // app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
-// app.use('/api/v1/clients/jobs/orders/versions/services', serviceRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes) //should inserts belong to /jobs/orders/files??
 // app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
