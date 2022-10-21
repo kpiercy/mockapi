@@ -6,12 +6,12 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const all_downloads = async (req,res) => {
-
      try {
+      const jobid = req.params.jobid;
        let pool = await sql.connect(configJobData);
        let getDLs = await pool
          .request()
-         .input("jobid", sql.NVarChar, req.params.jobid)
+         .input("jobid", sql.NVarChar, jobid.toLowerCase())
          .execute("GetDownloads");
 
        res
@@ -51,7 +51,6 @@ const one_download = async (req,res) => {
 }
 
 const create_download = async (req,res) => {
-    
        try {
         const downloads = JSON.stringify(req.body);
          let pool = await sql.connect(configJobData);
@@ -70,6 +69,24 @@ const create_download = async (req,res) => {
          console.log(e);
        }
 }
+
+const update_download = async (req, res) => {
+  try {
+    const downloadid = req.params.downloadid;
+    const downloads = JSON.stringify(req.body);
+    let pool = await sql.connect(configJobData);
+    let putDL = await pool
+      .request()
+      .input("downloads", sql.NVarChar, downloads)
+      .input("downloadid", sql.VarChar, downloadid.toLowerCase())
+      .execute("PutDownloads");
+
+    res.status(200).json(putDL.recordsets);
+  } catch (e) {
+    res.status(500).json({ Error: e.message });
+    console.log(e);
+  }
+};
 
 const delete_download = async (req,res) => {
 
@@ -91,5 +108,6 @@ module.exports = {
     all_downloads,
     one_download,
     create_download,
+    update_download,
     delete_download
 }
