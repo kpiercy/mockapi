@@ -7,11 +7,11 @@ const jwt = require("jsonwebtoken");
 
 const all_deposits = async (req, res) => {
   try {
-    const jobid = req.params.jobid;
+    const invoiceid = req.params.invoiceid;
     let pool = await sql.connect(configJobData);
     let getDeposits = await pool
       .request()
-      .input("jobid", sql.NVarChar, jobid.toLowerCase())
+      .input("invoiceid", sql.NVarChar, invoiceid.toLowerCase())
       .execute("GetDeposits");
 
     res
