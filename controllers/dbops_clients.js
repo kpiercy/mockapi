@@ -158,6 +158,24 @@ const clients_client_mn = async (req,res) => {
     }
 }
 
+const update_client = async (req, res) => {
+  const clients = JSON.stringify(req.body);
+  const clientid = req.params.clientid
+  try {
+    let pool = await sql.connect(configJobData);
+    let updateClient = await pool
+      .request()
+      .input("clients", sql.NVarChar, clients)
+      .input("clientid", sql.NVarChar, clientid.toLowerCase())
+      .execute("PutClients");
+
+    res.status(200).json(updateClient.recordsets);
+  } catch (e) {
+    res.status(500).json({ Error: e.message });
+    console.log(e);
+  }
+};
+
 
 
 module.exports = {
@@ -165,5 +183,6 @@ module.exports = {
     clients_all,
     clients_client_all,
     clients_create,
-    clients_delete
+    clients_delete,
+    update_client
 }

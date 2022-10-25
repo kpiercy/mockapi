@@ -40,6 +40,9 @@ router.get('/:mnid', checkReach, dboperations.clients_client_mn)
 //create new client
 router.post('/', authLvl, dboperations.clients_create) 
 
+//update client with fields provided in json body
+router.put('/', authLvl, dboperations.update_client) 
+
 //set client and any children as inactive if parentclientid is provided
 router.delete('/', authLvl, dboperations.clients_delete)
 
