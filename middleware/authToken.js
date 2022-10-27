@@ -25,11 +25,27 @@ async function authenticateToken(req, res, next){
         } else {
             req.user = user
             console.log("***authToken: verified***");
+            const { _id } = jwt.verify(token, secret);
+
             next()
         }
-
     })
+
+    // try {
+    //     const { _id } = jwt.verify(token, secret)
+
+    //     let pool = await sql.connect(configJobData);
+    //     let job = await pool.request()
+    //         .input ('token', sql.VarChar, _id)
+    //         .execute('GetClientReach');
+
+    //         req.user = res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']));
+    //     } catch (e) {
+    //         res.status(500).json({ Error: +e.message })
+    //         console.log(e);
+    //     }
+ 
+    }
     
-}
 
 module.exports = authenticateToken;

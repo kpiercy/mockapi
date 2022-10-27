@@ -1,6 +1,11 @@
 
+/*Color palette*/
+/*#EAEAEA, #B2B2B2, #3C4048, #00ABB3, 
+elitered rgba(238, 46, 36, 1), elitegreen #65c8c6, 
+elitegray #818285, elitedkgray #525252 */
+
 /* google font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+@import url('https: //fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&family=Ubuntu&display=swap');
 
 /* layout */
 :root {
@@ -11,7 +16,8 @@
 body {
     background: #f1f1f1;
     margin: 0;
-    font-family: "Poppins";
+    font-family: "Montserrat";
+    font-weight: bold;
 }
 
 header {

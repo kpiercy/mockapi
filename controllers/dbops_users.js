@@ -3,16 +3,17 @@ require('dotenv').config()
 var configJobData = require('../config/JobData_dbconfig');
 const sql = require('mssql/msnodesqlv8');
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 
 const user_auth = async (req,res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const password = req.body.password
     const username = req.body.username
-    const user = { name: req.body.username, password: hashedPassword }
-    if ( user.name == null || user.password == null ){
-        return res.status(400).json('Error:Please enter proper credentials')
+    if (username == null || password == null) {
+      return res.status(400).json("Error:Please enter proper credentials");
     }
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const user = { name: username, password: hashedPassword }
         try{
             let pool = await sql.connect(configJobData)
             let users = await pool.request()
@@ -21,8 +22,11 @@ const user_auth = async (req,res) => {
                     var thisUser = users.recordset[0].username
                     var thisPass = users.recordset[0].hashedpassword
                     var thisAccess = users.recordset[0].apiaccess
-
+                    var thisClient = users.recordset[0].clientid
+                    var thisParent = users.recordset[0].parent_clientid;
+                
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
+                 
                 if ( thisAccess === 'true' ) {
                         const accessToken = jwt.sign(
                           user,
@@ -34,8 +38,8 @@ const user_auth = async (req,res) => {
                           process.env.REFRESH_TOKEN_SECRET,
                           { expiresIn: "8hr" }
                         );
-                        res.json({accessToken: accessToken, refreshToken: refreshToken})
-
+                        res.json({token: accessToken, accessExpiresIn: "30min", refreshToken: refreshToken, refreshExpiresIn: "8hrs", client: thisClient, parent: thisParent});
+                        
                         let userUp = { usernm: req.body.username, refToken: refreshToken, accToken: accessToken}
                         try{
                             let pool = await sql.connect(configJobData);
