@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-var configJobData = require('../config/JobData_dbconfig');
+const configJobData = require('../config/JobData_dbconfig');
 const sql = require('mssql/msnodesqlv8');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -19,12 +19,12 @@ const user_auth = async (req,res) => {
             let users = await pool.request()
                 .input('username', sql.VarChar, username)  
                 .execute('UserExists')
-                    var thisUser = users.recordset[0].username
-                    var thisPass = users.recordset[0].hashedpassword
-                    var thisAccess = users.recordset[0].apiaccess
-                    var thisClient = users.recordset[0].clientid
-                    var thisParent = users.recordset[0].parent_clientid
-                    var thisPerm = users.recordset[0].securityGrp;
+                    let thisUser = users.recordset[0].username
+                    let thisPass = users.recordset[0].hashedpassword
+                    let thisAccess = users.recordset[0].apiaccess
+                    let thisClient = users.recordset[0].clientid
+                    let thisParent = users.recordset[0].parent_clientid
+                    let thisPerm = users.recordset[0].securityGrp;
                 
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
                  
@@ -77,7 +77,7 @@ const user_refresh = async (req,res) => {
         let users = await pool.request()
             .input('refToken', sql.VarChar, refreshtoken)
             .execute('RefreshAccess')
-        var thisRefTok = users.recordset[0].refreshtoken
+        let thisRefTok = users.recordset[0].refreshtoken
         if ( thisRefTok === refreshtoken ){
                 jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
                     if (err) return res.sendStatus(403)

@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-var configJobData = require('../config/JobData_dbconfig')
+const configJobData = require('../config/JobData_dbconfig')
 const sql = require('mssql/msnodesqlv8')
 const model = require('../classes/client')
 
@@ -21,8 +21,8 @@ const clients_all = async (req, res) => {
 const clients_client_all = async (req, res) => {
     req.clientid = req.params.clientid
     req.params.clientid = req.clientid
-    var cid = req.params.clientid
-    var pageIt = req.query.paginate
+    let cid = req.params.clientid
+    let pageIt = req.query.paginate
     
     if ( pageIt === 'true' ) {
         const page = parseInt(req.query.page)
@@ -40,7 +40,7 @@ const clients_client_all = async (req, res) => {
           const results = {};
 
           if (endIndex < model.length) {
-            var nextPage = page + 1;
+            let nextPage = page + 1;
             results.next =
               "http://localhost:3000/clients?page=" +
               nextPage +
@@ -49,7 +49,7 @@ const clients_client_all = async (req, res) => {
               "";
           }
           if (startIndex > 0) {
-            var prevPage = page - 1;
+            let prevPage = page - 1;
             results.previous =
               "http://localhost:3000/clients?page=" +
               prevPage +
