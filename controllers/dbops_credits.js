@@ -78,7 +78,7 @@ const create_credit = async (req, res) => {
       .input("credits", sql.NVarChar, credits)
       .execute("PostCredits");
 
-    res.status(200).json(postCredits.recordsets);
+    res.status(201).json(postCredits.recordsets);
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

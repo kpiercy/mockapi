@@ -23,7 +23,8 @@ const user_auth = async (req,res) => {
                     var thisPass = users.recordset[0].hashedpassword
                     var thisAccess = users.recordset[0].apiaccess
                     var thisClient = users.recordset[0].clientid
-                    var thisParent = users.recordset[0].parent_clientid;
+                    var thisParent = users.recordset[0].parent_clientid
+                    var thisPerm = users.recordset[0].securityGrp;
                 
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
                  
@@ -38,7 +39,7 @@ const user_auth = async (req,res) => {
                           process.env.REFRESH_TOKEN_SECRET,
                           { expiresIn: "8hr" }
                         );
-                        res.json({token: accessToken, accessExpiresIn: "30min", refreshToken: refreshToken, refreshExpiresIn: "8hrs", client: thisClient, parent: thisParent});
+                        res.json({token: accessToken, accessExpiresIn: "30min", refreshToken: refreshToken, refreshExpiresIn: "8hrs", permissions: thisPerm, client: thisClient, parent: thisParent});
                         
                         let userUp = { usernm: req.body.username, refToken: refreshToken, accToken: accessToken}
                         try{
@@ -139,7 +140,7 @@ const user_create = async (req,res) => {
                 .input('users', sql.NVarChar, users)
                 .execute('addUsers');
     
-            res.status(200).json(insertUser.recordsets);
+            res.status(201).json(insertUser.recordsets);
         }
         catch (e){
             res.status(500).json({ Error: e.message })

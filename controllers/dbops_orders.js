@@ -80,7 +80,7 @@ const create_order = async (req, res) => {
       .input("orders", sql.NVarChar, orders)
       .execute("PostOrders");
 
-    res.status(200).json(postOrders.recordsets);
+    res.status(201).json(postOrders.recordsets);
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

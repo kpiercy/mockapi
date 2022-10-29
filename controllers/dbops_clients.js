@@ -109,7 +109,7 @@ const clients_create = async (req,res) => {
             .input('clients', sql.NVarChar, clients)
             .execute('CreateClients')
 
-        res.status(200).json(insertClient.recordsets)
+        res.status(201).json(insertClient.recordsets)
     }
     catch (e) {
         res.status(500).json({ Error: e.message })

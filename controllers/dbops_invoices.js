@@ -78,7 +78,7 @@ const create_invoice = async (req, res) => {
       .input("invoices", sql.NVarChar, invoices)
       .execute("PostInvoices");
 
-    res.status(200).json(postInvoices.recordsets);
+    res.status(201).json(postInvoices.recordsets);
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

@@ -85,7 +85,7 @@ const create_contact = async (req,res) => {
         .execute("PostContacts");
 
       res
-      .status(200)
+      .status(201)
       .json(postContacts.recordsets);
     } catch (e) {
       res.status(500).json({ Error: e.message });

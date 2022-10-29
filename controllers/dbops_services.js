@@ -76,7 +76,7 @@ const create_service = async (req, res) => {
       .input("services", sql.NVarChar, services)
       .execute("PostServices");
 
-    res.status(200).json(postServices.recordsets);
+    res.status(201).json(postServices.recordsets);
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

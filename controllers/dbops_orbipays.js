@@ -77,7 +77,7 @@ const create_orbipay = async (req,res) => {
         .input("orbipays", sql.NVarChar, orbipays)
         .execute("PostOrbipays");
 
-        res.status(200).json(postOrbi.recordsets);
+        res.status(201).json(postOrbi.recordsets);
     } catch (e) {
         res.status(500).json({ Error: e.message });
         console.log(e);

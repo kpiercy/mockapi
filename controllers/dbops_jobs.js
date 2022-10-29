@@ -47,8 +47,7 @@ const jobs_create = async (req,res) => {
           .input("jobs", sql.NVarChar, jobs)
           .execute("PostJobs");
 
-        res.json(
-          JSON.parse(
+        res.status(201).json(JSON.parse(
             insertJob.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
           )
         );

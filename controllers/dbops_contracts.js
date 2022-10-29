@@ -78,7 +78,7 @@ const create_contract = async (req, res) => {
       .input("contracts", sql.NVarChar, contracts)
       .execute("PostContracts");
 
-    res.status(200).json(postContracts.recordsets);
+    res.status(201).json(postContracts.recordsets);
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

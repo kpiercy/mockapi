@@ -60,7 +60,7 @@ const create_download = async (req,res) => {
            .execute("PostDownloads");
 
          res
-           .status(200)
+           .status(201)
            .json(
                postDL.recordsets
            );

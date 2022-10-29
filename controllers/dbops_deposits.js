@@ -78,7 +78,7 @@ const create_deposit = async (req, res) => {
       .input("deposits", sql.NVarChar, deposits)
       .execute("PostDeposits");
 
-    res.status(200).json(postDeposits.recordsets);
+    res.status(201).json(postDeposits.recordsets);
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
