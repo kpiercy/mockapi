@@ -28,7 +28,7 @@ router.get("/", checkReach, dboperations.all_contracts);
 router.get("/:contractid", checkReach, dboperations.one_contract);
 
 //update single contract for this job by id
-router.put("/:contractid", checkReach, dboperations.update_contract);
+router.patch("/:contractid", checkReach, dboperations.update_contract);
 
 //create new contract by job
 router.post("/", checkReach, dboperations.create_contract);

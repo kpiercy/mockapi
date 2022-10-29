@@ -26,7 +26,7 @@ router.get("/", checkReach, dboperations.all_prices);
 router.get("/:priceid", checkReach, dboperations.one_price);
 
 //update single price for this job by id
-router.put("/:priceid", checkReach, dboperations.update_price);
+router.patch("/:priceid", checkReach, dboperations.update_price);
 
 //create new price by job
 router.post("/", checkReach, dboperations.create_price);

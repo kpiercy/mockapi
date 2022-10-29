@@ -34,10 +34,10 @@ router.get('/', authenticateToken, authLvl, authAccess, authIP, dboperations.use
 router.post('/', authenticateToken, authLvl, authAccess, authIP, dboperations.user_create)
 
 //revoke api access for all users of a client by client id
-router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.user_client_revoke)
+router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
 
 //revoke api access of a single user by userid
-//router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.user_revoke)
+router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_user)
 
 // //get your userid, username and permissionLvl
 // router.post('/me/confirm', authenticateToken, authAccess, async (req, res) => {

@@ -30,6 +30,6 @@ router.get('/', checkReach, dboperations.proofs_client_all)
 router.post('/', authLvl, checkReach, dboperations.proof_create)
 
 //update proof
-router.put('/', authLvl, checkReach, dboperations.proof_update)
+router.patch('/', authLvl, checkReach, dboperations.proof_update)
 
 module.exports = router;

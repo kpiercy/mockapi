@@ -26,7 +26,7 @@ router.get("/", checkReach, dboperations.all_deposits);
 router.get("/:depositid", checkReach, dboperations.one_deposit);
 
 //update single deposit for this job by id
-router.put("/:depositid", checkReach, dboperations.update_deposit);
+router.patch("/:depositid", checkReach, dboperations.update_deposit);
 
 //create new deposit by job
 router.post("/", checkReach, dboperations.create_deposit);

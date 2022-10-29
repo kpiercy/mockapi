@@ -26,7 +26,7 @@ router.get("/", checkReach, dboperations.all_credits);
 router.get("/:creditid", checkReach, dboperations.one_credit);
 
 //update single credit for this job by id
-router.put("/:creditid", checkReach, dboperations.update_credit);
+router.patch("/:creditid", checkReach, dboperations.update_credit);
 
 //create new credit by job
 router.post("/", checkReach, dboperations.create_credit);

@@ -26,7 +26,7 @@ router.get("/", checkReach, dboperations.all_facilities);
 router.get("/:facilityid", checkReach, dboperations.one_facility);
 
 //update single facilitie for this job by id
-router.put("/:facilityid", checkReach, dboperations.update_facility);
+router.patch("/:facilityid", checkReach, dboperations.update_facility);
 
 //create new facilitie by job
 router.post("/", checkReach, dboperations.create_facility);

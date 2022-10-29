@@ -26,7 +26,7 @@ router.get('/', checkReach, dboperations.all_downloads)
 router.get('/:downloadid', checkReach, dboperations.one_download)
 
 //update existing based on provided fields or create if not found
-router.put('/:downloadid', checkReach, dboperations.update_download)
+router.patch('/:downloadid', checkReach, dboperations.update_download)
 
 //create new download by job
 router.post('/', checkReach, authLvl, dboperations.create_download)

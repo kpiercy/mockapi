@@ -30,7 +30,7 @@ router.get('/', checkReach, dboperations.all_invoices)
 router.get('/:invoiceid', checkReach, dboperations.one_invoice)
 
 //update single deposit for this job by id
-router.put("/:invoiceid", checkReach, dboperations.update_invoice);
+router.patch("/:invoiceid", checkReach, dboperations.update_invoice);
 
 //create new invoice
 router.post('/', checkReach, authLvl, dboperations.create_invoice)
