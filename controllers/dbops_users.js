@@ -153,7 +153,7 @@ const user_create = async (req,res) => {
     }
 }
 
-const user_client_revoke = async (req,res) => {
+const delete_client_users = async (req,res) => {
     const client = req.body.clientid
     console.log('Clientid provided for RevokeAPIAccess call: '+client)
     try{
@@ -172,6 +172,20 @@ const user_client_revoke = async (req,res) => {
             res.status(400).json('Error:No users by that clientid found.')
             }
 
+    } catch (e) {
+        res.status(500).json({ Error: e.message })
+        console.log(e);
+    }
+}
+
+const delete_user = async (req,res) => {
+    const userid = req.params.userid
+    try{
+        let pool2 = await sql.connect(configJobData)
+        let revoke = await pool2.request()
+            .input('userid', sql.VarChar, userid)
+            .execute('DeleteUser')
+        res.status(202).json(revoke.recordsets)
     } catch (e) {
         res.status(500).json({ Error: e.message })
         console.log(e);
@@ -202,6 +216,7 @@ module.exports = {
     user_refresh,
     user_me,
     user_create,
-    user_client_revoke,
+    delete_client_users,
+    delete_user,
     user_get_all
 }
