@@ -16,10 +16,11 @@ async function authLvl(req, res, next) {
             .execute('AuthPermLvl')
         var thisUserLvl = permLvl.recordset[0].securityGrp
         var thisUser = permLvl.recordset[0].username
-            if (thisUserLvl != 'Admin') {
+            if (thisUserLvl.toLowerCase() !== 'admin') {
+                console.log("!!!!!!!!  Admin Protected route call made by non-admin user: " + `${thisUser}` + " !!!!!!!!")
                 res.status(401).json({ Error: 'Requesting user does not have permission necesssary.' })
             } else {
-                console.log('***authLvl for '+`${thisUser.substring(0, 3)}`+': verified***')
+                console.log('AuthLvlMW: AdminLvl for '+`${thisUser.substring(0, 3)}`+': verified')
                 next()
             }
     } catch (e) {

@@ -32,7 +32,7 @@ async function apiAccess(req, res, next) {
             var thisClientAccess = clientAccess.recordset[0].Status
         console.log({ userAccess: thisUserAccess, clientStatus: thisClientAccess })
         if (thisUserAccess === 'true' && thisClientAccess === 'Active') {
-            console.log('***User & Client apiAccess: verified***')
+            console.log('AccessMW: User & Client apiAccess verified')
             next()
         } else {
                 res.status(403).json({Error: 'Requesting user does not have API access. Please contact ElitePS for more information.'})

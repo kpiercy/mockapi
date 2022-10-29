@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const sql = require('mssql/msnodesqlv8')
+const { user } = require('../config/JobData_dbconfig')
 const configJobData = require('../config/JobData_dbconfig')
 
 //handles the requirement that every request this mw is passed on should contain clientid and determines if the requesting user is a part of the clientid in the user table
@@ -25,15 +26,16 @@ async function limitReach(req, res, next) {
         let pool = await sql.connect(configJobData)
         let limit = await pool.request()
             .input('token', sql.VarChar, token)
+            .input('clientid', sql.NVarChar, cid)
             .execute('GetClientReach')
         var thisReach = limit.recordset[0].clientid
         var thisUser = limit.recordset[0].username
         var thisParent = limit.recordset[0].parent_clientid
         var thisPerm = limit.recordset[0].securityGrp
         
-            if ( thisReach.toLowerCase() === process.env.EPS_CLIENT_ID ) { 
+            if ( thisReach.toLowerCase() === process.env.EPS_CLIENT_ID && thisPerm.toLowerCase() === 'admin') { 
                 var master = true
-                console.log('***master reach for user: '+`${thisUser.substring(0, 3)}`+': verified***')
+                console.log('ReachLimitMW: Master reach for user: '+`${thisUser.substring(0, 3)}`+' verified')
                 next()
             } else if (
               thisParent.toLowerCase() === cid &&
@@ -41,9 +43,9 @@ async function limitReach(req, res, next) {
             ) {
               var parent = true;
               console.log(
-                "***parent reach for user " +
+                "ReachLimitMW: Parent reach for user " +
                   `${thisUser.substring(0, 3)}` +
-                  ": verified***"
+                  " verified***"
               );
               next();
             } else if (
@@ -53,9 +55,9 @@ async function limitReach(req, res, next) {
               parent === false
             ) {
               console.log(
-                "***basic reach for user: " +
+                "ReachLimitMW: Standard reach for user " +
                   `${thisUser.substring(0, 3)}` +
-                  ": verified***"
+                  " verified***"
               );
               next();
             } else if (
@@ -63,9 +65,10 @@ async function limitReach(req, res, next) {
               master === false &&
               parent === false
             ) {
+              console.log("ReachLimitMW: ReachLimit exceeded by user:" +`${thisUser.substring(0,3)}` + "***")
               res.status(401).json({
                 Error:
-                  'Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.',
+                  'ReachLimit exceeded, Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.',
               });
             } else {
               res.status(500).json({

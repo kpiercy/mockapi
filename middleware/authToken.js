@@ -24,7 +24,7 @@ async function authenticateToken(req, res, next){
             res.status(403).json(err)
         } else {
             req.user = user
-            console.log("***authToken: verified***");
+            console.log("AuthTokenMW: authToken verified");
             const { _id } = jwt.verify(token, secret);
 
             next()
