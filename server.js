@@ -54,6 +54,18 @@ Static routes are handled via the list of app.use below, whereby it calls the gi
 All of the same capabilities are open to Static and Dynamic requests. The difference being that when using the static routes, you will need to provide details like the clientid, orderid, ... params via JSON body in most cases. 
 */
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Origin-Allow-Headers', 
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
+        return res.status(200).json({})
+    }
+
+    next()
+})
+
  
 app.use("/", indexRoutes);
 app.use("/api/v1/clients", clientRoutes); //crud
@@ -91,12 +103,13 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
-    res.status(err.status || 500)
+    res.status(error.status || 500)
     res.json({
         error: {
             message: error.message
         }
     })
+    next()
 })
 
 

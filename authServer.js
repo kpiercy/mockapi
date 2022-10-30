@@ -13,6 +13,18 @@ app.use(logger('dev'))
 const stamp  = require('./middleware/timestamp').getStamp()
 const userRoutes = require('./routes/users')
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Origin-Allow-Headers', 
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
+        return res.status(200).json({})
+    }
+
+    next()
+})
+
 ///////////////endpoint routes////////////////
 
 app.use('/api/v1/clients/users', userRoutes)
