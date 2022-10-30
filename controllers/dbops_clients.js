@@ -69,11 +69,11 @@ const clients_client_all = async (req, res) => {
             res
               .status(200)
               .json(
-                JSON.parse(
-                  res.paginatedResults.data.recordset[0][
-                    "JSON_F52E2B61-18A1-11d1-B105-00805F49916B"
-                  ]
-                )
+                {
+                  Next: res.paginatedResults.next,
+                  Previous: res.paginatedResults.previous,
+                  Clients: res.paginatedResults.data.recordset
+                }
               );
             //res.paginatedResults
           } catch (e) {
@@ -127,7 +127,7 @@ const clients_delete = async (req,res) => {
                     let pool = await sql.connect(configJobData)
                     let revokeClient = await pool.request()
                         .input('client', sql.VarChar, clients[i].clientid)
-                        .execute('RevokeClientAccess')
+                        .execute('DeleteClient')
                     Object.assign(results, revokeClient.recordsets)
                 }
                 catch (e) {
