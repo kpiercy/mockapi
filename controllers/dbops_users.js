@@ -118,7 +118,7 @@ const user_me = async (req,res) => {
         let pool = await sql.connect(configJobData)
         let permLvl = await pool.request()
             .input('token', sql.VarChar, token)
-            .execute('UsersMe')
+            .execute('GetUserMe')
             res.json(JSON.parse(permLvl.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     } catch (e) {
         res.status(500).json({ Error: e.message })
