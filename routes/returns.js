@@ -12,7 +12,7 @@ const checkReach = require("../middleware/reachlimiter");
 
 
 //controller
-const dboperations = require("../controllers/dbops_uploads");
+const dboperations = require("../controllers/dbops_returns");
 
 //model
 
@@ -20,16 +20,19 @@ const dboperations = require("../controllers/dbops_uploads");
 router.use(pubip().getIpInfoMiddleware);
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
-//get all uploads, paginate
-router.get("/", checkReach, dboperations.all_uploads);
+//create new return
+router.post("/", checkReach, authLvl, dboperations.create_return);
 
-//get single upload by id
-router.get("/:id", checkReach, dboperations.one_upload);
+//get all returns, paginate
+router.get("/", checkReach, dboperations.all_returns);
 
-//create new upload
-router.post("/", checkReach, authLvl, dboperations.create_upload);
+//get single return by id
+router.get("/:returnid", checkReach, dboperations.one_return);
 
-//delete upload
-router.delete("/", checkReach, authLvl, dboperations.delete_upload);
+//update return
+router.patch("/:returnid", checkReach, authLvl, dboperations.update_return);
+
+//delete return
+router.delete("/:returnid", checkReach, authLvl, dboperations.delete_return);
 
 module.exports = router;
