@@ -128,19 +128,33 @@ const user_me = async (req,res) => {
 
 const user_create = async (req,res) => {
     try {
-        const user = req.body
+        const user = req.body.Users
         for(let i = 0; i < user.length; i++){
-            const hashedpassword = await bcrypt.hash(user[i].password, 10)
-            Object.assign(user[i], { hashedpassword: hashedpassword })
+
+            let username = user[i].username
+            let pool = await sql.connect(configJobData)
+            let findUser = await pool.request()
+                .input('username', sql.VarChar, username)
+                .execute('UserExists')
+            let thisUser = findUser.recordset[0]
+
+            if ( thisUser != null ) {
+                throw Error( user[i].username + ' already exists' )
+            } else {
+                const hashedpassword = await bcrypt.hash(user[i].password, 10)
+                Object.assign(user[i], { hashedpassword: hashedpassword })
+            }
          }
+
         const users = JSON.stringify(user)
-        try{
+         console.log(users)
+        try {
             let pool = await sql.connect(configJobData);
             let insertUser = await pool.request()
                 .input('users', sql.NVarChar, users)
-                .execute('addUsers');
+                .execute('PostUsers');
     
-            res.status(201).json(insertUser.recordsets);
+            res.status(201).json({ Users: insertUser.recordset});
         }
         catch (e){
             res.status(500).json({ Error: e.message })
@@ -167,7 +181,7 @@ const delete_client_users = async (req,res) => {
             let revoke = await pool2.request()
                 .input('client', sql.VarChar, client)
                 .execute('RevokeUserAccess')
-            res.status(202).json(revoke.recordsets)
+            res.status(202).json({ Users: revoke.recordset})
         } else{
             res.status(400).json('Error:No users by that clientid found.')
             }
@@ -185,7 +199,7 @@ const delete_user = async (req,res) => {
         let revoke = await pool2.request()
             .input('userid', sql.VarChar, userid)
             .execute('DeleteUser')
-        res.status(202).json(revoke.recordsets)
+        res.status(202).json({ Users: revoke.recordsets})
     } catch (e) {
         res.status(500).json({ Error: e.message })
         console.log(e);

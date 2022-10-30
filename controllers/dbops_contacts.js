@@ -66,7 +66,7 @@ const update_contact = async (req,res) => {
       res
         .status(200)
         .json(
-          getContacts.recordsets
+          { Contacts: getContacts.recordset }
         );
     } catch (e) {
       res.status(500).json({ Error: e.message });
@@ -86,7 +86,7 @@ const create_contact = async (req,res) => {
 
       res
       .status(201)
-      .json(postContacts.recordsets);
+    .json({ Contacts: postContacts.recordset });
     } catch (e) {
       res.status(500).json({ Error: e.message });
       console.log(e);
@@ -106,7 +106,7 @@ const delete_contact = async (req,res) => {
       res
         .status(200)
         .json(
-            delContact.recordsets
+            { Contacts: delContact.recordset }
         );
     } catch (e) {
       res.status(500).json({ Error: e.message });

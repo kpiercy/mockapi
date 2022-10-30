@@ -61,7 +61,7 @@ const update_deposit = async (req, res) => {
       .input("depositid", sql.NVarChar, depositid.toLowerCase())
       .execute("PutDeposits");
 
-    res.status(200).json(getDeposits.recordsets);
+    res.status(200).json({ Deposits: getDeposits.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -78,7 +78,7 @@ const create_deposit = async (req, res) => {
       .input("deposits", sql.NVarChar, deposits)
       .execute("PostDeposits");
 
-    res.status(201).json(postDeposits.recordsets);
+    res.status(201).json({ Deposits: postDeposits.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -95,7 +95,7 @@ const delete_deposit = async (req, res) => {
       .input("depositid", sql.NVarChar, depositid.toLowerCase())
       .execute("DeleteDeposit");
 
-    res.status(200).json(delDeposit.recordsets);
+    res.status(200).json({ Deposits: delDeposit.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

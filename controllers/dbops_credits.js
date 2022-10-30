@@ -61,7 +61,7 @@ const update_credit = async (req, res) => {
       .input("creditid", sql.NVarChar, creditid.toLowerCase())
       .execute("PutCredits");
 
-    res.status(200).json(getCredits.recordsets);
+    res.status(200).json({ Credits: getCredits.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -78,7 +78,7 @@ const create_credit = async (req, res) => {
       .input("credits", sql.NVarChar, credits)
       .execute("PostCredits");
 
-    res.status(201).json(postCredits.recordsets);
+    res.status(201).json({ Credits: postCredits.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -95,7 +95,7 @@ const delete_credit = async (req, res) => {
       .input("creditid", sql.NVarChar, creditid.toLowerCase())
       .execute("DeleteCredit");
 
-    res.status(200).json(delCredit.recordsets);
+    res.status(200).json({ Credits: delCredit.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

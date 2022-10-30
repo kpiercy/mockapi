@@ -109,7 +109,7 @@ const clients_create = async (req,res) => {
             .input('clients', sql.NVarChar, clients)
             .execute('CreateClients')
 
-        res.status(201).json(insertClient.recordsets)
+        res.status(201).json({Clients: insertClient.recordset})
     }
     catch (e) {
         res.status(500).json({ Error: e.message })
@@ -119,7 +119,7 @@ const clients_create = async (req,res) => {
 
 const clients_delete = async (req,res) => {
     try {
-        const clients = req.body
+        const clients = req.body.Clients
         if ( clients == null ) res.status(400).json('Please provide at least one client or parent client id')
         const results = {}
             for( let i = 0; i < clients.length; i++ ){
@@ -134,7 +134,7 @@ const clients_delete = async (req,res) => {
                     res.status(500).json({ Error: e.message })
                     console.log(e);
                 }
-                res.status(200).json(results)
+                res.status(200).json({Clients: results})
              }
     } catch (e) {
         console.log(e)
@@ -142,21 +142,21 @@ const clients_delete = async (req,res) => {
     } 
 }
 
-const clients_client_mn = async (req,res) => {
-    const clients = JSON.stringify(req.body)
-    try {
-        let pool = await sql.connect(configJobData)
-        let insertClient = await pool.request()
-            .input('clients', sql.NVarChar, clients)
-            .execute('CreateClients')
+// const clients_client_mn = async (req,res) => {
+//     const clients = JSON.stringify(req.body)
+//     try {
+//         let pool = await sql.connect(configJobData)
+//         let insertClient = await pool.request()
+//             .input('clients', sql.NVarChar, clients)
+//             .execute('CreateClients')
 
-        res.status(200).json(insertClient.recordsets)
-    }
-    catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e);
-    }
-}
+//         res.status(200).json(insertClient.recordsets)
+//     }
+//     catch (e) {
+//         res.status(500).json({ Error: e.message })
+//         console.log(e);
+//     }
+// }
 
 const update_client = async (req, res) => {
   const clients = JSON.stringify(req.body);
@@ -169,7 +169,7 @@ const update_client = async (req, res) => {
       .input("clientid", sql.NVarChar, clientid.toLowerCase())
       .execute("PutClients");
 
-    res.status(200).json(updateClient.recordsets);
+    res.status(200).json({ Clients: updateClient.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -179,7 +179,6 @@ const update_client = async (req, res) => {
 
 
 module.exports = {
-    clients_client_mn,
     clients_all,
     clients_client_all,
     clients_create,
