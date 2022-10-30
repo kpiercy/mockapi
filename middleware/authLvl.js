@@ -13,7 +13,7 @@ async function authLvl(req, res, next) {
         let pool = await sql.connect(configJobData)
         let permLvl = await pool.request()
             .input('token', sql.VarChar, token)
-            .execute('AuthPermLvl')
+            .execute('MW_AuthPermLvl')
         var thisUserLvl = permLvl.recordset[0].securityGrp
         var thisUser = permLvl.recordset[0].username
             if (thisUserLvl.toLowerCase() !== 'admin') {

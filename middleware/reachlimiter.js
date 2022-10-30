@@ -27,7 +27,7 @@ async function limitReach(req, res, next) {
         let limit = await pool.request()
             .input('token', sql.VarChar, token)
             .input('clientid', sql.NVarChar, cid)
-            .execute('GetClientReach')
+            .execute('MW_GetReach')
         var thisReach = limit.recordset[0].clientid
         var thisUser = limit.recordset[0].username
         var thisParent = limit.recordset[0].parent_clientid

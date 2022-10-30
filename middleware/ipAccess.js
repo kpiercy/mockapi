@@ -19,7 +19,7 @@ async function authIP(req, res, next){
         let pool = await sql.connect(configJobData)
         let goodIp = await pool.request()
             .input('token', sql.VarChar, token)
-            .execute('IPExists')
+            .execute('MW_IPExists')
         var thisIp = goodIp.recordset[0].allowedips
         var thisUser = goodIp.recordset[0].email
         let str = thisIp

@@ -22,13 +22,13 @@ async function apiAccess(req, res, next) {
         let pool = await sql.connect(configJobData)
         let canAccess = await pool.request()
             .input('token', sql.VarChar, token)
-            .execute('UserAccessAPI')
+            .execute('MW_UserAccessAPI')
             var thisUserAccess = canAccess.recordset[0].apiaccess
             var thisUserClient = canAccess.recordset[0].clientid
         await sql.connect(configJobData)
         let clientAccess = await pool.request()
             .input('clientid', sql.VarChar, thisUserClient)
-            .execute('ClientAccessAPI')
+            .execute('MW_ClientAccessAPI')
             var thisClientAccess = clientAccess.recordset[0].Status
         console.log({ userAccess: thisUserAccess, clientStatus: thisClientAccess })
         if (thisUserAccess === 'true' && thisClientAccess === 'Active') {
