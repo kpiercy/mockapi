@@ -42,7 +42,7 @@ const clients_client_all = async (req, res) => {
           if (endIndex < model.length) {
             let nextPage = page + 1;
             results.next =
-              "http://localhost:3000/clients?page=" +
+              "http://localhost:3000/clients/" + cid.toLowerCase() + "?paginate=true&page=" +
               nextPage +
               "&limit=" +
               limit +
@@ -51,7 +51,7 @@ const clients_client_all = async (req, res) => {
           if (startIndex > 0) {
             let prevPage = page - 1;
             results.previous =
-              "http://localhost:3000/clients?page=" +
+              "http://localhost:3000/clients/" + cid.toLowerCase() + "?paginate=true&page=" +
               prevPage +
               "&limit=" +
               limit +
