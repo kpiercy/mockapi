@@ -61,7 +61,7 @@ const update_orbipay = async (req, res) => {
           .input("orbipayid", sql.VarChar, orbipayid.toLowerCase())
           .execute("PutOrbipays");
 
-        res.status(200).json(putOrbi.recordsets);
+        res.status(200).json({ Orbipays: putOrbi.recordset });
       } catch (e) {
         res.status(500).json({ Error: e.message });
         console.log(e);
@@ -77,7 +77,7 @@ const create_orbipay = async (req,res) => {
         .input("orbipays", sql.NVarChar, orbipays)
         .execute("PostOrbipays");
 
-        res.status(201).json(postOrbi.recordsets);
+        res.status(201).json({ Orbipays: postOrbi.recordset });
     } catch (e) {
         res.status(500).json({ Error: e.message });
         console.log(e);
@@ -93,7 +93,7 @@ const delete_orbipay = async (req,res) => {
         .input("orbipayid", sql.VarChar, orbipayid.toLowerCase())
         .execute("DeleteOrbipay");
 
-      res.status(200).json(deleted.recordsets);
+      res.status(200).json({ Orbipays: deleted.recordset });
     } catch (e) {
       res.status(500).json({ Error: e.message });
       console.log(e);

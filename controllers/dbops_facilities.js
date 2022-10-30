@@ -61,7 +61,7 @@ const update_facility = async (req, res) => {
       .input("facilityid", sql.NVarChar, facilityid.toLowerCase())
       .execute("PutFacilities");
 
-    res.status(200).json(putFacilities.recordsets);
+    res.status(200).json({ Facilities: putFacilities.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -78,7 +78,7 @@ const create_facility = async (req, res) => {
       .input("facilities", sql.NVarChar, facilities)
       .execute("PostFacilities");
 
-    res.status(200).json(postFacilities.recordsets);
+    res.status(200).json({ Facilities: postFacilities.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -95,7 +95,7 @@ const delete_facility = async (req, res) => {
       .input("facilityid", sql.NVarChar, facilityid.toLowerCase())
       .execute("DeleteFacility");
 
-    res.status(200).json(delFacility.recordsets);
+    res.status(200).json({ Facilities: delFacility.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

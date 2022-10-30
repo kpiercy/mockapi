@@ -61,7 +61,7 @@ const update_invoice = async (req, res) => {
       .input("invoiceid", sql.NVarChar, invoiceid.toLowerCase())
       .execute("PutInvoices");
 
-    res.status(200).json(getInvoices.recordsets);
+    res.status(200).json({ Invoices: getInvoices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -78,7 +78,7 @@ const create_invoice = async (req, res) => {
       .input("invoices", sql.NVarChar, invoices)
       .execute("PostInvoices");
 
-    res.status(201).json(postInvoices.recordsets);
+    res.status(201).json({ Invoices: postInvoices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -95,7 +95,7 @@ const delete_invoice = async (req, res) => {
       .input("invoiceid", sql.NVarChar, invoiceid.toLowerCase())
       .execute("DeleteInvoice");
 
-    res.status(200).json(delInvoice.recordsets);
+    res.status(200).json({ Invoices: delInvoice.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

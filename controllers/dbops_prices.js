@@ -61,7 +61,7 @@ const update_price = async (req, res) => {
       .input("priceid", sql.NVarChar, priceid.toLowerCase())
       .execute("PutPrices");
 
-    res.status(20).json(putPrices.recordsets);
+    res.status(20).json({ Prices: putPrices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -78,7 +78,7 @@ const create_price = async (req, res) => {
       .input("prices", sql.NVarChar, prices)
       .execute("PostPrices");
 
-    res.status(201).json(postPrices.recordsets);
+    res.status(201).json({ Prices: postPrices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -95,7 +95,7 @@ const delete_price = async (req, res) => {
       .input("priceid", sql.NVarChar, priceid.toLowerCase())
       .execute("DeletePrice");
 
-    res.status(200).json(delPrice.recordsets);
+    res.status(200).json({ Prices: delPrice.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

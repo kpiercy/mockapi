@@ -63,7 +63,7 @@ const update_order = async (req, res) => {
       .input("orderid", sql.NVarChar, orderid.toLowerCase())
       .execute("PutOrders");
 
-    res.status(200).json(getOrders.recordsets);
+    res.status(200).json({ Orders: getOrders.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -80,7 +80,7 @@ const create_order = async (req, res) => {
       .input("orders", sql.NVarChar, orders)
       .execute("PostOrders");
 
-    res.status(201).json(postOrders.recordsets);
+    res.status(201).json({ Orders: postOrders.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -97,7 +97,7 @@ const delete_order = async (req, res) => {
       .input("orderid", sql.NVarChar, orderid.toLowerCase())
       .execute("DeleteOrder");
 
-    res.status(200).json(delOrder.recordsets);
+    res.status(200).json({ Orders: delOrder.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

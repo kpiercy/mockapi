@@ -71,7 +71,7 @@ const jobs_delete = async (req,res) => {
         .execute("DeleteJob");
 
       res.json(
-          deleteJob.recordset
+          { Jobs: deleteJob.recordset }
       );
     } catch (e) {
       res.status(500).json({ Error: e.message });

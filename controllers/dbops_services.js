@@ -59,7 +59,7 @@ const update_service = async (req, res) => {
       .input("serviceid", sql.NVarChar, serviceid.toLowerCase())
       .execute("PutServices");
 
-    res.status(200).json(putServices.recordsets);
+    res.status(200).json({ Services: putServices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -76,7 +76,7 @@ const create_service = async (req, res) => {
       .input("services", sql.NVarChar, services)
       .execute("PostServices");
 
-    res.status(201).json(postServices.recordsets);
+    res.status(201).json({ Services: postServices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -93,7 +93,7 @@ const delete_service = async (req, res) => {
       .input("serviceid", sql.NVarChar, serviceid.toLowerCase())
       .execute("DeleteService");
 
-    res.status(200).json(delService.recordsets);
+    res.status(200).json({ Services: delService.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);

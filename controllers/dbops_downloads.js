@@ -62,7 +62,7 @@ const create_download = async (req,res) => {
          res
            .status(201)
            .json(
-               postDL.recordsets
+               { Downloads: postDL.recordset }
            );
        } catch (e) {
          res.status(500).json({ Error: e.message });
@@ -81,7 +81,7 @@ const update_download = async (req, res) => {
       .input("downloadid", sql.VarChar, downloadid.toLowerCase())
       .execute("PutDownloads");
 
-    res.status(200).json(putDL.recordsets);
+    res.status(200).json({ Downloads: putDL.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
@@ -97,7 +97,7 @@ const delete_download = async (req,res) => {
             .input('downloadid', sql.VarChar, downloadid.toLowerCase())
             .execute('DeleteDownload')
     
-        res.status(200).json(deleted.recordsets)
+        res.status(200).json({ Downloads: deleted.recordset })
     } catch (e){
         res.status(500).json({ Error: e.message })
         console.log(e);
