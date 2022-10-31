@@ -2,6 +2,8 @@ require('dotenv').config()
 
 const configJobData = require('../config/JobData_dbconfig')
 const sql = require('mssql/msnodesqlv8')
+
+//classes
 const model = require('../classes/client')
 
 const clients_all = async (req, res) => {
