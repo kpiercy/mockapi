@@ -23,11 +23,11 @@ const all_contacts = async (req,res) => {
       const startIndex = (page - 1) * limit
       const endIndex = page * limit
 
-      if (cid.toLowerCase() == null) {
+      if (jid.toLowerCase() == null) {
         res
           .status(406)
           .json(
-            "Error: clientid must be specified in either the URL as a query param or in the request body."
+            "Error: jobid must be specified in either the URL as a query param or in the request body."
           );
       } else {
         const results = {};
@@ -35,7 +35,7 @@ const all_contacts = async (req,res) => {
         if (endIndex < model.length) {
           let nextPage = page + 1;
           results.next =
-            "http://localhost:3000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/contacts?paginate=true&page=" +
+            "http://localhost:5000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/contacts?paginate=true&page=" +
             nextPage +
             "&limit=" +
             limit +
@@ -44,7 +44,7 @@ const all_contacts = async (req,res) => {
         if (startIndex > 0) {
           let prevPage = page - 1;
           results.previous =
-            "http://localhost:3000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/contacts?paginate=true&page=" +
+            "http://localhost:5000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/contacts?paginate=true&page=" +
             prevPage +
             "&limit=" +
             limit +
