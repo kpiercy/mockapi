@@ -3,13 +3,10 @@ const sql = require('mssql/msnodesqlv8')
 const dboperations = require('../controllers/dbops_clients')
 const configJobData = require('../config/JobData_dbconfig')
 const configEliteMaster = require('../config/EliteMaster_dbconfig')
-const model = require('../models/client')
+//const model = require('../models/client')
 
-function paginatedResults(model) {
+function paginatedResults( model, cid, tablen ) {
     return async (req, res, next) => {
-
-        //req.params.clientid = req.clientid
-        var cid = req.params.clientid
 
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
@@ -35,9 +32,12 @@ function paginatedResults(model) {
             results.results = await pool.request()
                 .input('startindex', sql.Int, startIndex)
                 .input('limit', sql.Int, limit)
-                .input('cid', sql.VarChar, cid)  //only retrieve proofs associated to this req users clientid
-                .execute('GetPaginatedClients')
+                .input('cid', sql.VarChar, cid)
+                .input('tablen', sql.VarChar, tablen)
+                .execute('GetPaginated')
             res.paginatedResults = results
+            console.log(res.paginatedResults)
+            
             next()
         } catch (e) {
             res.status(500).json( {message: e.message} )
