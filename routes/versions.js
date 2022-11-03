@@ -14,7 +14,7 @@ const serviceRoutes = require('./services')
 const summaryRoutes = require('./summaries')
 
 //controller
-const dboperations = require('../controllers/dbops_versions')
+const dboperations = require('../controllers/versions')
 
 //model
 

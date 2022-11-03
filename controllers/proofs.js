@@ -16,7 +16,7 @@ const proof_client_getOne = async (req, res) => {
         let proof = await pool.request()
             .input('pid', sql.VarChar, pid)
             .input('cid', sql.VarChar, cid)
-            .execute('GetProofbyID')
+            .execute('GetProof')
         res.json(JSON.parse(proof.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     }
     catch (e) {
@@ -40,7 +40,7 @@ const proof_create = async (req, res) => {
         let pool = await sql.connect(configJobData)
         let insertProof = await pool.request()
             .input('proofs', sql.NVarChar, proofs)
-            .execute('addProofs')
+            .execute('PostProofs')
 
         res.status(200).json(insertProof.recordsets)
     }
@@ -57,7 +57,7 @@ const proof_update = async (req, res) => {
         let pool = await sql.connect(configJobData);
         let updateProof = await pool.request()
             .input('proofs', sql.NVarChar, proofresult)
-            .execute('updateProof');
+            .execute('PutProof');
 
         return updateProof.recordsets;
     }
@@ -101,7 +101,15 @@ const proofs_client_all = async (req, res) => {
                 //.input('file', sql.UniqueIdentifier, fid)  //CHANGE GetPaginatedProofs to only retrieve proofs associated to this fileid
                 .execute('GetPaginatedProofs')
             res.paginatedResults = results
-            res.status(200).json(res.paginatedResults)
+            res
+              .status(200)
+              .json(
+                {
+                  Next: res.paginatedResults.next,
+                  Previous: res.paginatedResults.previous,
+                  Proofs: res.paginatedResults.data.recordset
+                }
+              )
         } catch (e) {
             console.log(e)
             res.status(500).json({ Error: e.message })

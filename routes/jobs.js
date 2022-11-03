@@ -18,7 +18,7 @@ const orderRoutes = require('./orders')
 const proofRoutes = require('./proofs')
 
 //controller
-const dboperations = require('../controllers/dbops_jobs')
+const dboperations = require('../controllers/jobs')
 
 //model
 const model = require('../classes/proof')

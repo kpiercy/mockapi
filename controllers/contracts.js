@@ -55,6 +55,8 @@ const all_contracts = async (req, res) => {
             .input("cid", sql.VarChar, cid.toLowerCase())
             .execute("GetPaginatedContracts");
           res.paginatedResults = results;
+          //let pricesArray = res.paginatedResults.data.recordset[0]['Prices']
+          
           res
             .status(200)
             .json(
@@ -62,7 +64,7 @@ const all_contracts = async (req, res) => {
                 Next: res.paginatedResults.next,
                 Previous: res.paginatedResults.previous,
                 Contracts: res.paginatedResults.data.recordset
-                //Prices: JSON.parse(res.paginatedResults.data.recordset[0]['Prices'])
+                //Prices: JSON.parse(pricesArray)
               }
             );
           //res.paginatedResults

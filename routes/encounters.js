@@ -12,7 +12,7 @@ const checkReach = require('../middleware/reachlimiter')
 const detailRoutes = require('./details')
 
 //controller
-const dboperations = require('../controllers/dbops_encounters')
+const dboperations = require('../controllers/encounters')
 
 //model
 const model = require('../classes/proof')

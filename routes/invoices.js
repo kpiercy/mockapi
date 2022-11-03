@@ -13,7 +13,7 @@ const creditRoutes = require("./credits");
 const depositRoutes = require("./deposits");
 
 //controller
-const dboperations = require('../controllers/dbops_invoices')
+const dboperations = require('../controllers/invoices')
 
 //model
 

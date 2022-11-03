@@ -8,7 +8,7 @@ const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl')
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
-const dboperations = require('../controllers/dbops_users')
+const dboperations = require('../controllers/users')
 const pubip = require('express-ip')
 
 const router = express.Router()
@@ -37,7 +37,7 @@ router.post('/', authenticateToken, authLvl, authAccess, authIP, dboperations.us
 router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
 
 //revoke api access of a single user by userid
-router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_user)
+//router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_user)
 
 // //get your userid, username and permissionLvl
 // router.post('/me/confirm', authenticateToken, authAccess, async (req, res) => {

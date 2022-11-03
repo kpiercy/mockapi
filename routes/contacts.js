@@ -11,7 +11,7 @@ const checkReach = require('../middleware/reachlimiter')
 //child routes
 
 //controller
-const dboperations = require('../controllers/dbops_contacts')
+const dboperations = require('../controllers/contacts')
 
 //model
 

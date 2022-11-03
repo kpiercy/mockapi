@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const configJobData = require('../config/JobData_dbconfig')
 const sql = require('mssql/msnodesqlv8')
+//const paginatedResults = require('../middleware/paginate')
 
 //classes
 const model = require('../classes/client')
@@ -27,6 +28,8 @@ const clients_client_all = async (req, res) => {
     let pageIt = req.query.paginate
     
     if ( pageIt === 'true' ) {
+
+      //paginatedResults(model, client, 'Clients2')
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
         const startIndex = (page - 1) * limit
@@ -67,7 +70,7 @@ const clients_client_all = async (req, res) => {
               .input("limit", sql.Int, limit)
               .input("cid", sql.VarChar, cid.toLowerCase())
               .execute("GetPaginatedClients");
-            res.paginatedResults = results;
+             res.paginatedResults = results;
             res
               .status(200)
               .json(
@@ -77,13 +80,14 @@ const clients_client_all = async (req, res) => {
                   Clients: res.paginatedResults.data.recordset
                 }
               );
-            //res.paginatedResults
+            res.paginatedResults
           } catch (e) {
             console.log(e);
             res.status(500).json({ Error: e.message });
           }
         }
-    } else {
+    }
+         else {
         try {
           let pool = await sql.connect(configJobData);
           let client = await pool
@@ -177,8 +181,6 @@ const update_client = async (req, res) => {
     console.log(e);
   }
 };
-
-
 
 module.exports = {
     clients_all,

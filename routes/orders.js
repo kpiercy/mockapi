@@ -12,7 +12,7 @@ const checkReach = require('../middleware/reachlimiter')
 const versionRoutes = require('./versions')
 
 //controller
-const dboperations = require('../controllers/dbops_orders')
+const dboperations = require('../controllers/orders')
 
 //model
 

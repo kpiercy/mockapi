@@ -15,7 +15,7 @@ const authIP = require('../middleware/ipAccess')
 //child routes
 
 //controller
-const dboperations = require('../controllers/dbops_services')
+const dboperations = require('../controllers/services')
 
 //model
 

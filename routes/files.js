@@ -17,7 +17,7 @@ const messageRoutes = require('./messages')
 const patientRoutes = require('./patients')
 
 //controller
-const dboperations = require('../controllers/dbops_files')
+const dboperations = require('../controllers/files')
 
 //model
 

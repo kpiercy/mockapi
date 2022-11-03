@@ -12,7 +12,7 @@ const checkReach = require("../middleware/reachlimiter");
 const priceRoutes = require("./prices");
 
 //controller
-const dboperations = require("../controllers/dbops_contracts");
+const dboperations = require("../controllers/contracts");
 
 //model
 
