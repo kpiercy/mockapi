@@ -28,6 +28,7 @@ app.use((req, res, next) => {
 ///////////////endpoint routes////////////////
 
 app.use('/api/v1/clients/users', userRoutes)
+app.use("/api/v1/clients/:clientid/users", userRoutes);
 
 ///////////////endpoint routes////////////////
 
