@@ -11,30 +11,36 @@ const authIP = require('../middleware/ipAccess')
 const dboperations = require('../controllers/users')
 const pubip = require('express-ip')
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true });
 router.use(pubip().getIpInfoMiddleware)
 router.all('*', authlimiter)
 
 //takes in req body, SHA256 ecrypts the password, verifies user exists in DB and compares SHA256 password to stored value, returns accessToken and refreshToken
-router.post('/auth', dboperations.user_auth)
+router.post('/login', dboperations.user_auth)
 
 //takes in refresh token from req body, confirms that matches stored refresh token, returns new access token, updates DB with new access token
 router.post('/refresh', authenticateToken, authAccess, authIP, dboperations.user_refresh)
 
 //get your userid, username and permissionLvl
-router.get('/me', authenticateToken, authLvl, authAccess, authIP, dboperations.user_me)
+router.get('/me', authenticateToken, authLvl, authAccess, authIP, dboperations.find_me)
 
 //get all users 
-router.get('/', authenticateToken, authLvl, authAccess, authIP, dboperations.user_get_all)
+router.get('/', authenticateToken, authLvl, authAccess, authIP, dboperations.find_users)
 
 //get one user 
-//router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.user_get_one)
+router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.find_user)
 
 //create one or more users
-router.post('/', authenticateToken, authLvl, authAccess, authIP, dboperations.user_create)
+router.post('/', authenticateToken, authLvl, authAccess, authIP, dboperations.create_users)
+
+//update a user
+router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.update_user)
 
 //revoke api access for all users of a client by client id
 router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
+
+//revoke api access for all users of a client by client id
+router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
 
 //revoke api access of a single user by userid
 //router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_user)

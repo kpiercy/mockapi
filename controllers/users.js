@@ -5,6 +5,45 @@ const sql = require('mssql/msnodesqlv8');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
+const create_users = async (req, res) => {
+  try {
+    const user = req.body.Users;
+    for (let i = 0; i < user.length; i++) {
+      let username = user[i].username;
+      let pool = await sql.connect(configJobData);
+      let findUser = await pool
+        .request()
+        .input("username", sql.VarChar, username)
+        .execute("UserExists");
+      let thisUser = findUser.recordset[0];
+
+      if (thisUser != null) {
+        throw Error(user[i].username + " already exists");
+      } else {
+        const hashedpassword = await bcrypt.hash(user[i].password, 10);
+        Object.assign(user[i], { hashedpassword: hashedpassword });
+      }
+    }
+
+    const users = JSON.stringify(user);
+    console.log(users);
+    try {
+      let pool = await sql.connect(configJobData);
+      let insertUser = await pool
+        .request()
+        .input("users", sql.NVarChar, users)
+        .execute("PostUsers");
+
+      res.status(201).json({ Users: insertUser.recordset });
+    } catch (e) {
+      res.status(500).json({ Error: e.message });
+      console.log(e);
+    }
+  } catch (e) {
+    res.status(500).json({ Error: e.message });
+    console.log(e);
+  }
+};
 
 const user_auth = async (req,res) => {
     const password = req.body.password
@@ -110,7 +149,7 @@ const user_refresh = async (req,res) => {
     }
 }
 
-const user_me = async (req,res) => {
+const find_me = async (req,res) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
@@ -126,46 +165,65 @@ const user_me = async (req,res) => {
     }
 }
 
-const user_create = async (req,res) => {
+const find_user = async (req, res) => {
+  try {
+    const userid = req.params.userid;
+    let pool = await sql.connect(configJobData);
+    let getUser = await pool
+      .request()
+      .input("userid", sql.NVarChar, userid.toLowerCase())
+      .execute("GetUser");
+
+    res
+      .status(200)
+      .json(
+        JSON.parse(
+          getUser.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
+        )
+      );
+  } catch (e) {
+    res.status(500).json({ Error: e.message });
+    console.log(e);
+  }
+};
+
+const find_users = async (req, res) => {
+  try {
+    let clientid = req.params.clientid;
+    let pool = await sql.connect(configJobData);
+    let users = await pool
+      .request()
+      .input("clientid", sql.NVarChar, clientid.toLowerCase())
+      .execute("GetUsers");
+    res
+      .status(200)
+      .json(
+        JSON.parse(
+          users.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
+        )
+      );
+  } catch (e) {
+    res.status(500).json({ Error: e.message });
+    console.log(e);
+  }
+};
+
+const update_user = async (req, res) => {
     try {
-        const user = req.body.Users
-        for(let i = 0; i < user.length; i++){
-
-            let username = user[i].username
-            let pool = await sql.connect(configJobData)
-            let findUser = await pool.request()
-                .input('username', sql.VarChar, username)
-                .execute('UserExists')
-            let thisUser = findUser.recordset[0]
-
-            if ( thisUser != null ) {
-                throw Error( user[i].username + ' already exists' )
-            } else {
-                const hashedpassword = await bcrypt.hash(user[i].password, 10)
-                Object.assign(user[i], { hashedpassword: hashedpassword })
-            }
-         }
-
-        const users = JSON.stringify(user)
-         console.log(users)
-        try {
-            let pool = await sql.connect(configJobData);
-            let insertUser = await pool.request()
-                .input('users', sql.NVarChar, users)
-                .execute('PostUsers');
-    
-            res.status(201).json({ Users: insertUser.recordset});
-        }
-        catch (e){
-            res.status(500).json({ Error: e.message })
-            console.log(e);
-        }
-
-    } catch (e){
-        res.status(500).json({ Error: e.message })
+        let userid = req.params.userid
+        let pool = await sql.connect(configJobData)
+        let userUp = await pool
+            .request()
+            .input('userid', sql.NVarChar, userid)
+            .execute('PutUser');
+        res 
+            .status(201)
+            .json({ Users: userUp.recordset })
+    } catch (e) {
+        res.status(500).json({ Error: e.message });
         console.log(e);
     }
-}
+};
 
 const delete_client_users = async (req,res) => {
     const client = req.body.clientid
@@ -206,19 +264,6 @@ const delete_user = async (req,res) => {
     }
 }
 
-const user_get_all = async (req,res) => {
-    try{
-        let pool = await sql.connect(configJobData);
-        let users = await pool.request()
-            .execute('GetAllUsers')
-    
-    res.status(200).json(JSON.parse(users.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
-    } catch (e){
-        res.status(500).json({ Error: e.message })
-        console.log(e);
-    }
-}
-
 
 function generateAccessToken(user){
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" })
@@ -228,9 +273,11 @@ function generateAccessToken(user){
 module.exports = {
     user_auth,
     user_refresh,
-    user_me,
-    user_create,
+    find_me,
+    find_user,
+    create_users,
+    update_user,
     delete_client_users,
     delete_user,
-    user_get_all
+    find_users
 }
