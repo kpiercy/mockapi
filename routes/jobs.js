@@ -16,12 +16,13 @@ const contactRoutes = require('./contacts')
 const orbipayRoutes = require('./orbipays')
 const orderRoutes = require('./orders')
 const proofRoutes = require('./proofs')
+const processRoutes = require('./processes')
+const workflowRoutes = require("./workflows");
 
 //controller
 const dboperations = require('../controllers/jobs')
 
 //model
-const model = require('../classes/proof')
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)
@@ -33,6 +34,8 @@ router.use('/:jobid/contacts', contactRoutes)
 router.use('/:jobid/orders', orderRoutes)
 router.use('/:jobid/orbipays', orbipayRoutes)
 router.use('/:jobid/proofs', proofRoutes)
+router.use("/:jobid/processes", processRoutes);
+router.use("/:jobid/workflows", workflowRoutes);
 
 //get all jobs
 router.get('/', checkReach, dboperations.all_jobs) //authLvl????
