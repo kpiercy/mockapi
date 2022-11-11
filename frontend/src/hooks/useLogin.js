@@ -11,7 +11,7 @@ export const useLogin = () => {
       setError(null);
 
       const response = await fetch(
-        'http://localhost:4000/api/v1/clients/users/auth',
+        'http://localhost:4000/api/v1/clients/users/login',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
