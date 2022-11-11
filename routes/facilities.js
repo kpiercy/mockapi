@@ -9,6 +9,7 @@ const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
 
 //child routes
+const specRoutes = require("./specs")
 
 //controller
 const dboperations = require("../controllers/facilities");
@@ -17,7 +18,7 @@ const dboperations = require("../controllers/facilities");
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware);
-//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
+router.use('/:facilityid/specs', specRoutes)
 
 //get all facilities for this job
 router.get("/", checkReach, dboperations.all_facilities);
