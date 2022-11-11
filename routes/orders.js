@@ -28,7 +28,7 @@ router.get('/', checkReach, dboperations.all_orders)
 router.get('/:orderid', checkReach, dboperations.one_order)
 
 //update single contact for this job by id
-router.put('/:orderid', checkReach, dboperations.update_order)
+router.patch('/:orderid', checkReach, dboperations.update_order)
 
 //create new order for this job by client
 router.post('/', checkReach, authLvl, dboperations.create_order)
