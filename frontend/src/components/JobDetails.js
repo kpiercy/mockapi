@@ -1,40 +1,41 @@
+import { useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useJobContext } from "../hooks/useJobContext";
 import { Link } from "react-router-dom";
 
 const JobDetails = ({ job }) => {
+  const [jobs, setJobs] = useState(null)
   const { dispatch } = useJobContext();
   const { user } = useAuthContext();
 
-  // const handleClick = async () => {
-  //     if (!user) {
-  //         return
-  //     }
+  const handleClick = async () => {
+      if (!user) {
+          return
+      }
 
-  // const response = await fetch(
-  //   "http://localhost:5000/api/v1/client/" +
-  //     user.client +
-  //     "paginate=false&page=1&limit=5",
-  //   {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${user.token}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
+  const response = await fetch(
+    "http://localhost:5000/api/v1/client/" +
+      job.clientid +
+      "/jobs/" + job.GUID,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+    })
 
-  //   const json = await response.json()
+    const json = await response.json()
 
-  //   if (response.ok) {
-  //     dispatch({type: 'DELETE_CLIENT', payload: json})
-  //   }
-  // }
+    if (response.ok) {
+      setJobs(json)
+      //dispatch({type: 'DELETE_CLIENT', payload: json})
+    }
+  }
 
   return (
     <div className="workout-details">
-      <Link className="cardLink" to={`/jobs/${job.GUID}`}>
-        <h4>{job.Name}</h4>
-      </Link>
+      <h4>{job.Name}</h4>
       <p>
         <strong>GUID: </strong>
         {job.GUID}
@@ -43,7 +44,10 @@ const JobDetails = ({ job }) => {
         <strong>Status: </strong>
         Active
       </p>
-      <Link className="cardLink" to={`/contracts`}>
+      <Link className="cardLink" onClick={handleClick}>
+        <h5>Job Details</h5>
+      </Link>
+      {/* <Link className="cardLink" to={`/contracts`}>
         <h5>Contracts</h5>
       </Link>
       <Link className="cardLink" to={`/orders`}>
@@ -66,7 +70,7 @@ const JobDetails = ({ job }) => {
       </Link>
       <Link className="cardLink" to={`/downloads`}>
         <h5>Downloads</h5>
-      </Link>
+      </Link> */}
       {/* <p>
         <strong>GUID: </strong>
         {job.Downloads[0].GUID}

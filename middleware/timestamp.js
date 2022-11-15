@@ -1,5 +1,5 @@
-//returns Promise {object}, need to get rid of promise still kjhgliu
-const getStamp = async (req, res) => {
+
+const getStamp = async () => {
     try {
         const d = new Date()
         let year = d.getFullYear()
@@ -9,8 +9,8 @@ const getStamp = async (req, res) => {
         let min = d.getMinutes()
         let s = d.getSeconds()
         let ms = d.getMilliseconds()
-        const stamp = month +"-"+ day +"-"+ year +" "+ hour +":" + min + ":" + s + "." + ms
 
+        const stamp = month +"-"+ day +"-"+ year +" "+ hour +":" + min + ":" + s + "." + ms
         return stamp
         
     } catch (e) {

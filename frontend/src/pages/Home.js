@@ -11,17 +11,24 @@ const Home = () => {
   const { dispatch } = useDashboardContext();
   const { user } = useAuthContext();
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchClients = async () => {
-      if (user.parent !== null) {
+        if (user.permissions.toLowerCase() === 'standard') {
+          var clientid = user.client.toLowerCase()
+        } 
+        else if (user.permissions.toLowerCase() === 'parent') {
           var clientid = user.parent.toLowerCase();
-      } else {
-        var clientid = user.client.toLowerCase();
-      }
+        } 
+        // else if (user.permissions.toLowerCase() === 'admin') {
+        //   var clientid = '6a0ad3cb-d41e-492c-8b48-970060a22136'
+        // } 
+        else {
+          var clientid = null;
+        }
+
       const response = await fetch(
         "http://localhost:5000/api/v1/clients/" +
-          clientid +
-          "?paginate=false&page=1&limit=1",
+          clientid,
         {
           method: "GET",
           headers: {

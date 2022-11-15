@@ -1,6 +1,6 @@
 require('dotenv').config()
 const sql = require('mssql/msnodesqlv8')
-const dboperations = require('../controllers/dbops_clients')
+const dboperations = require('../controllers/clients.js')
 const configJobData = require('../config/JobData_dbconfig')
 const configEliteMaster = require('../config/EliteMaster_dbconfig')
 //const model = require('../models/client')

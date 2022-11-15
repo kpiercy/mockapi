@@ -20,8 +20,8 @@ const ClientDetails = ({ client }) => {
         
         const response = await fetch(
           "http://localhost:5000/api/v1/clients/" +
-            clientid +
-            "/jobs/" + client.Jobs[0].GUID,
+            client.GUID +
+            "/jobs",
           {
             method: "GET",
             headers: {
@@ -41,12 +41,10 @@ const ClientDetails = ({ client }) => {
 
     return (
       <div className="workout-details">
-        <Link className="cardLink" to="/jobs">
-          <h4>{client.Name}</h4>
-        </Link>
+        <h4>{client.Name}</h4>
         <p>
-          <strong>Parent_GUID: </strong>
-          {client.Parent_GUID}
+          <strong>Client_GUID: </strong>
+          {client.GUID}
         </p>
         <p>
           <strong>Status: </strong>
@@ -60,10 +58,9 @@ const ClientDetails = ({ client }) => {
           <strong>ERP Parent ID: </strong>
           {client.ERP_Parent_GUID}
         </p>
-        {/* <p>
-          <strong>Jobs: </strong>
-          {client.Jobs[0].GUID}
-        </p> */}
+        <Link className="cardLink" onClick={handleClick}>
+          <h6>Jobs</h6>
+        </Link>
         {/* <span className="material-symbols-outlined" onClick={handleClick}>
           delete
         </span> */}

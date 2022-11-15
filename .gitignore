@@ -1,7 +1,6 @@
 .env
 node_modules
 ./public/uploads
-proofModel.js
 file.js
 proof.js
 user.js

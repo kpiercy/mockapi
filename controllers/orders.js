@@ -36,7 +36,11 @@ const all_orders = async (req, res) => {
         if (endIndex < model.length) {
           let nextPage = page + 1;
           results.next =
-            "http://localhost:5000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/orders?paginate=true&page=" +
+            "http://localhost:5000/clients/" +
+             cid.toLowerCase() +
+              "/jobs/" +
+              jid.toLowerCase() +
+              "/orders?paginate=true&page=" +
             nextPage +
             "&limit=" +
             limit +
@@ -45,7 +49,11 @@ const all_orders = async (req, res) => {
         if (startIndex > 0) {
           let prevPage = page - 1;
           results.previous =
-            "http://localhost:5000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/orders?paginate=true&page=" +
+            "http://localhost:5000/clients/" +
+            cid.toLowerCase() +
+            "/jobs/" +
+            jid.toLowerCase() +
+            "/orders?paginate=true&page=" +
             prevPage +
             "&limit=" +
             limit +
@@ -77,11 +85,11 @@ const all_orders = async (req, res) => {
       }
   } else {
       try {
-        const jobid = req.params.jobid;
+        const clientid = req.params.clientid;
         let pool = await sql.connect(configJobData);
         let getOrders = await pool
           .request()
-          .input("jobid", sql.NVarChar, jobid.toLowerCase())
+          .input("clientid", sql.NVarChar, clientid.toLowerCase())
           .execute("GetOrders");
 
         res
@@ -127,13 +135,13 @@ const update_order = async (req, res) => {
     const orders = JSON.stringify(req.body);
     const orderid = req.params.orderid;
     let pool = await sql.connect(configJobData);
-    let getOrders = await pool
+    let putOrder = await pool
       .request()
       .input("orders", sql.NVarChar, orders)
       .input("orderid", sql.NVarChar, orderid.toLowerCase())
-      .execute("PutOrders");
+      .execute("PutOrder");
 
-    res.status(200).json({ Orders: getOrders.recordset });
+    res.status(200).json({ Orders: putOrder.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
