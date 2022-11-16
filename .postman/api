@@ -11,6 +11,7 @@ files[] = {"id":"11398241-b59657d8-6840-444c-95ab-caaeb53e7d03","path":"REST API
 
 [relations.apiDefinition]
 rootDirectory = postman/schemas
+files[] = {"path":"index.json","metaData":{}}
 
 [relations.apiDefinition.metaData]
 type = openapi:3

@@ -68,12 +68,6 @@
 								"method": "GET",
 								"header": [
 									{
-										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoia3BpZXJjeSIsInBhc3N3b3JkIjoiJDJiJDEwJDZBZGdOUnpTSmNtNloxY3k5aXlldnU1Z3lYcEttVFFaZmx1YXNpTzh3N2IudllVTVNjaHFDIiwiaWF0IjoxNjY1MDEyMjUxLCJleHAiOjE2NjUwMTQwNTF9.oeqrJbLx5XCGIC71vZJyIdDQ6vs3koId_rtnLd9sx5M",
-										"type": "text",
-										"disabled": true
-									},
-									{
 										"key": "Content-Type",
 										"value": "application/json",
 										"type": "text"
