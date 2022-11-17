@@ -78,7 +78,15 @@ const create_facility = async (req, res) => {
       .input("facilities", sql.NVarChar, facilities)
       .execute("PostFacilities");
 
-    res.status(200).json({ Facilities: postFacilities.recordset });
+    res
+      .status(200)
+      .json(
+        JSON.parse(
+          postFacilities.recordset[0][
+            "JSON_F52E2B61-18A1-11d1-B105-00805F49916B"
+          ]
+        )
+      );
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
