@@ -3,15 +3,21 @@ require('dotenv').config()
 //2FA notes: store pubIP to DB during registration/setup, if requesting pubIP does not match stored value, send email during /auth or /refresh to user email with link containing /me/confirm route and token that expires in 1 day, during /me/confirm route, append the new pubIp to their pubIp field, ALSO add windows scheduler script that reset each users "confirmed" status to false every xx days to make them redo 2FA
 
 const express = require('express')
+const pubip = require("express-ip");
+const router = express.Router({ mergeParams: true });
+
+//middleware
 const authlimiter = require('../middleware/authlimiter')
 const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl')
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
-const dboperations = require('../controllers/users')
-const pubip = require('express-ip')
+const validateDto = require('../middleware/validateDto')
+const userDto = require("../dto/users");
 
-const router = express.Router({ mergeParams: true });
+//controller
+const dboperations = require('../controllers/users')
+
 router.use(pubip().getIpInfoMiddleware)
 router.all('*', authlimiter)
 
@@ -31,7 +37,7 @@ router.get('/', authenticateToken, authLvl, authAccess, authIP, dboperations.fin
 router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.find_user)
 
 //create one or more users
-router.post('/', authenticateToken, authLvl, authAccess, authIP, dboperations.create_users)
+router.post('/', authenticateToken, authLvl, authAccess, authIP, validateDto(userDto), dboperations.create_users)
 
 //update a user
 router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.update_user)
