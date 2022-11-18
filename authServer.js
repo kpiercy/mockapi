@@ -5,12 +5,16 @@ const cors = require('cors')
 const app = express()
 const logger = require('morgan')
 
+//middleware
+const apiErrorHandler = require("./errors/api-error-handler");
+
 app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 app.use(logger('dev'))
+app.use(apiErrorHandler)
 
-const stamp  = require('./middleware/timestamp').getStamp()
+//child routes
 const userRoutes = require('./routes/users')
 
 app.use((req, res, next) => {
@@ -32,20 +36,6 @@ app.use("/api/v1/clients/:clientid/users", userRoutes);
 
 ///////////////endpoint routes////////////////
 
-app.use((req, res, next) => {
-    const error = new Error('Not found')
-    error.status = 404
-    next(error)
-})
-
-app.use((error, req, res, next) => {
-    res.status(err.status || 500)
-    res.json({
-        error: {
-            message: error.message
-        }
-    })
-})
 
 var port = process.env.PORT || 4000
 app.listen(port)

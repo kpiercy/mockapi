@@ -11,6 +11,7 @@ const publimiter = require("./middleware/publimiter");
 const authenticateToken = require("./middleware/authToken");
 const authAccess = require("./middleware/access");
 const authIP = require("./middleware/ipAccess");
+const apiErrorHandler = require("./errors/api-error-handler");
 
 // app.set("views", "views");
 // app.set("view engine", "ejs");
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(pubip().getIpInfoMiddleware);
 app.use(logger("dev"));
+app.use(apiErrorHandler);
 
 const indexRoutes = require("./routes/index");
 const fileRoutes = require("./routes/files");
@@ -43,6 +45,7 @@ const logoRoutes = require("./routes/logos");
 const patientRoutes = require("./routes/patients");
 const encounterRoutes = require("./routes/encounters");
 const detailRoutes = require("./routes/details");
+
 
 ///////////////endpoint routes ////////////////
 
