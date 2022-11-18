@@ -11,6 +11,8 @@ const authLvl = require('../middleware/authLvl') // pass on routes that can only
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
 const checkReach = require('../middleware/reachlimiter') //pass on routes that need query reach limited to only their client (bypasses check if user is internal)
+const validateDto = require("../middleware/validateDto");
+const clientDto = require("../dto/clients");
 
 //controller
 const dboperations = require('../controllers/clients')
@@ -28,7 +30,7 @@ router.use('/:clientid/invoices', invoiceRoutes)
 router.use('/:clientid/jobs', jobRoutes)
 
 //create new client
-router.post('/', authLvl, dboperations.clients_create)
+router.post('/', authLvl, validateDto(clientDto), dboperations.clients_create)
 
 //get all clients by clientid, will paginate in case of parent-child relations, will otherwise return single client in pagination form
 router.get('/:clientid', checkReach, dboperations.clients_client_all)
