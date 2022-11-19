@@ -5,6 +5,9 @@ var cors = require("cors");
 const app = express();
 const pubip = require("express-ip");
 const logger = require("morgan");
+const fs = require('fs-extra')
+const path = require('path')
+const fileStreamRotator = require("file-stream-rotator");
 
 //middleware
 const publimiter = require("./middleware/publimiter");
@@ -19,6 +22,19 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 app.use(pubip().getIpInfoMiddleware);
+//This will ensure log directory exists for acccess logs
+const logsFolder = __dirname + "/accessLog";
+fs.existsSync(logsFolder) || fs.mkdirSync(logsFolder);
+//Create a log stream here
+const rotatingLogStream = fileStreamRotator.getStream({
+    filename: `${logsFolder}/access-%DATE%.log`,
+    frequency: "daily",
+    verbose: false,
+    date_format: "YYYY-MM-DD",
+    max_logs: 45, //Keep for 45 days
+});
+
+app.use(logger("combined", {stream: rotatingLogStream}));
 app.use(logger("dev"));
 app.use(apiErrorHandler);
 
