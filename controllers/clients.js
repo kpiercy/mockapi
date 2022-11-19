@@ -113,7 +113,7 @@ const clients_create = async (req,res) => {
         let pool = await sql.connect(configJobData)
         let insertClient = await pool.request()
             .input('clients', sql.NVarChar, clients)
-            .execute('CreateClients')
+            .execute('PostClients')
 
         res.status(201).json({Clients: insertClient.recordset})
     }
@@ -189,3 +189,11 @@ module.exports = {
     clients_delete,
     update_client
 }
+
+// class ClientController {
+//   createClient(req, res) {
+
+//   }
+// }
+
+// module.exports = new ClientController();
