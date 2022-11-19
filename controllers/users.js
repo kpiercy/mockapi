@@ -49,7 +49,7 @@ const user_auth = async (req,res) => {
     const password = req.body.password
     const username = req.body.username
     if (username == null || password == null) {
-      return res.status(400).json("Error:Please enter proper credentials");
+      return res.status(400).json({ Error: "Please enter proper credentials" });
     }
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = { name: username, password: hashedPassword }
@@ -97,10 +97,10 @@ const user_auth = async (req,res) => {
                         }
 
                     } else {
-                        res.status(403).json('Error:User does not have API access at this time, please check with your admin and contact Elite Services if necessary')
+                        res.status(403).json({ Error: 'User does not have API access at this time, please check with your admin and contact Elite Services if necessary' })
                     }
                 } else {
-                    res.status(403).json('Error:Username or password incorrect')
+                    res.status(403).json({ Error : 'Username or password incorrect' })
                 }
         } catch (e) {
             res.status(500).json({ Error: e.message });
@@ -140,7 +140,7 @@ const user_refresh = async (req,res) => {
                 
                 })
             } else {
-                res.status(401).json('Error:Refresh token does not match our records')
+                res.status(401).json({ Error: 'Refresh token does not match our records' })
             }
 
     } catch (e){
