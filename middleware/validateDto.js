@@ -1,5 +1,6 @@
 const ApiError = require('../errors/api-error')
 
+//middleware validation factory
 function validateDto(schema) {
   return async(req, res, next) => {
     try {
@@ -7,7 +8,7 @@ function validateDto(schema) {
       req.body = validatedBody
       next();
     } catch (err) {
-      next(ApiError.badRequest(err))
+      next(ApiError.badRequest(err));
     }
   };
 }
