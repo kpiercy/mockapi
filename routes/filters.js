@@ -7,6 +7,8 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const filterDto = require('../dto/filters')
 
 //child routes
 
@@ -20,7 +22,7 @@ router.use(pubip().getIpInfoMiddleware);
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all filters for this job
-//router.get("/", checkReach, dboperations.all_filters);
+router.get("/", checkReach, dboperations.all_filters);
 
 //get single filter for this job by id
 router.get("/:filterid", checkReach, dboperations.one_filter);
@@ -29,7 +31,7 @@ router.get("/:filterid", checkReach, dboperations.one_filter);
 router.patch("/:filterid", checkReach, dboperations.update_filter);
 
 //create new filter by job
-router.post("/", checkReach, authLvl, dboperations.create_filter);
+router.post("/", checkReach, authLvl, validateDto(filterDto), dboperations.create_filter);
 
 //delete filter for this job
 router.delete("/:filterid", checkReach, authLvl, dboperations.delete_filter);
