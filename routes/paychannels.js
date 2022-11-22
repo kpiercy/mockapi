@@ -7,6 +7,8 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const channelDto = require('../dto/channels')
 
 //child routes
 
@@ -29,7 +31,7 @@ router.get("/:paychannelid", checkReach, dboperations.one_paychannel);
 router.patch("/:paychannelid", checkReach, dboperations.update_paychannel);
 
 //create new paychannel by job
-router.post("/", checkReach, authLvl, dboperations.create_paychannel);
+router.post("/", checkReach, authLvl, validateDto(channelDto), dboperations.create_paychannel);
 
 //delete paychannel for this job
 router.delete("/:paychannelid", checkReach, authLvl, dboperations.delete_paychannel);
