@@ -2,6 +2,7 @@ const sql = require('mssql/msnodesqlv8')
 const configJobData = require('../config/JobData_dbconfig')
 const nodemailer = require("nodemailer")
 const jwt = require('jsonwebtoken')
+const ApiError = require('../errors/api-error')
 
 async function authIP(req, res, next){
     try{
@@ -65,9 +66,10 @@ async function authIP(req, res, next){
                 console.log('IPAccessMW: ipaccess verified')
                 next()
             }
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({ Error: 'Unable to verify IP' })
+    } catch (err) {
+        console.log(err)
+        next(ApiError.internal(err))
+        //res.status(500).json({ Error: 'Unable to verify IP' })
     }
     
 }

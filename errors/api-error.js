@@ -24,7 +24,7 @@ class ApiError {
     return new ApiError(404, msg)
   }
 
-  static methodNotAllowed(msg) {
+  static notAllowed(msg) {
     return new ApiError(405, msg)
   }
 
@@ -48,11 +48,11 @@ class ApiError {
     return new ApiError(424, msg)
   }
 
-  static tooManyRequests(msg) {
+  static rateLimit(msg) {
     return new ApiError(429, msg)
   }
 
-  static internalServerError(msg) {
+  static internal(msg) {
     return new ApiError(500, msg)
   }
 

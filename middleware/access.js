@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const sql = require('mssql/msnodesqlv8')
 const configJobData = require('../config/JobData_dbconfig')
+const ApiError = require('../errors/api-error')
 
 async function apiAccess(req, res, next) {
       
@@ -35,11 +36,11 @@ async function apiAccess(req, res, next) {
             console.log('AccessMW: User & Client apiAccess verified')
             next()
         } else {
-                res.status(403).json({Error: 'Requesting user does not have API access. Please contact ElitePS for more information.'})
+                //res.status(403).json({Error: 'Requesting user does not have API access. Please contact ElitePS for more information.'})
+                next(ApiError.forbidden(err))
             }
-    } catch (e) {
-        console.log(e);
-        res.status(500).json({ Error: 'Unable to retrieve apiAccess for user.' })
+    } catch (err) {
+        next(ApiError.internal(err));
     }
 
 }

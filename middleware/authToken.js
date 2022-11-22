@@ -1,5 +1,6 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
+const ApiError = require('../errors/api-error')
 
 async function authenticateToken(req, res, next){
 
@@ -21,7 +22,7 @@ async function authenticateToken(req, res, next){
     jwt.verify(token, secret,  (err, user) => {
         if (err) {
             console.log(err)
-            res.status(403).json(err)
+            next(ApiError.forbidden(err))
         } else {
             req.user = user
             console.log("AuthTokenMW: authToken verified");
