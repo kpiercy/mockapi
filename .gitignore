@@ -5,3 +5,6 @@ file.js
 proof.js
 user.js
 client.js
+config
+authLog
+accessLog
