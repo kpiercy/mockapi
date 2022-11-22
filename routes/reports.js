@@ -7,6 +7,8 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const reportDto = require('../dto/reports')
 
 //child routes
 
@@ -29,7 +31,7 @@ router.get("/:reportid", checkReach, dboperations.one_report);
 router.patch("/:reportid", checkReach, dboperations.update_report);
 
 //create new report by job
-router.post("/", checkReach, authLvl, dboperations.create_report);
+router.post("/", checkReach, authLvl, validateDto(reportDto), dboperations.create_report);
 
 //delete report for this job
 router.delete("/:reportid", checkReach, authLvl, dboperations.delete_report);
