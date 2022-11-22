@@ -2,8 +2,7 @@ require('dotenv').config()
 const sql = require('mssql/msnodesqlv8')
 const dboperations = require('../controllers/clients.js')
 const configJobData = require('../config/JobData_dbconfig')
-const configEliteMaster = require('../config/EliteMaster_dbconfig')
-//const model = require('../models/client')
+const ApiError = require("../errors/api-error");
 
 function paginatedResults( model, cid, tablen ) {
     return async (req, res, next) => {
@@ -14,7 +13,7 @@ function paginatedResults( model, cid, tablen ) {
         const endIndex = page * limit
     
         if( cid == null ) {
-            res.status(406).json('Error: clientid must be specified in either the URL as a query param or in the request body.')
+            res.status(406).json({ Error: 'clientid must be specified in either the URL as a query param or in the request body.' })
         } else {
         const results = {}
     
@@ -35,12 +34,12 @@ function paginatedResults( model, cid, tablen ) {
                 .input('cid', sql.VarChar, cid)
                 .input('tablen', sql.VarChar, tablen)
                 .execute('GetPaginated')
-            res.paginatedResults = results
-            console.log(res.paginatedResults)
+            res.locals.paginatedResults = results
+            console.log(res.locals.paginatedResults)
             
             next()
-        } catch (e) {
-            res.status(500).json( {message: e.message} )
+        } catch (err) {
+            next(ApiError.internalServerError(err));
         }
     }
     }
