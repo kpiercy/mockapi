@@ -7,11 +7,14 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const specDto = require('../dto/specs')
 
 //child routes
 const groupRoutes = require("./groups")
 const reportRoutes = require("./reports")
 const filterRoutes = require("./filters")
+const channelRoutes = require('./paychannels')
 const logoRoutes = require("./logos")
 const chartRoutes = require("./charts")
 const insertRoutes = require("./inserts")
@@ -27,6 +30,7 @@ router.use(pubip().getIpInfoMiddleware);
 router.use("/:specid/groups", groupRoutes)
 router.use("/:specid/reports", reportRoutes)
 router.use("/:specid/filters", filterRoutes)
+router.use('/:specid/channels', channelRoutes)
 router.use("/:specid/logos", logoRoutes)
 router.use("/:specid/charts", chartRoutes)
 router.use("/:specid/inserts", insertRoutes)
@@ -42,7 +46,7 @@ router.get("/:specid", checkReach, dboperations.one_spec);
 router.patch("/:specid", checkReach, dboperations.update_spec);
 
 //create new spec by job
-router.post("/", checkReach, authLvl, dboperations.create_spec);
+router.post("/", checkReach, authLvl, validateDto(specDto), dboperations.create_spec);
 
 //delete spec for this job
 router.delete("/:specid", checkReach, authLvl, dboperations.delete_spec);
