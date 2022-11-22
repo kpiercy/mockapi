@@ -7,6 +7,8 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const groupDto = require('../dto/groups')
 
 //child routes
 
@@ -29,7 +31,7 @@ router.get("/:groupid", checkReach, dboperations.one_group);
 router.patch("/:groupid", checkReach, dboperations.update_group);
 
 //create new group by job
-router.post("/", checkReach, authLvl, dboperations.create_group);
+router.post("/", checkReach, authLvl, validateDto(groupDto), dboperations.create_group);
 
 //delete group for this job
 router.delete("/:groupid", checkReach, authLvl, dboperations.delete_group);
