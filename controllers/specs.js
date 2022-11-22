@@ -137,7 +137,13 @@ const create_spec = async (req, res) => {
       .input("specs", sql.NVarChar, specs)
       .execute("PostSpecs");
 
-    res.status(201).json({ Specs: postSpec.recordset });
+    res
+      .status(201)
+      .json(
+        JSON.parse(
+          postSpec.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
+        )
+      );
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
