@@ -1,10 +1,8 @@
 .env
 node_modules
 ./public/uploads
-file.js
-proof.js
-user.js
-client.js
-config
+classes/
+models/
+config/
 authLog
 accessLog
