@@ -9,7 +9,7 @@ const path = require('path')
 const fileStreamRotator = require('file-stream-rotator')
 
 //middleware
-const apiErrorHandler = require('./errors/api-error-handler')
+const apiErrorHandler = require('./utils/api-error-handler')
 
 app.use(express.json())
 app.use(cors())
