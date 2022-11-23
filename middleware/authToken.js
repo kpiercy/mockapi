@@ -1,6 +1,6 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
-const ApiError = require('../errors/api-error')
+const ApiError = require('../utils/api-error')
 
 async function authenticateToken(req, res, next){
 
