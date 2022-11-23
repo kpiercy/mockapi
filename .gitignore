@@ -1,8 +1,7 @@
 .env
 node_modules
 ./public/uploads
-classes/
-models/
-config/
+classes
+config
 authLog
 accessLog
