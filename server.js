@@ -14,7 +14,7 @@ const publimiter = require('./middleware/publimiter')
 const authenticateToken = require('./middleware/authToken')
 const authAccess = require('./middleware/access')
 const authIP = require('./middleware/ipAccess')
-const apiErrorHandler = require('./errors/api-error-handler')
+const apiErrorHandler = require('./utils/api-error-handler')
 
 // app.set("views", "views");
 // app.set("view engine", "ejs");
