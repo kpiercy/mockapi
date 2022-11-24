@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 //classes
-const model = require('../classes/contract')
+const model = require('../models/contract')
 
 const all_contracts = async (req, res) => {
   req.clientid = req.params.clientid

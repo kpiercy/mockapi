@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 //classes
-const model = require('../classes/download')
+const model = require('../models/download')
 
 const all_downloads = async (req,res) => {
   req.jobid = req.params.jobid

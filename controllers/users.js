@@ -5,6 +5,9 @@ const sql = require('mssql/msnodesqlv8');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
+//model
+//const model = require('../models/user')
+
 const create_users = async (req, res) => {
   try {
     const user = req.body.Users;
@@ -262,11 +265,6 @@ const delete_user = async (req,res) => {
         res.status(500).json({ Error: e.message })
         console.log(e);
     }
-}
-
-
-function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" })
 }
 
 

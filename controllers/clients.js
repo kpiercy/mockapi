@@ -5,7 +5,7 @@ const sql = require('mssql/msnodesqlv8')
 //const paginatedResults = require('../middleware/paginate')
 
 //classes
-const model = require('../classes/client')
+const model = require('../models/client')
 
 const clients_all = async (req, res) => {
     try{

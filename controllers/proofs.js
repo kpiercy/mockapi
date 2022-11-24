@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const configJobData = require('../config/JobData_dbconfig');
-const configEliteMaster = require('../config/EliteMaster_dbconfig')
 const sql = require('mssql/msnodesqlv8');
 const model = require('../classes/proof')
 

@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 //classes
-// const model = require("../classes/group");
+// const model = require("../models/group");
 
 // const all_groups = async (req, res) => {
 //   req.jobid = req.params.jobid;

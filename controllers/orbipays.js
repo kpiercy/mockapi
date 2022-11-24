@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 //classes
-const model = require('../classes/orbipay')
+const model = require('../models/orbipay')
 
 const all_orbipays = async (req,res) => {
   req.jobid = req.params.jobid

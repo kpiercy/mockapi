@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 //classes
-const model = require('../classes/order')
+const model = require('../models/order')
 
 //get all orders for client by jobid
 const all_orders = async (req, res) => {
