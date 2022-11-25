@@ -7,6 +7,8 @@ const pubip = require('express-ip')
 //additional middleware
 const authLvl = require('../middleware/authLvl')
 const checkReach = require('../middleware/reachlimiter')
+const validateDto = require('../middleware/validateDto')
+const invoiceDto = require('../dto/invoices')
 
 //child routes
 const creditRoutes = require("./credits");
@@ -33,7 +35,7 @@ router.get('/:invoiceid', checkReach, dboperations.one_invoice)
 router.patch("/:invoiceid", checkReach, dboperations.update_invoice);
 
 //create new invoice
-router.post('/', checkReach, authLvl, dboperations.create_invoice)
+router.post('/', checkReach, authLvl, validateDto(invoiceDto), dboperations.create_invoice)
 
 //delete invoice
 router.delete('/:invoiceid', checkReach, authLvl, dboperations.delete_invoice)
