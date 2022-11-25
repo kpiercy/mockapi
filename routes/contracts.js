@@ -7,6 +7,8 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const contractsDto = require('../dto/contracts')
 
 //child routes
 const priceRoutes = require("./prices");
@@ -31,7 +33,7 @@ router.get("/:contractid", checkReach, dboperations.one_contract);
 router.patch("/:contractid", checkReach, dboperations.update_contract);
 
 //create new contract by job
-router.post("/", checkReach, dboperations.create_contract);
+router.post("/", checkReach, validateDto(contractsDto), dboperations.create_contract);
 
 //delete contract for this job
 router.delete("/:contractid", checkReach, authLvl, dboperations.delete_contract);
