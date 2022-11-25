@@ -147,7 +147,7 @@ const create_contract = async (req, res) => {
       .input("contracts", sql.NVarChar, contracts)
       .execute("PostContracts");
 
-    res.status(201).json({ Contracts: postContracts.recordset });
+    res.status(201).json({ Contracts: JSON.parse(postContracts.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]) });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
