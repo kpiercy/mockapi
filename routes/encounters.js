@@ -15,7 +15,7 @@ const detailRoutes = require('./details')
 const dboperations = require('../controllers/encounters')
 
 //model
-const model = require('../classes/proof')
+
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)
