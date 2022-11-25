@@ -7,6 +7,8 @@ const pubip = require("express-ip");
 //additional middleware
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
+const validateDto = require('../middleware/validateDto')
+const pricesDto = require('../dto/prices')
 
 //child routes
 
@@ -29,7 +31,7 @@ router.get("/:priceid", checkReach, dboperations.one_price);
 router.patch("/:priceid", checkReach, dboperations.update_price);
 
 //create new price by job
-router.post("/", checkReach, dboperations.create_price);
+router.post("/", checkReach, validateDto(pricesDto), dboperations.create_price);
 
 //delete price for this job
 router.delete("/:priceid", checkReach, authLvl, dboperations.delete_price);
