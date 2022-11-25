@@ -11,7 +11,7 @@ const validateDto = require("../middleware/validateDto");
 const facilityDto = require("../dto/facilities");
 
 //child routes
-const specRoutes = require("./specs")
+const specRoutes = require('./specs')
 
 //controller
 const dboperations = require("../controllers/facilities");
