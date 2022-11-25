@@ -14,7 +14,7 @@ const checkReach = require('../middleware/reachlimiter')
 const dboperations = require('../controllers/proofs')
 
 //model
-const model = require('../classes/proof')
+const model = require('../models/proof')
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)

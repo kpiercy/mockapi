@@ -1,8 +1,10 @@
 require('dotenv').config()
 
 const configJobData = require('../config/JobData_dbconfig');
-const sql = require('mssql/msnodesqlv8');
-const model = require('../classes/proof')
+const sql = require('mssql/msnodesqlv8')
+
+//model
+const model = require('../models/proof')
 
 
 //get single proof by proofid and clientid
