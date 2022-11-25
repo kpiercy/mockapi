@@ -29,7 +29,7 @@ router.get('/:orbipayid', checkReach, dboperations.one_orbipay)
 router.post('/', checkReach, authLvl, dboperations.create_orbipay)
 
 //create new payment by job
-router.put('/:orbipayid', checkReach, authLvl, dboperations.update_orbipay)
+router.patch('/:orbipayid', checkReach, authLvl, dboperations.update_orbipay)
 
 //delete payment for this job
 router.delete("/:orbipayid", checkReach, authLvl, dboperations.delete_orbipay);
