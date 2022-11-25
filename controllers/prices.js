@@ -61,7 +61,7 @@ const update_price = async (req, res) => {
       .input("priceid", sql.NVarChar, priceid.toLowerCase())
       .execute("PutPrices");
 
-    res.status(20).json({ Prices: putPrices.recordset });
+    res.status(200).json({ Prices: putPrices.recordset });
   } catch (e) {
     res.status(500).json({ Error: e.message });
     console.log(e);
