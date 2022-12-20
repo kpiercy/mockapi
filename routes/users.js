@@ -28,16 +28,16 @@ router.post('/login', dboperations.user_auth)
 router.post('/refresh', authenticateToken, authAccess, authIP, dboperations.user_refresh)
 
 //get your userid, username and permissionLvl
-router.get('/me', authenticateToken, authLvl, authAccess, authIP, dboperations.find_me)
+router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
 
 //get all users 
-router.get('/', authenticateToken, authLvl, authAccess, authIP, dboperations.find_users)
+router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
 
 //get one user 
 router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.find_user)
 
 //create one or more users
-router.post('/', authenticateToken, authLvl, authAccess, authIP, validateDto(userDto), dboperations.create_users)
+router.post('/', authenticateToken, authAccess, authIP, validateDto(userDto), dboperations.create_users)
 
 //update a user
 router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.update_user)
@@ -46,7 +46,7 @@ router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dbopera
 router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
 
 //revoke api access for all users of a client by client id
-router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
+router.delete('/:userid', authenticateToken, authAccess, authIP, dboperations.delete_user)
 
 //revoke api access of a single user by userid
 //router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_user)
