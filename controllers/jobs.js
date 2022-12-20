@@ -51,9 +51,9 @@ const jobs_create = async (req,res) => {
             insertJob.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
           )
         );
-      } catch (e) {
-        res.status(500).json({ Error: e.message });
-        console.log(e);
+      } catch (err) {
+        res.status(500).json({ Error: err.message });
+        console.log(err);
       }
 }
 
