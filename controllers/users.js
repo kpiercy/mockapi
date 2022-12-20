@@ -12,7 +12,7 @@ const create_users = async (req, res) => {
   try {
     const user = req.body.Users;
     for (let i = 0; i < user.length; i++) {
-      let username = user[i].username;
+      let username = user[i].Username;
       let pool = await sql.connect(configJobData);
       let findUser = await pool
         .request()
@@ -21,15 +21,13 @@ const create_users = async (req, res) => {
       let thisUser = findUser.recordset[0];
 
       if (thisUser != null) {
-        throw Error(user[i].username + " already exists");
+        throw Error( "username already taken" );
       } else {
-        const hashedpassword = await bcrypt.hash(user[i].password, 10);
+        const hashedpassword = await bcrypt.hash(user[i].Password, 10);
         Object.assign(user[i], { hashedpassword: hashedpassword });
       }
     }
-
     const users = JSON.stringify(user);
-    console.log(users);
     try {
       let pool = await sql.connect(configJobData);
       let insertUser = await pool
@@ -70,7 +68,7 @@ const user_auth = async (req,res) => {
                 
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
                  
-                if ( thisAccess === 'true' ) {
+                if ( thisAccess === true ) {
                         const accessToken = jwt.sign(
                           user,
                           process.env.ACCESS_TOKEN_SECRET,
@@ -185,8 +183,8 @@ const find_user = async (req, res) => {
         )
       );
   } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+      console.log(e)
+      res.status(500).json({ Error: e.message })
   }
 };
 
@@ -206,8 +204,8 @@ const find_users = async (req, res) => {
         )
       );
   } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+    console.log(e)
+    res.status(500).json({ Error: e.message })
   }
 };
 
