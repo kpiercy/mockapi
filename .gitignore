@@ -1,7 +1,9 @@
 .env
 node_modules
 ./public/uploads
-classes
+models/
 config
 authLog
 accessLog
+audit.json
+
