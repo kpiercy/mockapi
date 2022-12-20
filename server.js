@@ -22,9 +22,11 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 app.use(pubip().getIpInfoMiddleware)
+
 //This will ensure log directory exists for acccess logs
 const logsFolder = __dirname + '/accessLog'
 fs.existsSync(logsFolder) || fs.mkdirSync(logsFolder)
+
 //Create a log stream here
 const rotatingLogStream = fileStreamRotator.getStream({
   filename: `${logsFolder}/access-%DATE%.log`,

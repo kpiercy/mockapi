@@ -14,9 +14,11 @@ const apiErrorHandler = require('./utils/api-error-handler')
 app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
+
 //This will ensure log directory exists for acccess logs
 const logsFolder = __dirname + '/authLog'
 fs.existsSync(logsFolder) || fs.mkdirSync(logsFolder)
+
 //Create a log stream here
 const rotatingLogStream = fileStreamRotator.getStream({
   filename: `${logsFolder}/auth-%DATE%.log`,
@@ -54,6 +56,6 @@ app.use('/api/v1/clients/:clientid/users', userRoutes)
 
 ///////////////endpoint routes////////////////
 
-var port = process.env.PORT || 4000
+var port = process.env.AUTH_PORT || 4000
 app.listen(port)
 console.log('authServer is running at port ' + port)

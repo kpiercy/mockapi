@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+html,
+body,
+#root,
+.app,
+.content {
+  height: 100%;
+  width: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.app {
+  display: flex;
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/*Sidebar*/
+.sidebar-header {
+  font-size: 1.5rem;
+  text-align: center;
+  /* padding: 5px 10px; */
+}
+
+/* auth forms */
+form.signup,
+form.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: transparent;
+  border-radius: 4px;
+}
+
+form button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+input.error {
+  border: 1px solid var(--error);
+}
+
+.data-heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.data-row {
+  margin: 0 0 15px 0;
+}
+
+.data-col-header {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 15px;
+}
+
+.data-add-item {
+  color: var(--primary);
+  fill: var(--primary);
+}
+
+.data-cards {
+  background: transparent;
+  border-radius: 4px;
+  margin: 10px auto;
+  padding: 15px;
+  position: relative;
+  width: 100%;
+}
+
+.data-cards h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.data-cards h5 {
+  margin: 0 0 10px 0;
+  font-size: 1.0em;
+  color: var(--primary);
+}
+
+.data-cards p {
+  margin: 0;
+  font-size: 0.9em;
+  color: var(--primary);
+}
+
+.data-cards span {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  background: transparent;
+  padding: 6px;
+  border-radius: 50%;
+  color: var(--primary);
+}
+
+.modify-details-icon {
+  margin: 0px 5px;
+  cursor: pointer;
+  color: var(--primary);
+}
