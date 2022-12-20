@@ -32,7 +32,7 @@ async function apiAccess(req, res, next) {
             .execute('MW_ClientAccessAPI')
             var thisClientAccess = clientAccess.recordset[0].Status
         console.log({ userAccess: thisUserAccess, clientStatus: thisClientAccess })
-        if (thisUserAccess === 'true' && thisClientAccess === 'Active') {
+        if (thisUserAccess === true && thisClientAccess === 'Active') {
             console.log('AccessMW: User & Client apiAccess verified')
             next()
         } else {
