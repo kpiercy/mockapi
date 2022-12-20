@@ -7,8 +7,9 @@ module.exports = yup.object().shape({
       Email: yup.string().trim().email().required(),
       Username: yup.string().trim().lowercase().required(),
       Password: yup.string().min(16).required(),
+      PermissionLvl: yup.string().uuid().required('Must choose a PermissionLvl'),
       ApiAccess: yup.boolean().default(false).required(),
-      AllowableIP: yup.string().trim().required()
+      AllowableIP: yup.string().trim().required(),
     })
   ),
-});
+})
