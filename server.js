@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const express = require('express')
+const { version } = require('./package.json')
 var cors = require('cors')
 const app = express()
 const pubip = require('express-ip')
@@ -8,6 +9,9 @@ const logger = require('morgan')
 const fs = require('fs-extra')
 const path = require('path')
 const fileStreamRotator = require('file-stream-rotator')
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
+
 
 //middleware
 const publimiter = require('./middleware/publimiter')
@@ -23,11 +27,11 @@ app.use(cors())
 app.use(express.static('public'))
 app.use(pubip().getIpInfoMiddleware)
 
-//This will ensure log directory exists for acccess logs
+//ensure log directory exists for acccess logs
 const logsFolder = __dirname + '/accessLog'
 fs.existsSync(logsFolder) || fs.mkdirSync(logsFolder)
 
-//Create a log stream here
+//Create a log stream
 const rotatingLogStream = fileStreamRotator.getStream({
   filename: `${logsFolder}/access-%DATE%.log`,
   frequency: 'daily',
@@ -35,6 +39,48 @@ const rotatingLogStream = fileStreamRotator.getStream({
   date_format: 'YYYY-MM-DD',
   max_logs: 45, //Keep for 45 days
 })
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'ElitePS_API',
+      version,
+      description: 'REST API for Elite Services Inc',
+      contact: {
+        name: 'Kraig Piercy',
+        email: 'kpiercy@eliteps.com',
+      },
+    },
+    servers: [
+      {
+        url: 'http://localhost:5000/api/v1',
+        description: 'Clients'
+      },
+      {
+        url: 'http://localhost:4000/api/v1',
+        description: 'Users'
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  },
+  apis: ['./routes/*.js', './schemas/master.js'],
+}
+
+const swaggerSpecs = swaggerJsDoc(swaggerOptions)
 
 app.use(logger('combined', { stream: rotatingLogStream }))
 app.use(logger('dev'))
@@ -88,6 +134,7 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 app.use('/', indexRoutes)
 app.use('/api/v1/clients', clientRoutes) //crud
 app.use('/api/v1/services', serviceRoutes) //cru
@@ -210,5 +257,9 @@ app.use((error, req, res, next) => {
 })
 
 var port = process.env.PORT || 5000
-app.listen(port)
-console.log('server is running at port ' + port)
+app.listen(port, async () => {
+  console.log('server is running at port ' + port)
+  console.log(`Docs can be found at http://localhost:${port}/api/v1/docs`)
+
+})
+

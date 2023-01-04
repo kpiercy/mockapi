@@ -8,7 +8,7 @@ const pubip = require("express-ip");
 const authLvl = require("../middleware/authLvl");
 const checkReach = require("../middleware/reachlimiter");
 const validateDto = require('../middleware/validateDto')
-const groupDto = require('../dto/groups')
+const groupDto = require('../schemas/groups')
 
 //child routes
 

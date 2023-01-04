@@ -19,19 +19,16 @@ const dboperations = require("../controllers/charts");
 router.use(pubip().getIpInfoMiddleware);
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
-//get all charts for this job
-//router.get("/", checkReach, dboperations.all_charts);
-
-//get single chart for this job by id
+//GetOne
 router.get("/:chartid", checkReach, dboperations.one_chart);
 
-//update existing based on provided fields or create if not found
+//PatchOne
 router.patch("/:chartid", checkReach, dboperations.update_chart);
 
-//create new chart by job
+//Post
 router.post("/", checkReach, authLvl, dboperations.create_chart);
 
-//delete chart for this job
+//DeleteOne
 router.delete("/:chartid", checkReach, authLvl, dboperations.delete_chart);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 {
   "name": "nodejsapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "authServer.js",
   "scripts": {
@@ -35,6 +35,8 @@
     "passport-azure-ad": "^4.3.4",
     "path": "^0.12.7",
     "speakeasy": "^2.0.0",
+    "swagger-jsdoc": "^6.2.7",
+    "swagger-ui-express": "^4.6.0",
     "tar": "^6.1.11",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
