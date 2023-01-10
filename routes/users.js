@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const express = require('express')
 const pubip = require("express-ip");
-const router = express.Router({ mergeParams: true });
+const router = express.Router({ mergeParams: true })
 
 //middleware
 const authlimiter = require('../middleware/authlimiter')
