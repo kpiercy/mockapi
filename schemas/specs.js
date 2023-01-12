@@ -107,7 +107,7 @@ const urlRegExp =
                     .required("IVRPhone is required when IVRPayments is True"),
                 }),
                 OnlinePayments: yup.boolean().default(false),
-                PaySite: yup
+                OnlineSite: yup
                 .string()
                 .nullable()
                 .when("OnlinePayments", {
