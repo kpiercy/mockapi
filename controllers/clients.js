@@ -93,7 +93,7 @@ const clients_client_all = async (req, res) => {
           let client = await pool
             .request()
             .input("cid", sql.VarChar, cid.toLowerCase())
-            .execute("GetClient");
+            .execute("GetClients");
 
           res.json(
             JSON.parse(
