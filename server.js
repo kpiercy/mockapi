@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+//PACKAGES
 const express = require('express')
 const { version } = require('./package.json')
 var cors = require('cors')
@@ -13,25 +14,18 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 
 
-//middleware
+//MIDDLEWARE
 const publimiter = require('./middleware/publimiter')
 const authenticateToken = require('./middleware/authToken')
 const authAccess = require('./middleware/access')
 const authIP = require('./middleware/ipAccess')
 const apiErrorHandler = require('./utils/api-error-handler')
 
-// app.set("views", "views");
-// app.set("view engine", "ejs");
-app.use(express.json())
-app.use(cors())
-app.use(express.static('public'))
-app.use(pubip().getIpInfoMiddleware)
-
-//ensure log directory exists for acccess logs
+//CHECK LOG DIRECTORY
 const logsFolder = __dirname + '/accessLog'
 fs.existsSync(logsFolder) || fs.mkdirSync(logsFolder)
 
-//Create a log stream
+//LOG STREAM
 const rotatingLogStream = fileStreamRotator.getStream({
   filename: `${logsFolder}/access-%DATE%.log`,
   frequency: 'daily',
@@ -40,6 +34,7 @@ const rotatingLogStream = fileStreamRotator.getStream({
   max_logs: 45, //Keep for 45 days
 })
 
+//SWAGGER
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -54,13 +49,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/api/v1',
-        description: 'Clients'
-      },
-      {
-        url: 'http://localhost:4000/api/v1',
-        description: 'Users'
-      },
+        url: 'http://localhost:5000/api/v1'
+      }
     ],
     components: {
       securitySchemes: {
@@ -82,13 +72,22 @@ const swaggerOptions = {
 
 const swaggerSpecs = swaggerJsDoc(swaggerOptions)
 
+//APP CONFIG
+app.use(express.json())
+app.use(cors())
+app.use(express.static('public'))
+app.use(pubip().getIpInfoMiddleware)
+// app.set("views", "views");
+// app.set("view engine", "ejs");
 app.use(logger('combined', { stream: rotatingLogStream }))
 app.use(logger('dev'))
 app.use(apiErrorHandler)
 
+//ROUTES
 const indexRoutes = require('./routes/index')
 const fileRoutes = require('./routes/files')
 const clientRoutes = require('./routes/clients')
+const userRoutes = require('./routes/users')
 const serviceRoutes = require('./routes/services')
 const invoiceRoutes = require('./routes/invoices')
 const creditRoutes = require('./routes/credits')
@@ -110,16 +109,7 @@ const patientRoutes = require('./routes/patients')
 const encounterRoutes = require('./routes/encounters')
 const detailRoutes = require('./routes/details')
 
-///////////////endpoint routes ////////////////
-
-/*
-Dynamic routes are handled via split routing starting inside ./routes/clients, using router.use for any appended sub-path. For example, if you call the /clients/:clientid/jobs/:jobid/orders/ endpoint, the program hits the clientRoutes, then using the router, identifies the req.url has /jobs/:jobid and then goes into the jobRoutes, inside jobs.js it then identifies that the req.url has /orders in the path and then uses the orders module to fulfill the request.
-
-Static routes are handled via the list of app.use below, whereby it calls the given module directly. Routes are wrapped in an if statement that determine if the req.url is static or dynamic based on the path, thus allowing interaction via either method.
-
-All of the same capabilities are open to Static and Dynamic requests. The difference being that when using the static routes, you will need to provide details like the clientid, orderid, ... params via JSON body in most cases. 
-*/
-
+//CORS
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header(
@@ -134,99 +124,104 @@ app.use((req, res, next) => {
   next()
 })
 
+//DYNAMIC URL ENDPOINTS
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
-app.use('/', indexRoutes)
+//app.use('/', indexRoutes)
 app.use('/api/v1/clients', clientRoutes) //crud
-app.use('/api/v1/services', serviceRoutes) //cru
-app.use(
-  '/api/v1/clients/invoices',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  invoiceRoutes
-) //cru
-app.use(
-  '/api/v1/clients/invoices/credits',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  creditRoutes
-) //cru
-app.use(
-  '/api/v1/clients/invoices/deposits',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  depositRoutes
-) //cru
-app.use(
-  '/api/v1/clients/contracts',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  contractRoutes
-) //crud
-app.use(
-  '/api/v1/clients/contracts/prices',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  priceRoutes
-) //cru
-app.use('/api/v1/clients/jobs', publimiter, authenticateToken, authAccess, authIP, jobRoutes)
-app.use(
-  '/api/v1/clients/jobs/proofs',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  proofRoutes
-)
-app.use(
-  '/api/v1/clients/jobs/downloads',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  downloadRoutes
-) //crud
-app.use(
-  '/api/v1/clients/jobs/contacts',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  contactRoutes
-) //crud
-app.use(
-  '/api/v1/clients/jobs/orbipays',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  orbipayRoutes
-) //crud
-app.use(
-  '/api/v1/clients/jobs/orders',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  orderRoutes
-) //cru
-app.use(
-  '/api/v1/clients/jobs/facilities',
-  publimiter,
-  authenticateToken,
-  authAccess,
-  authIP,
-  facilityRoutes
-)
+app.use('/api/v1/services', serviceRoutes) //crud
+//app.use('/api/v1/jobs', jobRoutes)
+//app.use('/api/v1/facilities', facilityRoutes)
+
+//STATIC URL ENDPOINTS
+// app.use(
+//   '/api/v1/clients/invoices',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   invoiceRoutes
+// ) //cru
+// app.use(
+//   '/api/v1/clients/invoices/credits',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   creditRoutes
+// ) //cru
+// app.use(
+//   '/api/v1/clients/invoices/deposits',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   depositRoutes
+// ) //cru
+// app.use(
+//   '/api/v1/clients/contracts',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   contractRoutes
+// ) //crud
+// app.use(
+//   '/api/v1/clients/contracts/prices',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   priceRoutes
+// ) //cru
+// app.use('/api/v1/clients/jobs', publimiter, authenticateToken, authAccess, authIP, jobRoutes)
+// app.use(
+//   '/api/v1/clients/jobs/proofs',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   proofRoutes
+// )
+// app.use(
+//   '/api/v1/clients/jobs/downloads',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   downloadRoutes
+// ) //crud
+// app.use(
+//   '/api/v1/clients/jobs/contacts',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   contactRoutes
+// ) //crud
+// app.use(
+//   '/api/v1/clients/jobs/orbipays',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   orbipayRoutes
+// ) //crud
+// app.use(
+//   '/api/v1/clients/jobs/orders',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   orderRoutes
+// ) //cru
+// app.use(
+//   '/api/v1/clients/jobs/facilities',
+//   publimiter,
+//   authenticateToken,
+//   authAccess,
+//   authIP,
+//   facilityRoutes
+// )
 // app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
 // app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes) //should inserts belong to /jobs/orders/files??
@@ -238,8 +233,8 @@ app.use(
 //api/v1/clients/jobs/facilities/statements/encounters/charges/adjustments
 //api/v1/clients/jobs/facilities/statements/encounters/charges/transfers
 
-///////////////endpoint routes////////////////
 
+//ERROR HANDLING
 app.use((req, res, next) => {
   const error = new Error('Not found')
   error.status = 404

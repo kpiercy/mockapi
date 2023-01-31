@@ -53,6 +53,7 @@ const user_auth = async (req,res) => {
       return res.status(400).json({ Error: "Please enter proper credentials" });
     }
     const hashedPassword = await bcrypt.hash(password, 10)
+    //console.log('password hash complete')
     const user = { name: username, password: hashedPassword }
         try{
             let pool = await sql.connect(configJobData)
@@ -109,7 +110,7 @@ const user_auth = async (req,res) => {
 }
 
 const user_refresh = async (req,res) => {
-        const refreshtoken = req.body.token
+  const refreshtoken = req.body.token
     if (refreshtoken == null) return res.sendStatus(401)
 
     try{

@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router({ mergeParams: true })
 //const pubip = require('express-ip')
 
-//middleware
+//MIDDLEWARE
 const publimiter = require('../middleware/publimiter')
 const authenticateToken = require('../middleware/authToken')
 const authLvl = require('../middleware/authLvl') // pass on routes that can only be hit internally
@@ -14,20 +14,21 @@ const checkReach = require('../middleware/reachlimiter') //pass on routes that n
 const validateDto = require('../middleware/validateDto')
 const clientDto = require('../schemas/clients')
 
-//controller
+//CONTROLLER
 const dboperations = require('../controllers/clients')
 
-//child routes
+//CHILD ROUTES
+const userRoutes = require('./users')
 const jobRoutes = require('./jobs')
 const invoiceRoutes = require('./invoices')
 const contractRoutes = require('./contracts')
 
-//router options and children
-//router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
-router.use('/:clientid/contracts', contractRoutes)
-router.use('/:clientid/invoices', invoiceRoutes)
-router.use('/:clientid/jobs', jobRoutes)
+//CHILD ROUTING
+router.use('/users', userRoutes)
+router.use('/:clientid/users', userRoutes)
+router.use('/:clientid/contracts', publimiter, authenticateToken, authAccess, authIP, contractRoutes)
+router.use('/:clientid/invoices', publimiter, authenticateToken, authAccess, authIP, invoiceRoutes)
+router.use('/:clientid/jobs', publimiter, authenticateToken, authAccess, authIP, jobRoutes)
 
  /**
   * @swagger
