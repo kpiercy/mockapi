@@ -64,8 +64,8 @@ router.use('/:clientid/jobs', publimiter, authenticateToken, authAccess, authIP,
   *         description: Bad request
   */
 
-//create new client
-router.post('/', authLvl, validateDto(clientDto), dboperations.clients_create)
+
+router.post('/', publimiter, authenticateToken, authAccess, authIP, authLvl, validateDto(clientDto), dboperations.clients_create)
 
 /**
  * @swagger
@@ -113,7 +113,7 @@ router.post('/', authLvl, validateDto(clientDto), dboperations.clients_create)
  *          404:
  *              description: Client was not found
  */
-router.get('/:clientid', checkReach, dboperations.clients_client_all)
+router.get('/:clientid', publimiter, authenticateToken, authAccess, authIP, checkReach, dboperations.clients_client_all)
 
 /**
  * @swagger
@@ -140,7 +140,7 @@ router.get('/:clientid', checkReach, dboperations.clients_client_all)
  *          404:
  *              description: Client was not found
  */
-router.patch('/:clientid', authLvl, dboperations.update_client)
+router.patch('/:clientid', publimiter, authenticateToken, authAccess, authIP, authLvl, dboperations.update_client)
 
 /**
  * @swagger
@@ -167,6 +167,6 @@ router.patch('/:clientid', authLvl, dboperations.update_client)
  *                              $ref: '#/components/schemas/DeleteClientsResponse'
  *                              
  */
-router.delete('/', authLvl, dboperations.clients_delete)
+router.delete('/', publimiter, authenticateToken, authAccess, authIP, authLvl, dboperations.clients_delete)
 
 module.exports = router
