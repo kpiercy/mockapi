@@ -10,8 +10,6 @@ const logger = require('morgan')
 const fs = require('fs-extra')
 const path = require('path')
 const fileStreamRotator = require('file-stream-rotator')
-const swaggerJsDoc = require('swagger-jsdoc')
-const swaggerUi = require('swagger-ui-express')
 
 
 //MIDDLEWARE
@@ -20,6 +18,7 @@ const authenticateToken = require('./middleware/authToken')
 const authAccess = require('./middleware/access')
 const authIP = require('./middleware/ipAccess')
 const apiErrorHandler = require('./utils/api-error-handler')
+const swagger = require('./utils/swagger')
 
 //CHECK LOG DIRECTORY
 const logsFolder = __dirname + '/accessLog'
@@ -33,44 +32,6 @@ const rotatingLogStream = fileStreamRotator.getStream({
   date_format: 'YYYY-MM-DD',
   max_logs: 45, //Keep for 45 days
 })
-
-//SWAGGER
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'ElitePS_API',
-      version,
-      description: 'REST API for Elite Services Inc',
-      contact: {
-        name: 'Kraig Piercy',
-        email: 'kpiercy@eliteps.com',
-      },
-    },
-    servers: [
-      {
-        url: 'http://localhost:5000/api/v1'
-      }
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
-  },
-  apis: ['./routes/*.js', './schemas/master.js'],
-}
-
-const swaggerSpecs = swaggerJsDoc(swaggerOptions)
 
 //APP CONFIG
 app.use(express.json())
@@ -125,7 +86,7 @@ app.use((req, res, next) => {
 })
 
 //DYNAMIC URL ENDPOINTS
-app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
+swagger(app, port)
 //app.use('/', indexRoutes)
 app.use('/api/v1/clients', clientRoutes) //crud
 app.use('/api/v1/services', serviceRoutes) //crud
@@ -254,7 +215,7 @@ app.use((error, req, res, next) => {
 var port = process.env.PORT || 5000
 app.listen(port, async () => {
   console.log('server is running at port ' + port)
-  console.log(`Docs can be found at http://localhost:${port}/api/v1/docs`)
+  //console.log(`Docs can be found at http://localhost:${port}/api/v1/docs`)
 
 })
 

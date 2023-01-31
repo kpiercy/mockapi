@@ -49,7 +49,7 @@ function swaggerDocs(app, port) {
   app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
   //Docs in json format
-  app.get('docs.json', (req, res) => {
+  app.get('/api/v1/docs.json', (req, res) => {
     res.setHeader('Content-Type', 'application/json')
     res.send(swaggerSpec)
   })
