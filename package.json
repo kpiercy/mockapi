@@ -2,9 +2,10 @@
   "name": "nodejsapi",
   "version": "1.0.1",
   "description": "",
-  "main": "authServer.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "devStart": "nodemon server.js",
     "startAuth": "nodemon authServer.js"
   },
   "dependencies": {
