@@ -29,12 +29,7 @@ const swaggerOptions = {
       ],
       servers: [
         {
-          url: 'http://localhost:5000/api/v1',
-          description: 'Clients',
-        },
-        {
-          url: 'http://localhost:4000/api/v1',
-          description: 'Users',
+          url: 'https://eliteps-rest.azurewebsites.net/api/v1',
         },
       ],
     },
@@ -53,8 +48,8 @@ function swaggerDocs(app, port) {
     res.setHeader('Content-Type', 'application/json')
     res.send(swaggerSpec)
   })
-
-  console.log(`Docs available at http://localhost:${port}/api/v1/docs`)
+  console.log(`Docs available at https://eliteps-rest.azurewebsites.net/api/v1/docs`)
+  //console.log(`Docs available at http://localhost:${port}/api/v1/docs`)
 }
 
 module.exports = swaggerDocs;
