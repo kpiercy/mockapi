@@ -1,8 +1,8 @@
 const sql = require('mssql/msnodesqlv8')
-const configJobData = require('../config/JobData_dbconfig')
 const nodemailer = require("nodemailer")
 const jwt = require('jsonwebtoken')
 const ApiError = require('../utils/api-error')
+const configJobData = require(`../config/${process.env.NODE_ENV}`)
 
 async function authIP(req, res, next){
     try{

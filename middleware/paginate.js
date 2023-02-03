@@ -1,8 +1,8 @@
 require('dotenv').config()
 const sql = require('mssql/msnodesqlv8')
 const dboperations = require('../controllers/clients.js')
-const configJobData = require('../config/JobData_dbconfig')
-const ApiError = require("../utils/api-error");
+const ApiError = require("../utils/api-error")
+const configJobData = require(`../config/${process.env.NODE_ENV}`)
 
 function paginatedResults( model, cid, tablen ) {
     return async (req, res, next) => {

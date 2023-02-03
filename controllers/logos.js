@@ -1,9 +1,7 @@
 require("dotenv").config();
 
-const configJobData = require("../config/JobData_dbconfig");
+const configJobData = require(`../config/${process.env.NODE_ENV}`)
 const sql = require("mssql/msnodesqlv8");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const uuid = require("uuid").v4;
 const multer = require("multer");
 const path = require("path");
@@ -23,23 +21,18 @@ const storage = multer.diskStorage({
   },
 });
 
-//set filters for each type of file and return error when non-allowable filetype is sent
+//FILE OPTIONS
 const logos = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, //5MB
   fileFilter: (req, file, cb) => {
     if (
-      file.mimetype == "image/bmp" ||
-      file.mimetype == "image/gif" ||
-      file.mimetype == "image/jpeg" ||
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/svg+xml" ||
-      file.mimetype == "image/tiff"
+      file.mimetype == "image/png"
     ) {
       cb(null, true);
     } else {
       cb(
-        "Only .bmp, .gif, .jpg, .jpeg, .png, .svg, & .tiff formats are allowed!",
+        "Only .png formats are allowed!",
         false
       );
     }

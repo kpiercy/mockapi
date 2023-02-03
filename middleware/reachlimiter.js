@@ -1,9 +1,8 @@
 require('dotenv').config()
 
 const sql = require('mssql/msnodesqlv8')
-const { user } = require('../config/JobData_dbconfig')
-const configJobData = require('../config/JobData_dbconfig')
 const ApiError = require('../utils/api-error')
+const configJobData = require(`../config/${process.env.NODE_ENV}`)
 
 //handles the requirement that every request this mw is passed on should contain clientid and determines if the requesting user is a part of the clientid in the user table
 

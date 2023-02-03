@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const sql = require('mssql/msnodesqlv8')
-const configJobData = require('../config/JobData_dbconfig')
+const configJobData = require(`../config/${process.env.NODE_ENV}`)
 
 
 async function authLvl(req, res, next) {

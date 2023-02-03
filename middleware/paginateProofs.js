@@ -1,9 +1,8 @@
 require('dotenv').config()
 const sql = require('mssql/msnodesqlv8')
 const dboperations = require('../controllers/dbops_proofs')
-const configJobData = require('../config/JobData_dbconfig')
-const configEliteMaster = require('../config/EliteMaster_dbconfig')
 const model = require('../models/proof')
+const configJobData = require(`../config/${process.env.NODE_ENV}`)
 
 function paginatedResults(model) {
     return async (req, res, next) => {
