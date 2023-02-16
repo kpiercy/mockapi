@@ -5,8 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "devStart": "nodemon server.js",
-    "startAuth": "nodemon authServer.js"
+    "dev": "nodemon server.js",
+    "eslint": "eslint ./",
+    "eslint-fix": "eslint ./ --fix",
+    "build": "webpack",
+    "prod": "node dist/api.bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@xmldom/xmldom": "github:xmldom/xmldom",
@@ -49,7 +53,9 @@
     "latest-version": ">=5.1.1",
     "nodemon": "^2.0.18",
     "package-json": ">=6.5.1",
-    "update-notifier": ">=6.0.2"
+    "update-notifier": ">=6.0.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "keywords": [],
   "author": "Kraig Piercy, Elite Services Inc, 6/16/2021",

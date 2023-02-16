@@ -10,7 +10,7 @@ const logger = require('morgan')
 const fs = require('fs-extra')
 const path = require('path')
 const fileStreamRotator = require('file-stream-rotator')
-const ejs = require('ejs')
+//const ejs = require('ejs')
 
 
 //MIDDLEWARE
@@ -39,8 +39,8 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('public'))
 app.use(pubip().getIpInfoMiddleware)
-app.set('views', 'views')
-app.set('view engine', 'ejs')
+// app.set('views', 'views')
+// app.set('view engine', 'ejs')
 app.use(logger('combined', { stream: rotatingLogStream }))
 app.use(logger('dev'))
 app.use(apiErrorHandler)
@@ -88,7 +88,8 @@ app.use((req, res, next) => {
 
 //DYNAMIC URL ENDPOINTS
 
-app.use('/', indexRoutes)
+swagger(app, process.env.PORT)
+//app.use('/', indexRoutes)
 app.use('/api/v1/clients', clientRoutes) //crud
 app.use('/api/v1/services', serviceRoutes) //crud
 //app.use('/api/v1/jobs', jobRoutes)
@@ -215,7 +216,9 @@ app.use((error, req, res, next) => {
 
 let port = process.env.PORT || 5000
 app.listen(port, async () => {
-  console.log('server is running at port ' + port)
-  swagger(app, process.env.PORT)
+  console.log('Server running')
+  console.log(`PORT: ${port}`)
+  console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
+  
 })
 
