@@ -18,7 +18,6 @@ const dboperations = require("../controllers/logos");
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware);
-//router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
 //get all logos
 router.get("/", checkReach, dboperations.get_logos);

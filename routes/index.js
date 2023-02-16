@@ -19,11 +19,11 @@ const checkReach = require("../middleware/reachlimiter"); //pass on routes that 
 
 //router options and children
 router.use(pubip().getIpInfoMiddleware)
-router.all('*', publimiter, authenticateToken, authAccess, authIP)
+//router.all('*', publimiter, authenticateToken, authAccess, authIP)
 
-//get all clients by clientid, will paginate in case of parent-child relations, will otherwise return single client in pagination form
-router.get("/", checkReach, (req, res) => {
-    res.render("index", { title: "Express" })
-})
+
+// router.get("/", (req, res) => {
+//     res.render("index", { title: "Express" })
+// }) 
 
 module.exports = router;

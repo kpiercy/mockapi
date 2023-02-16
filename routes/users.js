@@ -621,6 +621,11 @@ router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.
  */
 router.delete('/:userid', authenticateToken, authAccess, authIP, dboperations.delete_user)
 
+/**
+ * 
+ */
+//router.get('/me/picture', authenticateToken, authAccess, authIP, dboperations.find_picture)
+
 //revoke api access of a single user by userid
 //router.delete('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_user)
 
