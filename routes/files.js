@@ -14,7 +14,6 @@ const checkReach = require('../middleware/reachlimiter')
 const insertRoutes = require('./inserts')
 const logoRoutes = require('./logos')
 const messageRoutes = require('./messages')
-const patientRoutes = require('./patients')
 
 //controller
 const dboperations = require('../controllers/files')
@@ -31,7 +30,6 @@ router.use(pubip().getIpInfoMiddleware)
 router.use('/inserts', insertRoutes)
 router.use('/logos', logoRoutes)
 router.use('/messages', messageRoutes)
-router.use('/:vfileid/patients', patientRoutes)
 
 
 router.get('/', checkReach, authLvl, dboperations.get_files)

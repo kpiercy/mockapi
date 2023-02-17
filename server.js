@@ -67,9 +67,6 @@ const versionRoutes = require('./routes/versions')
 const insertRoutes = require('./routes/inserts')
 const messageRoutes = require('./routes/messages')
 const logoRoutes = require('./routes/logos')
-const patientRoutes = require('./routes/patients')
-const encounterRoutes = require('./routes/encounters')
-const detailRoutes = require('./routes/details')
 
 //CORS
 app.use((req, res, next) => {
@@ -92,8 +89,6 @@ swagger(app, process.env.PORT)
 //app.use('/', indexRoutes)
 app.use('/api/v1/clients', clientRoutes) //crud
 app.use('/api/v1/services', serviceRoutes) //crud
-//app.use('/api/v1/jobs', jobRoutes)
-//app.use('/api/v1/facilities', facilityRoutes)
 
 //STATIC URL ENDPOINTS
 // app.use(
@@ -188,9 +183,6 @@ app.use('/api/v1/services', serviceRoutes) //crud
 // app.use('/api/v1/clients/jobs/orders/versions', versionRoutes)
 // app.use('/api/v1/clients/jobs/orders/versions/files', fileRoutes)  //should files belong to /orders instead of /versions??
 // app.use('/api/v1/clients/jobs/orders/versions/files/inserts', insertRoutes) //should inserts belong to /jobs/orders/files??
-// app.use('/api/v1/clients/jobs/orders/versions/files/patients', patientRoutes)
-// app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters', encounterRoutes)
-// app.use('/api/v1/clients/jobs/orders/versions/files/patients/encounters/details', detailRoutes)
 
 //api/v1/clients/jobs/facilities/statements/encounters/charges/payments
 //api/v1/clients/jobs/facilities/statements/encounters/charges/adjustments
