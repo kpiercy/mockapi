@@ -49,12 +49,12 @@ router.all('*', authlimiter)
  *               properties:
  *                 password:
  *                   type: string
- *                   example: 76D%L!H02wr6O@m
+ *                   example: aStrongP4ssw0rd!
  *                 username:
  *                   type: string
  *                   example: kpiercy
  *             example:
- *               password: 76D%L!H02wr6O@m
+ *               password: aStrongP4ssw0rd!
  *               username: kpiercy
  *       responses:
  *         '200':
@@ -69,13 +69,13 @@ router.all('*', authlimiter)
  *                     example: 30min
  *                   client:
  *                     type: string
- *                     example: 6A0AD3CB-D41E-492C-8B48-970060A22136
+ *                     example: 9999
  *                   parent:
  *                     nullable: true
  *                     example: null
  *                   permissions:
  *                     type: string
- *                     example: Admin
+ *                     example: Standard
  *                   refreshExpiresIn:
  *                     type: string
  *                     example: 8hrs
@@ -91,16 +91,16 @@ router.all('*', authlimiter)
  *                 '200':
  *                   value:
  *                     accessExpiresIn: 30min
- *                     client: 6A0AD3CB-D41E-492C-8B48-970060A22136
+ *                     client: 9999
  *                     parent: null
- *                     permissions: Admin
+ *                     permissions: Standard
  *                     refreshExpiresIn: 8hrs
  *                     refreshToken: >-
  *                       eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoia3BpZXJjeSIsInBhc3N3b3JkIjoiJDJiJDEwJHRlRS5uQ0IxbkRERXFKUUV4MGtKWE9IcWtsd0ZISlF5eThmdjIyLm1JWFBHN2tHZ3pvcklPIiwiaWF0IjoxNjcyNzcwMjg0LCJleHAiOjE2NzI3OTkwODR9.zMEX6EWVvRiRO8CLezklpTtKYCeV60F2nyVB3bUNiW4
  *                     token: >-
  *                       eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoia3BpZXJjeSIsInBhc3N3b3JkIjoiJDJiJDEwJHRlRS5uQ0IxbkRERXFKUUV4MGtKWE9IcWtsd0ZISlF5eThmdjIyLm1JWFBHN2tHZ3pvcklPIiwiaWF0IjoxNjcyNzcwMjg0LCJleHAiOjE2NzI3NzIwODR9.U1Cpvr3q9eNrXdadoAbBsszK6NDAZHtEmLz2K4UT3iU
- *         '403':
- *           description: '403'
+ *         '405':
+ *           description: '405'
  *           content:
  *             application/json:
  *               schema:
@@ -110,9 +110,10 @@ router.all('*', authlimiter)
  *                     type: string
  *                     example: Username or password incorrect
  *               examples:
- *                 '403':
+ *                 '405':
  *                   value:
- *                     Error: Username or password incorrect
+ *                     error: 
+ *                      message: Please enter proper credentials
  */
 router.post('/login', dboperations.user_auth)
 
@@ -139,7 +140,7 @@ router.post('/login', dboperations.user_auth)
  *               token: >-
  *                 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoia3BpZXJjeSIsInBhc3N3b3JkIjoiJDJiJDEwJDlFRWRiVGJ0VWdCUGJBQ2VoYkxuNU9mUzN6d2Y2LzVrdWZ1ZUVjcnliMi5MWnREeEJlRDJlIiwiaWF0IjoxNjcyNzcwNDI4LCJleHAiOjE2NzI3OTkyMjh9.A7Y7Qoh8-EsJckb2NgaDl2a_YgAj8Y6W35wm9B0nSMk
  *       responses:
- *         '201':
+ *         '200':
  *           description: '200'
  *           content:
  *             application/json:
@@ -167,7 +168,7 @@ router.post('/refresh', authenticateToken, authAccess, authIP, dboperations.user
  *       summary: Get my user
  *       description: >-
  *         For testing your access to the api, but also returns your user gid and
- *         permissions for reference or use elsewhere.
+ *         permissions for reference for use elsewhere.
  *       operationId: getMyUser
  *       responses:
  *         '200':
@@ -185,32 +186,32 @@ router.post('/refresh', authenticateToken, authAccess, authIP, dboperations.user
  *                         Active:
  *                           type: boolean
  *                           example: true
- *                         Client_GUID:
- *                           type: string
- *                           example: 6A0AD3CB-D41E-492C-8B48-970060A22136
- *                         GUID:
- *                           type: string
- *                           example: 659FBB77-3094-494C-88FB-F742A93A5EC0
+ *                         ClientID:
+ *                           type: integer
+ *                           example: 9999
+ *                         ID:
+ *                           type: integer
+ *                           example: 100
  *                         PermissionLvl:
  *                           type: string
- *                           example: Admin
+ *                           example: Standard
  *                         Username:
  *                           type: string
  *                           example: kpiercy
  *                     example:
  *                       - Active: true
- *                         Client_GUID: 6A0AD3CB-D41E-492C-8B48-970060A22136
- *                         GUID: 659FBB77-3094-494C-88FB-F742A93A5EC0
- *                         PermissionLvl: Admin
+ *                         ClientID: 9999
+ *                         ID: 100
+ *                         PermissionLvl: Standard
  *                         Username: kpiercy
  *               examples:
  *                 '200':
  *                   value:
  *                     Users:
  *                       - Active: true
- *                         Client_GUID: 6A0AD3CB-D41E-492C-8B48-970060A22136
- *                         GUID: 659FBB77-3094-494C-88FB-F742A93A5EC0
- *                         PermissionLvl: Admin
+ *                         ClientID: 9999
+ *                         ID: 100
+ *                         PermissionLvl: Standard
  *                         Username: kpiercy
  */
 router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
@@ -240,12 +241,12 @@ router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
  *                         Active:
  *                           type: boolean
  *                           example: true
- *                         Client_GUID:
- *                           type: string
- *                           example: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *                         GUID:
- *                           type: string
- *                           example: 42FF060A-F176-47CB-AAD0-DBE6E4701191
+ *                         ClientID:
+ *                           type: integer
+ *                           example: 9999
+ *                         ID:
+ *                           type: integer
+ *                           example: 100
  *                         PermissionLvl:
  *                           type: string
  *                           example: Parent
@@ -254,8 +255,8 @@ router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
  *                           example: someParent
  *                     example:
  *                       - Active: true
- *                         Client_GUID: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *                         GUID: 42FF060A-F176-47CB-AAD0-DBE6E4701191
+ *                         ClientID: 9999
+ *                         ID: 100
  *                         PermissionLvl: Parent
  *                         Username: someParent
  *               examples:
@@ -263,8 +264,8 @@ router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
  *                   value:
  *                     Users:
  *                       - Active: true
- *                         Client_GUID: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *                         GUID: 42FF060A-F176-47CB-AAD0-DBE6E4701191
+ *                         ClientID: 9999
+ *                         ID: 100
  *                         PermissionLvl: Parent
  *                         Username: someParent
  *     parameters:
@@ -272,8 +273,8 @@ router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
  *         in: path
  *         required: true
  *         schema:
- *           type: string
- *           example: 8DD82A1A-105C-4FED-B157-AE18684EECC1
+ *           type: integer
+ *           example: 9999
  */
 router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
 
@@ -304,12 +305,12 @@ router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
  *                         Active:
  *                           type: boolean
  *                           example: true
- *                         Client_GUID:
- *                           type: string
- *                           example: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *                         GUID:
- *                           type: string
- *                           example: 42FF060A-F176-47CB-AAD0-DBE6E4701191
+ *                         ClientID:
+ *                           type: integer
+ *                           example: 9999
+ *                         ID:
+ *                           type: integer
+ *                           example: 100
  *                         PermissionLvl:
  *                           type: string
  *                           example: Parent
@@ -318,8 +319,8 @@ router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
  *                           example: someParent
  *                     example:
  *                       - Active: true
- *                         Client_GUID: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *                         GUID: 42FF060A-F176-47CB-AAD0-DBE6E4701191
+ *                         ClientID: 9999
+ *                         ID: 100
  *                         PermissionLvl: Parent
  *                         Username: someParent
  *               examples:
@@ -327,8 +328,8 @@ router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
  *                   value:
  *                     Users:
  *                       - Active: true
- *                         Client_GUID: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *                         GUID: 42FF060A-F176-47CB-AAD0-DBE6E4701191
+ *                         ClientID: 9999
+ *                         ID: 100
  *                         PermissionLvl: Parent
  *                         Username: someParent
  */
@@ -360,9 +361,9 @@ router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperati
  *                       ApiAccess:
  *                         type: boolean
  *                         example: true
- *                       Client_GUID:
- *                         type: string
- *                         example: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
+ *                       ClientID:
+ *                         type: integer
+ *                         example: 9999
  *                       Email:
  *                         type: string
  *                         example: kpiercy@gmail.com
@@ -370,27 +371,27 @@ router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperati
  *                         type: string
  *                         example: asdlkfgjasdl1234fghfghrty
  *                       PermissionLvl:
- *                         type: string
- *                         example: 94dbbb6d-1e17-4769-9ebe-ddfe745cd01f
+ *                         type: integer
+ *                         example: 3
  *                       Username:
  *                         type: string
  *                         example: readyuser
  *                   example:
  *                     - AllowableIP: '::1'
  *                       ApiAccess: true
- *                       Client_GUID: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
- *                       Email: kpiercy@gmail.com
+ *                       ClientID: 9999
+ *                       Email: someemail@gmail.com
  *                       Password: asdlkfgjasdl1234fghfghrty
- *                       PermissionLvl: 94dbbb6d-1e17-4769-9ebe-ddfe745cd01f
+ *                       PermissionLvl: 3
  *                       Username: readyuser
  *             example:
  *               Users:
  *                 - AllowableIP: '::1'
  *                   ApiAccess: true
- *                   Client_GUID: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
- *                   Email: kpiercy@gmail.com
+ *                   ClientID: 9999
+ *                   Email: someemail@gmail.com
  *                   Password: asdlkfgjasdl1234fghfghrty
- *                   PermissionLvl: 94dbbb6d-1e17-4769-9ebe-ddfe745cd01f
+ *                   PermissionLvl: 3
  *                   Username: readyuser
  *       responses:
  *         '201':
@@ -408,32 +409,32 @@ router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperati
  *                         Access:
  *                           type: boolean
  *                           example: true
- *                         Client_GUID:
- *                           type: string
- *                           example: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
- *                         GUID:
- *                           type: string
- *                           example: DC23DBB5-E8CA-428C-BAF3-F6D8D623B4D9
+ *                         ClientID:
+ *                           type: integer
+ *                           example: 9999
+ *                         ID:
+ *                           type: integer
+ *                           example: 101
  *                         PermissionLvl:
- *                           type: string
- *                           example: 94DBBB6D-1E17-4769-9EBE-DDFE745CD01F
+ *                           type: integer
+ *                           example: 3
  *                         Username:
  *                           type: string
  *                           example: readyuser
  *                     example:
  *                       - Access: true
- *                         Client_GUID: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
- *                         GUID: DC23DBB5-E8CA-428C-BAF3-F6D8D623B4D9
- *                         PermissionLvl: 94DBBB6D-1E17-4769-9EBE-DDFE745CD01F
+ *                         ClientID: 9999
+ *                         ID: 101
+ *                         PermissionLvl: 3
  *                         Username: readyuser
  *               examples:
  *                 '201':
  *                   value:
  *                     Users:
  *                       - Access: true
- *                         Client_GUID: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
- *                         GUID: DC23DBB5-E8CA-428C-BAF3-F6D8D623B4D9
- *                         PermissionLvl: 94DBBB6D-1E17-4769-9EBE-DDFE745CD01F
+ *                         ClientID: 9999
+ *                         ID: 101
+ *                         PermissionLvl: 3
  *                         Username: readyuser
  *         '400':
  *           description: '400'
@@ -454,7 +455,7 @@ router.post('/', authenticateToken, authAccess, authIP, validateDto(userDto), db
 
 /**
  * @swagger
- *   /clients/users:
+ *   /clients/users/{userid}:
  *     patch:
  *       tags:
  *         - Users
@@ -495,8 +496,8 @@ router.post('/', authenticateToken, authAccess, authIP, validateDto(userDto), db
  *         in: path
  *         required: true
  *         schema:
- *           type: string
- *           example: 6a102a8e-547c-4a1d-b2e1-404d51144eee
+ *           type: integer
+ *           example: 101
  */
 router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.update_user)
 
@@ -518,10 +519,10 @@ router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dbopera
  *               type: object
  *               properties:
  *                 clientid:
- *                   type: string
- *                   example: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
+ *                   type: integer
+ *                   example: 9999
  *             example:
- *               clientid: 7133CAAC-3635-48F0-B116-14CAB71FBCB6
+ *               clientid: 9999
  *       responses:
  *         '202':
  *           description: '202'
@@ -535,24 +536,24 @@ router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dbopera
  *                     items:
  *                       type: object
  *                       properties:
- *                         User_GUID:
- *                           type: string
- *                           example: 6A102A8E-547C-4A1D-B2E1-404D51144EEE
+ *                         UserID:
+ *                           type: integer
+ *                           example: 101
  *                         Username:
  *                           type: string
  *                           example: kpiercy456
  *                     example:
- *                       - User_GUID: 6A102A8E-547C-4A1D-B2E1-404D51144EEE
+ *                       - UserID: 103
  *                         Username: kpiercy456
- *                       - User_GUID: FF4E30D9-0EEC-4D89-B1D8-E07A861DA682
+ *                       - UserID: 102
  *                         Username: kpiercy123
  *               examples:
  *                 '202':
  *                   value:
  *                     Users:
- *                       - User_GUID: 6A102A8E-547C-4A1D-B2E1-404D51144EEE
+ *                       - UserID: 103
  *                         Username: kpiercy456
- *                       - User_GUID: FF4E30D9-0EEC-4D89-B1D8-E07A861DA682
+ *                       - UserID: 102
  *                         Username: kpiercy123
  */
 router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
@@ -587,37 +588,34 @@ router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.
  *                       items:
  *                         type: object
  *                         properties:
- *                           User_GUID:
- *                             type: string
- *                             example: FF4E30D9-0EEC-4D89-B1D8-E07A861DA682
+ *                           UserID:
+ *                             type: integer
+ *                             example: 102
  *                           Username:
  *                             type: string
  *                             example: kpiercy123
  *                       example:
- *                         - User_GUID: FF4E30D9-0EEC-4D89-B1D8-E07A861DA682
- *                           Username: kpiercy123
- *                     example:
- *                       - - User_GUID: FF4E30D9-0EEC-4D89-B1D8-E07A861DA682
+ *                         - UserID: 102
  *                           Username: kpiercy123
  *               examples:
  *                 '202':
  *                   value:
  *                     Users:
- *                       - - User_GUID: FF4E30D9-0EEC-4D89-B1D8-E07A861DA682
- *                           Username: kpiercy123
+ *                       - UserID: 102
+ *                         Username: kpiercy123
  *     parameters:
  *       - name: clientid
  *         in: path
  *         required: true
  *         schema:
- *           type: string
- *           example: 7133caac-3635-48f0-b116-14cab71fbcb6
+ *           type: integer
+ *           example: 100
  *       - name: userid
  *         in: path
  *         required: true
  *         schema:
- *           type: string
- *           example: ff4e30d9-0eec-4d89-b1d8-e07a861da682
+ *           type: integer
+ *           example: 102
  */
 router.delete('/:userid', authenticateToken, authAccess, authIP, dboperations.delete_user)
 
