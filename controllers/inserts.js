@@ -1,6 +1,8 @@
 require("dotenv").config();
 
 const configJobData = require(`../config/${process.env.NODE_ENV}`)
+const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
+const ApiError = require('../utils/api-error')
 const sql = require("mssql/msnodesqlv8");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -42,24 +44,24 @@ const inserts = multer({
   }
 }).array("inserts", 6);
 
-const get_inserts = async (req, res) => {
+const get_inserts = async (req, res, next) => {
   console.log("dbops_inserts.all_inserts was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);
 };
 
-const get_insert = async (req, res) => {
+const get_insert = async (req, res, next) => {
   console.log("dbops_inserts.one_insert was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);
 };
 
-const post_insert = async (req, res) => {
+const post_insert = async (req, res, next) => {
   inserts(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      return res.status(500).json(err);
+      return next(ApiError.internal(err))
     } else if (err) {
-      return res.status(500).json(err);
+      return next(ApiError.internal(err))
     }
     //do insert call to tables with all relevant data, return data below
     //ISSUE: unable to retrieve req.body.file from postman for the filepath to use in stored proc var
@@ -67,7 +69,7 @@ const post_insert = async (req, res) => {
   });
 };
 
-// const post_file = async (req, res) => {
+// const post_file = async (req, res, next) => {
 //       try {
 //       console.log(req.body.file);
 //       let pool = await sql.connect(configJobData);
@@ -85,7 +87,7 @@ const post_insert = async (req, res) => {
 
 // };
 
-const delete_insert = async (req, res) => {
+const delete_insert = async (req, res, next) => {
   console.log("dbops_inserts.delete_insert was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);

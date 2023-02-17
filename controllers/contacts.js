@@ -1,6 +1,8 @@
 require('dotenv').config()
 
 const configJobData = require(`../config/${process.env.NODE_ENV}`)
+const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
+const ApiError = require('../utils/api-error')
 const sql = require('mssql/msnodesqlv8')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -8,7 +10,7 @@ const jwt = require('jsonwebtoken')
 //classes
 const model = require('../models/contact')
 
-const all_contacts = async (req,res) => {
+const all_contacts = async (req, res, next) => {
   req.jobid = req.params.jobid
   req.params.jobid = req.jobid
   let jid = req.params.jobid
@@ -23,32 +25,23 @@ const all_contacts = async (req,res) => {
       const startIndex = (page - 1) * limit
       const endIndex = page * limit
 
-      if (jid.toLowerCase() == null) {
-        res
-          .status(406)
-          .json(
-            "Error: jobid must be specified in either the URL as a query param or in the request body."
-          );
+      if (jid == null) {
+        next(
+          ApiError.badRequest(
+            'jobid must be specified in either the URL as a query param or in the request body.'
+          )
+        )
       } else {
         const results = {};
 
         if (endIndex < model.length) {
           let nextPage = page + 1;
           results.next =
-            "http://localhost:5000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/contacts?paginate=true&page=" +
-            nextPage +
-            "&limit=" +
-            limit +
-            "";
+            `${baseUrl.url}/clients/${cid}/jobs/${jid}/contacts?paginate=true&page=${nextPage}&limit=${limit}`
         }
         if (startIndex > 0) {
           let prevPage = page - 1;
-          results.previous =
-            "http://localhost:5000/clients/" + cid.toLowerCase() + "/jobs/" + jid.toLowerCase() + "/contacts?paginate=true&page=" +
-            prevPage +
-            "&limit=" +
-            limit +
-            "";
+          results.previous = `${baseUrl.url}/clients/${cid}/jobs/${jid}/contacts?paginate=true&page=${prevPage}&limit=${limit}`
         }
         try {
           let pool = await sql.connect(configJobData);
@@ -56,7 +49,7 @@ const all_contacts = async (req,res) => {
             .request()
             .input("startindex", sql.Int, startIndex)
             .input("limit", sql.Int, limit)
-            .input("jid", sql.VarChar, jid.toLowerCase())
+            .input("jid", sql.Int, jid)
             .execute("GetPaginatedContacts");
           res.paginatedResults = results;
           res
@@ -69,9 +62,9 @@ const all_contacts = async (req,res) => {
               }
             );
           //res.paginatedResults
-        } catch (e) {
-          console.log(e);
-          res.status(500).json({ Error: e.message });
+        } catch (err) {
+          console.log({ Error: err.message })
+          next(ApiError.internal(err))
         }
       }
   } else {
@@ -80,7 +73,7 @@ const all_contacts = async (req,res) => {
         let pool = await sql.connect(configJobData);
         let getContacts = await pool
           .request()
-          .input("jobid", sql.NVarChar, jobid.toLowerCase())
+          .input("jobid", sql.Int, jobid)
           .execute("GetContacts");
 
         res
@@ -90,20 +83,20 @@ const all_contacts = async (req,res) => {
               getContacts.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
             )
           );
-      } catch (e) {
-        res.status(500).json({ Error: e.message });
-        console.log(e);
+      } catch (err) {
+        console.log({ Error: err.message })
+        next(ApiError.internal(err))
       }
     }
 }
 
-const one_contact = async (req,res) => {
+const one_contact = async (req, res, next) => {
     try {
       const contactid = req.params.contactid
       let pool = await sql.connect(configJobData);
       let getContact = await pool
         .request()
-        .input("contactid", sql.NVarChar, contactid.toLowerCase())
+        .input("contactid", sql.Int, contactid)
         .execute("GetContact");
 
       res
@@ -115,14 +108,14 @@ const one_contact = async (req,res) => {
             ]
           )
         );
-    } catch (e) {
-      res.status(500).json({ Error: e.message });
-      console.log(e);
+    } catch (err) {
+      console.log({ Error: err.message })
+      next(ApiError.internal(err))
     }
 }
 
 //updates fields to values provided or leaves field value as is if field is not provided in req.body, will also create a record if one is not found
-const update_contact = async (req,res) => {
+const update_contact = async (req, res, next) => {
     try {
       const contacts = JSON.stringify(req.body);
       const contactid = req.params.contactid
@@ -130,7 +123,7 @@ const update_contact = async (req,res) => {
       let getContacts = await pool
         .request()
         .input("contacts", sql.NVarChar, contacts)
-        .input("contactid", sql.NVarChar, contactid.toLowerCase())
+        .input("contactid", sql.Int, contactid)
         .execute("PutContacts");
 
       res
@@ -138,14 +131,14 @@ const update_contact = async (req,res) => {
         .json(
           { Contacts: getContacts.recordset }
         );
-    } catch (e) {
-      res.status(500).json({ Error: e.message });
-      console.log(e);
+    } catch (err) {
+      console.log({ Error: err.message })
+      next(ApiError.internal(err))
     }
 }
 
 //create contact
-const create_contact = async (req,res) => {
+const create_contact = async (req, res, next) => {
     try {
       const contacts = JSON.stringify(req.body);
       let pool = await sql.connect(configJobData);
@@ -157,20 +150,20 @@ const create_contact = async (req,res) => {
       res
       .status(201)
     .json({ Contacts: postContacts.recordset });
-    } catch (e) {
-      res.status(500).json({ Error: e.message });
-      console.log(e);
+    } catch (err) {
+      console.log({ Error: err.message })
+      next(ApiError.internal(err))
     }
 }
 
 //deactivate contact
-const delete_contact = async (req,res) => {
+const delete_contact = async (req, res, next) => {
     try {
       const contactid = req.params.contactid
       let pool = await sql.connect(configJobData);
       let delContact = await pool
         .request()
-        .input("contactid", sql.NVarChar, contactid.toLowerCase())
+        .input("contactid", sql.Int, contactid)
         .execute("DeleteContact");
 
       res
@@ -178,9 +171,9 @@ const delete_contact = async (req,res) => {
         .json(
             { Contacts: delContact.recordset }
         );
-    } catch (e) {
-      res.status(500).json({ Error: e.message });
-      console.log(e);
+    } catch (err) {
+      console.log({ Error: err.message })
+      next(ApiError.internal(err))
     }
 }
 

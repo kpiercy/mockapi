@@ -1,14 +1,14 @@
-require("dotenv").config();
+require('dotenv').config()
 
 const configJobData = require(`../config/${process.env.NODE_ENV}`)
-const sql = require("mssql/msnodesqlv8");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
+const ApiError = require('../utils/api-error')
+const sql = require('mssql/msnodesqlv8')
 
 //classes
 // const model = require("../models/style");
 
-// const all_styles = async (req, res) => {
+// const all_styles = async (req, res, next) => {
 //   req.jobid = req.params.jobid;
 //   req.params.jobid = req.jobid;
 //   let jid = req.params.jobid;
@@ -78,9 +78,9 @@ const jwt = require("jsonwebtoken");
 //           Styles: res.paginatedResults.data.recordset,
 //         });
 //         //res.paginatedResults
-//       } catch (e) {
-//         console.log(e);
-//         res.status(500).json({ Error: e.message });
+//       } catch (err) {
+//         console.log({ Error: err.message });
+//         next(ApiError.internal(err))
 //       }
 //     }
 //   } else {
@@ -99,84 +99,71 @@ const jwt = require("jsonwebtoken");
 //             getStyles.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
 //           )
 //         );
-//     } catch (e) {
-//       res.status(500).json({ Error: e.message });
-//       console.log(e);
+//     } catch (err) {
+//       next(ApiError.internal(err))
+//       console.log({ Error: err.message });
 //     }
 //   }
 // };
 
-const one_style = async (req, res) => {
+const one_style = async (req, res, next) => {
   try {
-    const styleid = req.params.styleid;
-    let pool = await sql.connect(configJobData);
-    let getStyle = await pool
-      .request()
-      .input("styleid", sql.NVarChar, styleid.toLowerCase())
-      .execute("GetStyle");
+    const styleid = req.params.styleid
+    let pool = await sql.connect(configJobData)
+    let getStyle = await pool.request().input('styleid', sql.Int, styleid).execute('GetStyle')
 
     res
       .status(200)
-      .json(
-        JSON.parse(
-          getStyle.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
-        )
-      );
-  } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+      .json(JSON.parse(getStyle.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
+  } catch (err) {
+    next(ApiError.internal(err))
+    console.log({ Error: err.message })
   }
-};
+}
 
-const create_style = async (req, res) => {
+const create_style = async (req, res, next) => {
   try {
-    const styles = JSON.stringify(req.body);
-    let pool = await sql.connect(configJobData);
-    let postStyle = await pool
-      .request()
-      .input("styles", sql.NVarChar, styles)
-      .execute("PostStyles");
+    const styles = JSON.stringify(req.body)
+    let pool = await sql.connect(configJobData)
+    let postStyle = await pool.request().input('styles', sql.NVarChar, styles).execute('PostStyles')
 
-    res.status(201).json({ Styles: postStyle.recordset });
-  } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+    res.status(201).json({ Styles: postStyle.recordset })
+  } catch (err) {
+    next(ApiError.internal(err))
+    console.log({ Error: err.message })
   }
-};
+}
 
-const update_style = async (req, res) => {
+const update_style = async (req, res, next) => {
   try {
-    const styleid = req.params.styleid;
-    const styles = JSON.stringify(req.body);
-    let pool = await sql.connect(configJobData);
+    const styleid = req.params.styleid
+    const styles = JSON.stringify(req.body)
+    let pool = await sql.connect(configJobData)
     let putStyle = await pool
       .request()
-      .input("styles", sql.NVarChar, styles)
-      .input("styleid", sql.VarChar, styleid.toLowerCase())
-      .execute("PutStyles");
+      .input('styles', sql.NVarChar, styles)
+      .input('styleid', sql.Int, styleid)
+      .execute('PutStyles')
 
-    res.status(200).json({ Styles: putStyle.recordset });
-  } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+    res.status(200).json({ Styles: putStyle.recordset })
+  } catch (err) {
+    next(ApiError.internal(err))
+    console.log({ Error: err.message })
   }
-};
+}
 
-const delete_style = async (req, res) => {
+const delete_style = async (req, res, next) => {
   try {
-    const styleid = req.params.styleid;
-    let pool = await sql.connect(configJobData);
-    let deleted = await pool
-      .request()
-      .input("styleid", sql.VarChar, styleid.toLowerCase())
-      .execute("DeleteStyle");
+    const styleid = req.params.styleid
+    let pool = await sql.connect(configJobData)
+    let deleted = await pool.request().input('styleid', sql.Int, styleid).execute('DeleteStyle')
 
-    res.status(200).json({ Styles: deleted.recordset });
-  } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+    res.status(200).json({ Styles: deleted.recordset })
+  } catch (err) {
+    next(ApiError.internal(err))
+    console.log({ Error: err.message })
   }
-};
+}
 
 module.exports = {
   //all_styles,
@@ -184,4 +171,4 @@ module.exports = {
   create_style,
   update_style,
   delete_style,
-};
+}

@@ -39,12 +39,12 @@ const create_users = async (req, res, next) => {
       res.status(201).json({ Users: insertUser.recordset });
     } catch (err) {
       //res.status(500).json({ Error: e.message });
-      console.log(err)
+      console.log({ Error: err.message })
       next(ApiError.internal(err))
     }
   } catch (err) {
     //res.status(500).json({ Error: e.message });
-    console.log(err)
+    console.log({ Error: err.message })
     next(ApiError.internal(err))
   }
 };
@@ -97,7 +97,7 @@ const user_auth = async (req, res, next) => {
                         }
                         catch (err){
                             //res.status(500).json({ Error: e.message })
-                            console.log(err)
+                            console.log({ Error: err.message })
                             next(ApiError.internal(err))
                         }
 
@@ -147,7 +147,7 @@ const user_refresh = async (req, res, next) => {
                     }
                     catch (err){
                         //res.status(500).json({ Error: e.message })
-                        console.log(err)
+                        console.log({ Error: err.message })
                         next(ApiError.internal(err))
                     }
                 
@@ -176,7 +176,7 @@ const find_me = async (req, res, next) => {
             res.json(JSON.parse(permLvl.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     } catch (err) {
         //res.status(500).json({ Error: e.message })
-        console.log(err)
+        console.log({ Error: err.message })
         next(ApiError.internal(err))
     }
 }
@@ -198,7 +198,7 @@ const find_user = async (req, res, next) => {
         )
       );
   } catch (err) {
-      console.log(err)
+      console.log({ Error: err.message })
       next(ApiError.internal(err))
       //res.status(500).json({ Error: e.message })
   }
@@ -220,7 +220,7 @@ const find_users = async (req, res, next) => {
         )
       );
   } catch (err) {
-    console.log(err)
+    console.log({ Error: err.message })
     next(ApiError.internal(err))
     //res.status(500).json({ Error: e.message })
   }
@@ -239,7 +239,7 @@ const update_user = async (req, res, next) => {
             .json({ Users: userUp.recordset })
     } catch (err) {
         //res.status(500).json({ Error: e.message });
-        console.log(err)
+        console.log({ Error: err.message })
         next(ApiError.internal(err))
     }
 };
@@ -266,7 +266,7 @@ const delete_client_users = async (req, res, next) => {
 
     } catch (err) {
         //res.status(500).json({ Error: e.message })
-        console.log(err)
+        console.log({ Error: err.message })
         next(ApiError.internal(err))
     }
 }
@@ -281,7 +281,7 @@ const delete_user = async (req, res, next) => {
         res.status(202).json({ Users: revoke.recordsets})
     } catch (err) {
         //res.status(500).json({ Error: e.message })
-        console.log(err)
+        console.log({ Error: err.message })
         next(ApiError.internal(err))
     }
 }

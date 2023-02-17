@@ -1,6 +1,8 @@
 require('dotenv').config()
 
 const configJobData = require(`../config/${process.env.NODE_ENV}`)
+const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
+const ApiError = require('../utils/api-error')
 const sql = require('mssql/msnodesqlv8')
 
 //model
@@ -8,26 +10,26 @@ const model = require('../models/proof')
 
 
 //get single proof by proofid and clientid
-const proof_client_getOne = async (req, res) => {
+const proof_client_getOne = async (req, res, next) => {
     req.params.clientid = req.clientid
-    var cid = req.clientid
-    const pid = req.params.proofid
+    let cid = req.clientid
+    let pid = req.params.proofid
     try {
         let pool = await sql.connect(configJobData);
         let proof = await pool.request()
-            .input('pid', sql.VarChar, pid)
-            .input('cid', sql.VarChar, cid)
+            .input('pid', sql.Int, pid)
+            .input('cid', sql.Int, cid)
             .execute('GetProof')
         res.json(JSON.parse(proof.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     }
-    catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e);
+    catch (err) {
+        next(ApiError.internal(err))
+        console.log({ Error: err.message })
     }
 }
 
 //create one or multiple proofs for given clientid, jobid, fileid
-const proof_create = async (req, res) => {
+const proof_create = async (req, res, next) => {
     let proof = req.body
     req.params.clientid = req.clientid
     req.params.jobid = req.jobid
@@ -45,31 +47,31 @@ const proof_create = async (req, res) => {
 
         res.status(200).json(insertProof.recordsets)
     }
-    catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e);
+    catch (err) {
+        next(ApiError.internal(err))
+        console.log({ Error: err.message })
     }
 }
 
 //update single proof by proofid
-const proof_update = async (req, res) => {
-    let proofresult = JSON.stringify(req.body)
+const proof_update = async (req, res, next) => {
+    let proofs = JSON.stringify(req.body)
     try {
         let pool = await sql.connect(configJobData);
         let updateProof = await pool.request()
-            .input('proofs', sql.NVarChar, proofresult)
+            .input('proofs', sql.NVarChar, proofs)
             .execute('PutProof');
 
         return updateProof.recordsets;
     }
-    catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e);
+    catch (err) {
+        next(ApiError.internal(err))
+        console.log({ Error: err.message })
     }
 }
 
 //retrieve all proofs for provided clientid and paginate
-const proofs_client_all = async (req, res) => {
+const proofs_client_all = async (req, res, next) => {
     req.params.clientid = req.clientid
     var cid = req.params.clientid
 
@@ -111,9 +113,9 @@ const proofs_client_all = async (req, res) => {
                   Proofs: res.paginatedResults.data.recordset
                 }
               )
-        } catch (e) {
-            console.log(e)
-            res.status(500).json({ Error: e.message })
+        } catch (err) {
+            console.log({ Error: err.message })
+            next(ApiError.internal(err))
         }
     }
 }

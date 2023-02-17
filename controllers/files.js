@@ -43,24 +43,24 @@ const filestoprocess = multer({
       }
 }).array('filestoprocess', 6)
 
-const get_files = async (req,res) => {
+const get_files = async (req, res, next) => {
     console.log('dbops_files.all_files was reached')
     console.log('Clientid used: '+req.params.clientid)
     console.log('Jobid used: '+req.params.jobid)
 }
 
-const get_file = async (req,res) => {
+const get_file = async (req, res, next) => {
     console.log('dbops_files.one_file was reached')
     console.log('Clientid used: '+req.params.clientid)
     console.log('Jobid used: '+req.params.jobid)
 }
 
-const post_file = async (req,res) => {
+const post_file = async (req, res, next) => {
   filestoprocess(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      return res.status(500).json(err);
+      return next(ApiError.internal(err))
     } else if (err) {
-      return res.status(500).json(err);
+      return next(ApiError.internal(err))
     }
     //do insert call to tables with all relevant data, return data below
     //ISSUE: unable to retrieve req.body.file from postman for the filepath to use in stored proc var
@@ -68,7 +68,7 @@ const post_file = async (req,res) => {
   })
 }
 
-// const post_file = async (req, res) => {
+// const post_file = async (req, res, next) => {
 //       try {
 //       console.log(req.body.file);
 //       let pool = await sql.connect(configJobData);
@@ -86,7 +86,7 @@ const post_file = async (req,res) => {
   
 // };
 
-const delete_file = async (req, res) => {
+const delete_file = async (req, res, next) => {
   console.log("dbops_files.delete_file was reached");
   console.log("Clientid used: " + req.params.clientid);
   console.log("Jobid used: " + req.params.jobid);

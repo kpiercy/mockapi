@@ -17,7 +17,7 @@ const clients_all = async (req, res, next) => {
   } catch (err) {
     next(ApiError.internal(err))
     //res.status(500).json({ Error: e.message })
-    console.log(err)
+    console.log({ Error: err.message })
   }
 }
 
@@ -72,7 +72,7 @@ const clients_client_all = async (req, res, next) => {
         })
         res.paginatedResults
       } catch (err) {
-        console.log(err)
+        console.log({ Error: err.message })
         next(ApiError.internal(err))
         //res.status(500).json({ Error: e.message })
       }
@@ -86,7 +86,7 @@ const clients_client_all = async (req, res, next) => {
 
       res.json(JSON.parse(client.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
     } catch (err) {
-      console.log(err)
+      console.log({ Error: err.message })
       next(ApiError.internal(err))
       //res.status(500).json({ Error: e.message })
     }
@@ -105,7 +105,7 @@ const clients_create = async (req, res, next) => {
     res.status(201).json({ Clients: insertClient.recordset })
   } catch (err) {
     //res.status(500).json({ Error: e.message })
-    console.log(err)
+    console.log({ Error: err.message })
     next(ApiError.internal(err))
   }
 }
@@ -126,14 +126,14 @@ const clients_delete = async (req, res, next) => {
           .execute('DeleteClient')
         Object.assign(results, revokeClient.recordsets)
       } catch (err) {
-        console.log(err)
+        console.log({ Error: err.message })
         next(ApiError.internal(err))
         //res.status(500).json({ Error: e.message })
       }
       res.status(200).json({ Clients: results })
     }
   } catch (err) {
-    console.log(err)
+    console.log({ Error: err.message })
     next(ApiError.internal(err))
     //res.status(500).json({ Error: e.message })
   }
@@ -169,7 +169,7 @@ const update_client = async (req, res, next) => {
     res.status(200).json({ Clients: updateClient.recordset })
   } catch (err) {
     //res.status(500).json({ Error: e.message })
-    console.log(err)
+    console.log({ Error: err.message })
     next(ApiError.internal(err))
   }
 }
