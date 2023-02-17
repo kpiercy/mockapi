@@ -7,10 +7,10 @@ const yup = require("yup");
  *    User:
  *      type: object
  *      properties:
- *        GUID:
- *          type: string
- *        Client_GUID:
- *          type: string
+ *        ID:
+ *          type: integer
+ *        ClientID:
+ *          type: integer
  *        Active:
  *          type: boolean
  *        Username:
@@ -18,11 +18,11 @@ const yup = require("yup");
  *        PermissionLvl:
  *          type: string
  *      example:
- *        GUID: userid
- *        Client_GUID: clientid
+ *        ID: 100
+ *        ClientID: 9999
  *        Active: true
  *        Username: yourusername
- *        PermissionLvl: Standard
+ *        PermissionLvl: 3
  *    UsersLoginBody:
  *      type: object
  *      properties:
@@ -39,9 +39,9 @@ const yup = require("yup");
  *        accessExpiresIn:
  *          type: string
  *        client:
- *          type: string
+ *          type: integer
  *        parent:
- *          type: string
+ *          type: integer
  *        permissions:
  *          type: string
  *        refreshExpiresIn:
@@ -52,8 +52,8 @@ const yup = require("yup");
  *          type: string
  *      example:
  *        accessExpiresIn: 30min
- *        client: clientid
- *        parent: parentid
+ *        client: 9999
+ *        parent: 20
  *        permissions: Standard
  *        refreshExpiresIn: 8hrs
  *        refreshToken: refreshjwt
@@ -78,11 +78,11 @@ const yup = require("yup");
 module.exports = yup.object().shape({
   Users: yup.array().of(
     yup.object().shape({
-      Client_GUID: yup.string().uuid().required(),
+      ClientID: yup.number().integer().required(),
       Email: yup.string().trim().email().required(),
       Username: yup.string().trim().lowercase().required(),
       Password: yup.string().min(16).required(),
-      PermissionLvl: yup.string().uuid().required('Must choose a PermissionLvl'),
+      PermissionLvl: yup.number().integer().required('Must choose a PermissionLvl'),
       ApiAccess: yup.boolean().default(false).required(),
       AllowableIP: yup.string().trim().required(),
     })
