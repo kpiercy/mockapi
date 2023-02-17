@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const configJobData = require(`../config/${process.env.NODE_ENV}`)
+const configJobData = require(`../config/db-${process.env.NODE_ENV}`)
 const sql = require('mssql/msnodesqlv8')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
