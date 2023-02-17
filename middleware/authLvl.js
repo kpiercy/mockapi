@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const sql = require('mssql/msnodesqlv8')
 const configJobData = require(`../config/${process.env.NODE_ENV}`)
+const ApiError = require('../utils/api-error')
 
 
 async function authLvl(req, res, next) {
@@ -18,14 +19,16 @@ async function authLvl(req, res, next) {
         var thisUser = permLvl.recordset[0].username
             if (thisUserLvl.toLowerCase() !== 'admin') {
                 console.log("!!!!!!!!  Admin Protected route call made by non-admin user: " + `${thisUser}` + " !!!!!!!!")
-                res.status(401).json({ Error: 'Requesting user does not have permission necesssary.' })
+                //res.status(401).json({ Error: 'Requesting user does not have permission necesssary.' })
+                next(ApiError.unauthorized())
             } else {
                 console.log('AuthLvlMW: AdminLvl for '+`${thisUser.substring(0, 3)}`+': verified')
                 next()
             }
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({ Error: 'Unable to retrieve authLvl for user.' })
+    } catch (err) {
+        console.log(err)
+        // res.status(500).json({ Error: 'Unable to retrieve authLvl for user.' })
+        next(ApiError.internal(err))
     }
 
 }

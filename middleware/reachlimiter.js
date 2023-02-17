@@ -15,10 +15,7 @@ async function limitReach(req, res, next) {
         var cid = req.params.clientid
     }
 
-    let text2 = cid
-    var cid = text2.toLowerCase()
-
-    if (token == null) return res.status(401)
+    if (token == null) return next(ApiError.unautorized())
 
     try{
         var master = false
@@ -26,19 +23,19 @@ async function limitReach(req, res, next) {
         let pool = await sql.connect(configJobData)
         let limit = await pool.request()
             .input('token', sql.VarChar, token)
-            .input('clientid', sql.NVarChar, cid)
+            .input('clientid', sql.Int, cid)
             .execute('MW_GetReach')
         var thisReach = limit.recordset[0].clientid
         var thisUser = limit.recordset[0].username
         var thisParent = limit.recordset[0].parent_clientid
         var thisPerm = limit.recordset[0].securityGrp
         
-            if ( thisReach.toLowerCase() === process.env.EPS_CLIENT_ID && thisPerm.toLowerCase() === 'admin') { 
+            if ( thisReach === process.env.EPS_CLIENT_ID && thisPerm.toLowerCase() === 'admin') { 
                 var master = true
                 console.log('ReachLimitMW: Master reach for user: '+`${thisUser.substring(0, 3)}`+' verified')
                 next()
             } else if (
-              thisParent.toLowerCase() === cid &&
+              thisParent === cid &&
               thisPerm.toLowerCase() === "parent"
             ) {
               var parent = true;
@@ -49,7 +46,7 @@ async function limitReach(req, res, next) {
               );
               next();
             } else if (
-              thisReach.toLowerCase() === cid &&
+              thisReach === cid &&
               thisPerm.toLowerCase() === "standard" &&
               master === false &&
               parent === false
@@ -61,23 +58,30 @@ async function limitReach(req, res, next) {
               );
               next();
             } else if (
-              thisReach.toLowerCase() !== cid &&
+              thisReach !== cid &&
               master === false &&
               parent === false
             ) {
               console.log("ReachLimitMW: ReachLimit exceeded by user:" +`${thisUser.substring(0,3)}` + "***")
-              res.status(401).json({
-                Error:
-                  'ReachLimit exceeded, Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.',
-              });
+              next(
+                ApiError.forbidden(
+                  'ReachLimit exceeded, Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.'
+                )
+              )
+              // res.status(401).json({
+              //   Error:
+              //     'ReachLimit exceeded, Requesting user does not belong to the specified client contained in "clientid". You can use /clients/users/me to retrieve the correct client id.',
+              // });
             } else {
-              res.status(500).json({
-                Error: "Unhandled user reach limit exception encountered",
-              });
+              next(ApiError.notAllowed('Unhandled user reach limit exception encountered'))
+              // res.status(500).json({
+              //   Error: "Unhandled user reach limit exception encountered",
+              // });
             }               
 
     } catch {
-        res.status(500).json({ Error: 'Unable to verify user reach by client id specified' })
+      next(ApiError.notAllowed('Unable to verify user reach by client id specified'))
+        // res.status(500).json({ Error: 'Unable to verify user reach by client id specified' })
     }
 
 }

@@ -19,12 +19,12 @@ function paginatedResults( model, cid, tablen ) {
     
         if( endIndex < model.length ) {
             var nextPage = page + 1
-        results.next = "http://localhost:3000/clients/"+`${cid}`+"?page="+nextPage+"&limit="+limit+""
+        results.next = "http://localhost:5000/clients/"+`${cid}`+"?page="+nextPage+"&limit="+limit+""
             
         }
         if( startIndex > 0) {
             var prevPage = page - 1
-        results.previous = "http://localhost:3000/clients/"+`${cid}`+"?page="+prevPage+"&limit="+limit+""
+        results.previous = "http://localhost:5000/clients/"+`${cid}`+"?page="+prevPage+"&limit="+limit+""
         }
         try{
             let pool = await sql.connect(configJobData)
@@ -39,7 +39,7 @@ function paginatedResults( model, cid, tablen ) {
             
             next()
         } catch (err) {
-            next(ApiError.internalServerError(err));
+            next(ApiError.internal(err));
         }
     }
     }

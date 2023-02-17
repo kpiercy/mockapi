@@ -29,7 +29,7 @@ async function apiAccess(req, res, next) {
             var thisUserClient = canAccess.recordset[0].clientid
         await sql.connect(configJobData)
         let clientAccess = await pool.request()
-            .input('clientid', sql.VarChar, thisUserClient)
+            .input('clientid', sql.Int, thisUserClient)
             .execute('MW_ClientAccessAPI')
             var thisClientAccess = clientAccess.recordset[0].Status
         console.log({ userAccess: thisUserAccess, clientStatus: thisClientAccess })
