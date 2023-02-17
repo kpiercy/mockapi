@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-const configJobData = require(`../config/${process.env.NODE_ENV}`)
+const { configJobData } = require(`../config/${process.env.NODE_ENV}`)
+const ApiError = require('../utils/api-error')
 const sql = require('mssql/msnodesqlv8');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -8,7 +9,7 @@ const jwt = require('jsonwebtoken');
 //model
 //const model = require('../models/user')
 
-const create_users = async (req, res) => {
+const create_users = async (req, res, next) => {
   try {
     const user = req.body.Users;
     for (let i = 0; i < user.length; i++) {
@@ -36,24 +37,25 @@ const create_users = async (req, res) => {
         .execute("PostUsers");
 
       res.status(201).json({ Users: insertUser.recordset });
-    } catch (e) {
-      res.status(500).json({ Error: e.message });
-      console.log(e);
+    } catch (err) {
+      //res.status(500).json({ Error: e.message });
+      console.log(err)
+      next(ApiError.internal(err))
     }
-  } catch (e) {
-    res.status(500).json({ Error: e.message });
-    console.log(e);
+  } catch (err) {
+    //res.status(500).json({ Error: e.message });
+    console.log(err)
+    next(ApiError.internal(err))
   }
 };
 
-const user_auth = async (req,res) => {
+const user_auth = async (req, res, next) => {
     const password = req.body.password
     const username = req.body.username
-    if (username == null || password == null) {
-      return res.status(400).json({ Error: "Please enter proper credentials" });
+    if (username == null || password == null || username == '' || password == '') {
+      next(ApiError.badRequest('Please enter proper credentials'))
     }
     const hashedPassword = await bcrypt.hash(password, 10)
-    //console.log('password hash complete')
     const user = { name: username, password: hashedPassword }
         try{
             let pool = await sql.connect(configJobData)
@@ -68,7 +70,7 @@ const user_auth = async (req,res) => {
                     let thisPerm = users.recordset[0].securityGrp;
                 
             if ( await bcrypt.compare(req.body.password, thisPass) && thisUser === username) {
-                 
+                 console.log('pass comparison complete')
                 if ( thisAccess === true ) {
                         const accessToken = jwt.sign(
                           user,
@@ -93,25 +95,33 @@ const user_auth = async (req,res) => {
                     
                             //res.status(200).json(updateToken.recordsets);
                         }
-                        catch (e){
-                            res.status(500).json({ Error: e.message })
-                            console.log(e);
+                        catch (err){
+                            //res.status(500).json({ Error: e.message })
+                            console.log(err)
+                            next(ApiError.internal(err))
                         }
 
                     } else {
-                        res.status(403).json({ Error: 'User does not have API access at this time, please check with your admin and contact Elite Services if necessary' })
+                        //res.status(403).json({ Error: 'User does not have API access at this time, please check with your admin and contact Elite Services if necessary' })
+                        next(
+                          ApiError.forbidden(
+                            'User does not have API access at this time, please check with your admin and contact Elite Services if necessary'
+                          )
+                        )
                     }
                 } else {
-                    res.status(403).json({ Error : 'Username or password incorrect' })
+                    //res.status(403).json({ Error : 'Username or password incorrect' })
+                    next(ApiError.badRequest('Username or password incorrect'))
                 }
-        } catch (e) {
-            res.status(500).json({ Error: e.message });
+        } catch (err) {
+            //res.status(500).json({ Error: e.message });
+            next(ApiError.internal(err))
         }
 }
 
-const user_refresh = async (req,res) => {
+const user_refresh = async (req, res, next) => {
   const refreshtoken = req.body.token
-    if (refreshtoken == null) return res.sendStatus(401)
+    if (refreshtoken == null) return next(ApiError.badRequest('Body is required'))
 
     try{
         let pool = await sql.connect(configJobData)
@@ -121,7 +131,7 @@ const user_refresh = async (req,res) => {
         let thisRefTok = users.recordset[0].refreshtoken
         if ( thisRefTok === refreshtoken ){
                 jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
-                    if (err) return res.sendStatus(403)
+                    if (err) return next(ApiError.forbidden(err))
                     const accesstoken = jwt.sign({ name: user.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' })
                     res.status(201).json ({ accessToken: accesstoken })
     
@@ -135,45 +145,49 @@ const user_refresh = async (req,res) => {
                 
                         //return updateToken.recordsets;
                     }
-                    catch (e){
-                        res.status(500).json({ Error: e.message })
-                        console.log(e);
+                    catch (err){
+                        //res.status(500).json({ Error: e.message })
+                        console.log(err)
+                        next(ApiError.internal(err))
                     }
                 
                 })
             } else {
-                res.status(401).json({ Error: 'Refresh token does not match our records' })
+                //res.status(401).json({ Error: 'Refresh token does not match our records' })
+                next(ApiError.unauthorized('Refresh token does not match our records'))
             }
 
-    } catch (e){
-        res.status(500).json({ Error: e.message })
-        consolee.log(e)
+    } catch (err){
+        //res.status(500).json({ Error: e.message })
+        consolee.log(err)
+        next(ApiError.internal(err))
     }
 }
 
-const find_me = async (req,res) => {
+const find_me = async (req, res, next) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401)
+    if (token == null) return next(ApiError.badRequest('Authorization header required'))
     try{
         let pool = await sql.connect(configJobData)
         let permLvl = await pool.request()
             .input('token', sql.VarChar, token)
             .execute('GetUserMe')
             res.json(JSON.parse(permLvl.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
-    } catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e)
+    } catch (err) {
+        //res.status(500).json({ Error: e.message })
+        console.log(err)
+        next(ApiError.internal(err))
     }
 }
 
-const find_user = async (req, res) => {
+const find_user = async (req, res, next) => {
   try {
     const userid = req.params.userid;
     let pool = await sql.connect(configJobData);
     let getUser = await pool
       .request()
-      .input("userid", sql.NVarChar, userid.toLowerCase())
+      .input("userid", sql.Int, userid)
       .execute("GetUser");
 
     res
@@ -183,19 +197,20 @@ const find_user = async (req, res) => {
           getUser.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
         )
       );
-  } catch (e) {
-      console.log(e)
-      res.status(500).json({ Error: e.message })
+  } catch (err) {
+      console.log(err)
+      next(ApiError.internal(err))
+      //res.status(500).json({ Error: e.message })
   }
 };
 
-const find_users = async (req, res) => {
+const find_users = async (req, res, next) => {
   try {
-    let clientid = req.params.clientid;
-    let pool = await sql.connect(configJobData);
+    let clientid = req.params.clientid
+    let pool = await sql.connect(configJobData)
     let users = await pool
       .request()
-      .input("clientid", sql.NVarChar, clientid.toLowerCase())
+      .input("clientid", sql.Int, clientid)
       .execute("GetUsers");
     res
       .status(200)
@@ -204,65 +219,70 @@ const find_users = async (req, res) => {
           users.recordset[0]["JSON_F52E2B61-18A1-11d1-B105-00805F49916B"]
         )
       );
-  } catch (e) {
-    console.log(e)
-    res.status(500).json({ Error: e.message })
+  } catch (err) {
+    console.log(err)
+    next(ApiError.internal(err))
+    //res.status(500).json({ Error: e.message })
   }
 };
 
-const update_user = async (req, res) => {
+const update_user = async (req, res, next) => {
     try {
         let userid = req.params.userid
         let pool = await sql.connect(configJobData)
         let userUp = await pool
             .request()
-            .input('userid', sql.NVarChar, userid)
+            .input('userid', sql.Int, userid)
             .execute('PutUser');
         res 
             .status(201)
             .json({ Users: userUp.recordset })
-    } catch (e) {
-        res.status(500).json({ Error: e.message });
-        console.log(e);
+    } catch (err) {
+        //res.status(500).json({ Error: e.message });
+        console.log(err)
+        next(ApiError.internal(err))
     }
 };
 
-const delete_client_users = async (req,res) => {
+const delete_client_users = async (req, res, next) => {
     const client = req.body.clientid
     console.log('Clientid provided for RevokeAPIAccess call: '+client)
     try{
         let pool = await sql.connect(configJobData)
         let clients = await pool.request()
-            .input('client', sql.VarChar, client)
+            .input('client', sql.Int, client)
             .execute('ClientExists')
             console.log('Records found by clientid that will now be disabled: '+clients.recordset[0]['count'])
         if( clients.recordset[0]['count'] > 0.5 ) {
             let pool2 = await sql.connect(configJobData)
             let revoke = await pool2.request()
-                .input('client', sql.VarChar, client)
+                .input('client', sql.Int, client)
                 .execute('RevokeUserAccess')
             res.status(202).json({ Users: revoke.recordset})
         } else{
-            res.status(400).json('Error:No users by that clientid found.')
+            next(ApiError.badRequest('No users by clientid specified'))
+            //res.status(400).json('Error:No users by that clientid found.')
             }
 
-    } catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e);
+    } catch (err) {
+        //res.status(500).json({ Error: e.message })
+        console.log(err)
+        next(ApiError.internal(err))
     }
 }
 
-const delete_user = async (req,res) => {
+const delete_user = async (req, res, next) => {
     const userid = req.params.userid
     try{
         let pool2 = await sql.connect(configJobData)
         let revoke = await pool2.request()
-            .input('userid', sql.VarChar, userid)
+            .input('userid', sql.Int, userid)
             .execute('DeleteUser')
         res.status(202).json({ Users: revoke.recordsets})
-    } catch (e) {
-        res.status(500).json({ Error: e.message })
-        console.log(e);
+    } catch (err) {
+        //res.status(500).json({ Error: e.message })
+        console.log(err)
+        next(ApiError.internal(err))
     }
 }
 
