@@ -1,6 +1,7 @@
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 const { version } = require('../package.json')
+const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
 
 const swaggerOptions = {
   definition: {
@@ -14,7 +15,7 @@ const swaggerOptions = {
         email: 'kpiercy@eliteps.com',
       },
       components: {
-        securitySchemas: {
+        securitySchemes: {
           bearerAuth: {
             type: 'http',
             scheme: 'bearer',
@@ -29,7 +30,12 @@ const swaggerOptions = {
       ],
       servers: [
         {
+          url: 'http://localhost:${port}/api/v1/docs',
+          description: 'DEV',
+        },
+        {
           url: 'https://eliteps-rest.azurewebsites.net/api/v1',
+          description: 'PROD',
         },
       ],
     },
@@ -48,8 +54,7 @@ function swaggerDocs(app, port) {
     res.setHeader('Content-Type', 'application/json')
     res.send(swaggerSpec)
   })
-  console.log(`Docs available at https://eliteps-rest.azurewebsites.net/api/v1/docs`)
-  //console.log(`Docs available at http://localhost:${port}/api/v1/docs`)
+  console.log(`Docs available at ${baseUrl.url}/docs`)
 }
 
 module.exports = swaggerDocs;
