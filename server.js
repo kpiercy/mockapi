@@ -10,7 +10,10 @@ const logger = require('morgan')
 const fs = require('fs-extra')
 const path = require('path')
 const fileStreamRotator = require('file-stream-rotator')
+const sql = require('mssql/msnodesqlv8')
+const configJobData = require(`./config/db-${process.env.NODE_ENV}`)
 //const ejs = require('ejs')
+
 
 
 //MIDDLEWARE
@@ -211,6 +214,7 @@ app.listen(port, async () => {
   console.log('Server running')
   console.log(`PORT: ${port}`)
   console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
-  
+  await sql.connect(configJobData)
+  console.log(`${process.env.NODE_ENV} database connected`)
 })
 
