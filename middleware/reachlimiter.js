@@ -30,7 +30,7 @@ async function limitReach(req, res, next) {
         var thisParent = limit.recordset[0].parent_clientid
         var thisPerm = limit.recordset[0].securityGrp
         
-            if ( thisReach === process.env.EPS_CLIENT_ID && thisPerm.toLowerCase() === 'admin') { 
+            if ( thisReach === parseInt(process.env.EPS_CLIENT_ID) && thisPerm.toLowerCase() === 'admin') { 
                 var master = true
                 console.log('ReachLimitMW: Master reach for user: '+`${thisUser.substring(0, 3)}`+' verified')
                 next()
