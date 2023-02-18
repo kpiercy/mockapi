@@ -22,6 +22,7 @@ const create_users = async (req, res, next) => {
       let thisUser = findUser.recordset[0]
       if (thisUser != null) {
         next(ApiError.badRequest('username already exists'))
+        return
       } else {
         const hashedpassword = await bcrypt.hash(user[i].Password, 10)
         Object.assign(user[i], { hashedpassword: hashedpassword })
@@ -174,7 +175,7 @@ const find_me = async (req, res, next) => {
     console.log({ Error: err.message })
     next(ApiError.internal(err))
   }
-}
+} 
 
 const find_user = async (req, res, next) => {
   try {
@@ -209,9 +210,14 @@ const find_users = async (req, res, next) => {
 
 const update_user = async (req, res, next) => {
   try {
+    const users = JSON.stringify(req.body)
     let userid = req.params.userid
     let pool = await sql.connect(configJobData)
-    let userUp = await pool.request().input('userid', sql.Int, userid).execute('PutUser')
+    let userUp = await pool
+      .request()
+      .input('users', sql.NVarChar, users)
+      .input('userid', sql.Int, userid)
+      .execute('PutUsers')
     res.status(201).json({ Users: userUp.recordset })
   } catch (err) {
     //res.status(500).json({ Error: e.message });
