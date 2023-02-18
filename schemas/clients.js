@@ -7,11 +7,11 @@ const yup = require('yup');
  *     Client:
  *       type: object
  *       properties:
- *         GUID:
- *           type: string
+ *         ID:
+ *           type: int
  *           description: The public id of the client
- *         Parent_GUID:
- *           type: string
+ *         ParentID:
+ *           type: int
  *           description: The public id of the parent client if applicable
  *         Name:
  *           type: string
@@ -72,9 +72,9 @@ const yup = require('yup');
  *           default: false
  *           description: Whether or not the client will receive a bulk bill for all related children
  *       example:
- *         GUID: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
+ *         ID: 9999
  *         Name: zAdena
- *         Parent_GUID: 8DD82A1A-105C-4FED-B157-AE18684EECC1
+ *         ParentID: 101
  *         Status: Active
  *         ERPID: 1234
  *         ERPParentID: 777
@@ -93,8 +93,8 @@ const yup = require('yup');
  *     CreateClientsBody:
  *       type: object
  *       properties:
- *         Parent_GUID:
- *           type: string
+ *         ParentID:
+ *           type: int
  *           description: The public id of the parent client if applicable
  *         Name:
  *           type: string
@@ -155,7 +155,7 @@ const yup = require('yup');
  *           default: false
  *           description: Whether or not the client will receive a bulk bill for all related children
  *       example:
- *         Parent_GUID: 8DD82A1A-105C-4FED-B157-AE18684EECC1
+ *         ParentID: 101
  *         Name: zAdena
  *         Status: Active
  *         ERPID: 1234
@@ -175,11 +175,11 @@ const yup = require('yup');
  *     DeleteClientsResponse:
  *       type: object
  *       properties:
- *         GUID:
- *           type: string
+ *         ID:
+ *           type: int
  *           description: The public id of the client
- *         Parent_GUID:
- *           type: string
+ *         ParentID:
+ *           type: int
  *           description: The public id of the parent client if applicable
  *         Status:
  *           type: string
@@ -189,8 +189,8 @@ const yup = require('yup');
  *           format: int64
  *           description: The clientid inside of the ERP system 
  *       example:
- *         GUID: DE33BA44-DBD3-4B52-9A7E-0A031B8872C7
- *         Parent_GUID: 8DD82A1A-105C-4FED-B157-AE18684EECC1
+ *         ID: 9999
+ *         ParentID: 101
  *         Status: Inactive
  *         ERPID: 1234
  */
@@ -201,11 +201,11 @@ module.exports = yup.object().shape({
             Parent_GUID: yup.string().uuid(),
             Name: yup.string().trim().required('ClientName is a required field.'),
             Active: yup.boolean().required().default(false),
-            ErpID: yup.number().integer().default(0),
-            ErpParentID: yup.number().integer().default(0),
-            ErpCode: yup.string().trim().default('0'),
-            ErpSvcCode: yup.string().trim().default('0'),
-            ErpPostageCode: yup.string().trim().default('0'),
+            ERPID: yup.number().integer().default(0),
+            ERPParentID: yup.number().integer().default(0),
+            ERPCode: yup.string().trim().default('0'),
+            ERPSvcsCode: yup.string().trim().default('0'),
+            ERPPostageCode: yup.string().trim().default('0'),
             Type: yup.string()
                 .oneOf(['DirectClient', 'ChannelPartner', 'NonProfit', 'AdHoc'])
                 .default('DirectClient')
@@ -214,7 +214,7 @@ module.exports = yup.object().shape({
                 .oneOf(['NET10', 'NET30', 'NET60', 'NET90'])
                 .default('NET30')
                 .required('Please enter NET10, NET30, NET60, or NET90.'),
-            PostageCost: yup.number().default(0.481),
+            PostageCost: yup.number().default(0.497),
             PostagePrice: yup.number().default(0.510),
             AllInOneInvoicing: yup.boolean().default(false),
             ZeroSellHiding: yup.boolean().default(true),
