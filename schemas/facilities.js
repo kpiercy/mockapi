@@ -9,7 +9,7 @@ module.exports = yup
   .shape({
     Facilities: yup.array().of(
       yup.object().shape({
-        Job_GUID: yup.string().uuid().required(),
+        JobID: yup.number().integer().required(),
         Facility: yup.string().trim().required(),
         Active: yup.boolean().default(false),
         MinimumBalance: yup.number().default(0.0),
