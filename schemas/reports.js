@@ -3,7 +3,7 @@ const yup = require('yup')
 module.exports = yup.object().shape({
   Reports: yup.array().of(
     yup.object().shape({
-      Spec_GUID: yup.string().uuid().trim().required('Spec_GUID is required.'),
+      SpecID: yup.number().integer().required('SpecID is required.'),
       SummaryReport: yup
         .boolean()
         .default(false)
