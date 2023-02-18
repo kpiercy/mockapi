@@ -5,7 +5,7 @@ const phoneRegExp = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
 module.exports = yup.object().shape({
   Jobs: yup.array().of(
     yup.object().shape({
-      Client_GUID: yup.string().uuid().required('Client_GUID is required for Job'),
+      ClientID: yup.number().integer().required('ClientID is required for Job'),
       Name: yup.string().trim().required('Name is required for Job'),
       RootPath: yup.string().trim().required('RootPath is required'),
       Workflows: yup.object().shape({
@@ -140,7 +140,10 @@ module.exports = yup.object().shape({
       Contacts: yup.array().of(
         yup.object().shape({
           Active: yup.boolean().default(true),
-          Type: yup.string().uuid().required('Type is required for Contacts'),
+          Type: yup
+            .number()
+            .oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+            .required('Type is required for Returns'),
           FirstName: yup.string().required(),
           LastName: yup.string().required(),
           PhoneNumber: yup
