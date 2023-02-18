@@ -5,7 +5,7 @@ module.exports = yup.object()
 .shape({
     Contracts: yup.array().of(
         yup.object().shape({
-            Client_GUID: yup.string().uuid().required('Client_GUID is required.'),
+            ClientID: yup.number().integer().required('ClientID is required.'),
             DatePresented: yup.date().default(() => new Date()),
             DateSigned: yup.date().default(() => new Date()),
             EliteRep1: yup.string().default('EB').required('EliteRep1 is required.'),
