@@ -9,6 +9,8 @@ const urlRegExp =
     .shape({
       Specs: yup.array().of(
         yup.object().shape({
+            JobID: yup.number().integer().required('JobID is required'),
+            FacilityID: yup.number().integer().required('FacilityID is required'),
             Software: yup.string().trim(),
             APIAvailable: yup.boolean().default(false),
             APIDocumentation: yup
