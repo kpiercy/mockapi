@@ -60,11 +60,7 @@ router.use('/:clientid/jobs', publimiter, authenticateToken, authAccess, authIP,
   *               type: array
   *               items:
   *                 $ref: '#/components/schemas/Client'
-  *       400:
-  *         description: Bad request
   */
-
-
 router.post('/', publimiter, authenticateToken, authAccess, authIP, authLvl, validateDto(clientDto), dboperations.clients_create)
 
 /**
@@ -78,7 +74,7 @@ router.post('/', publimiter, authenticateToken, authAccess, authIP, authLvl, val
  *        - in: path
  *          name: clientid
  *          schema: 
- *              type: string
+ *              type: int
  *          required: true
  *          description: ClientID of data to retrieve
  *        - in: query
@@ -125,7 +121,7 @@ router.get('/:clientid', publimiter, authenticateToken, authAccess, authIP, chec
  *        - in: path
  *          name: clientid
  *          schema:
- *              type: string
+ *              type: int
  *          required: true
  *          description: ClientID of client to update
  *      responses:
@@ -153,7 +149,7 @@ router.patch('/:clientid', publimiter, authenticateToken, authAccess, authIP, au
  *        - in: path
  *          name: clientid
  *          schema:
- *              type: string
+ *              type: int
  *          required: true
  *          description: ClientID of client to delete
  *      responses:
