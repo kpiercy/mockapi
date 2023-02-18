@@ -6,8 +6,8 @@ module.exports = yup
   .shape({
     Prices: yup.array().of(
       yup.object().shape({
-        Contract_GUID: yup.string().uuid().required('Contract_GUID is required'),
-        Service_GUID: yup.string().uuid().required('Service_GUID is required'),
+        ContractID: yup.number().integer().required('ContractID is required'),
+        ServiceID: yup.number().integer().required('ServiceID is required'),
         ItemPrice: yup.number().default(0.00)
       })
     ),
