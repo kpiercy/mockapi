@@ -78,7 +78,30 @@ router.use(pubip().getIpInfoMiddleware);
  */
 router.get("/:chartid", checkReach, dboperations.one_chart);
 
-//PatchOne
+ /**
+  * @swagger
+  * /clients/{clientid}/jobs/{jobid}/facilities/{facilityid}/specs/{specid}/charts/{chartid}:
+  *   patch:
+  *     summary: Use to update a chart
+  *     tags: [Charts]
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: array
+  *             items:
+  *               $ref: '#/components/schemas/UpdateChartBody'
+  *     responses:
+  *       200:
+  *         description: Updated chart
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: array
+  *               items:
+  *                 $ref: '#/components/schemas/Charts'
+  */
 router.patch("/:chartid", checkReach, dboperations.update_chart);
 
  /**

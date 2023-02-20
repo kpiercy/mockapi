@@ -48,6 +48,22 @@ const yup = require('yup')
  *         SourceField: chart_source 
  *         ConsumptionText: consumption_descriptor
  *         UsageField: current_usage
+ *     UpdateChartBody:
+ *       type: object
+ *       properties:
+ *         SourceField:
+ *           type: string
+ *           description: The source field for the chart data
+ *         ConsumptionText:
+ *           type: int
+ *           description: The consumption text to be displayed on the chart
+ *         UsageField:
+ *           type: int
+ *           description: The field of the file that contains current usage
+ *       example:
+ *         SourceField: chart_source
+ *         ConsumptionText: consumption_descriptor
+ *         UsageField: current_usage
  *     DeleteChartResponse:
  *       type: object
  *       properties:
