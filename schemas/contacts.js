@@ -61,6 +61,7 @@ const phoneRegExp = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
  *           type: string
  *           description: Contacts email address
  *       example:
+ *         JobID: 101
  *         Active: true
  *         ContactType: StmtProcessing
  *         FirstName: Bobby
