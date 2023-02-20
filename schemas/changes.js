@@ -130,6 +130,46 @@ const yup = require('yup')
  *         TemporaryChange: true
  *         StartDate: 2023-05-01
  *         EndDate: 2023-05-30
+ *     UpdateChange:
+ *       type: object
+ *       properties:
+ *         Status:
+ *           type: int
+ *           description: The status of the change
+ *         ChangeType:
+ *           type: int
+ *           description: The public id of the change type being requested
+ *         FacilitySpecific:
+ *           type: boolean
+ *           description: Whether the change request is facility specific
+ *         FacilityID:
+ *           type: string
+ *           description: The public FacilityID for which the change should be made
+ *         DueDate:
+ *           type: string
+ *           description: The date the change should be implemented by
+ *         EstimatedHours:
+ *           type: number
+ *           description: The estimated hours for completion
+ *         TemporaryChange:
+ *           type: boolean
+ *           description: Whether the change being requested is temporary and should revert to Job defaults after specific date
+ *         StartDate:
+ *           type: string
+ *           description: The start date of any temporary change
+ *         EndDate:
+ *           type: string
+ *           description: The ending date of any temporary change
+ *       example:
+ *         Status: 2
+ *         ChangeType: 3
+ *         FacilitySpecific: true
+ *         FacilityID: 222
+ *         DueDate: 2023-05-01
+ *         EstimatedHours: 3
+ *         TemporaryChange: true
+ *         StartDate: 2023-05-01
+ *         EndDate: 2023-05-30
  *     DeleteChangeResponse:
  *       type: object
  *       properties:

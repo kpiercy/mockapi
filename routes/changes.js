@@ -101,44 +101,30 @@ router.get('/', checkReach, dboperations.all_changes)
  */
 router.get('/:changeid', checkReach, dboperations.one_change)
 
-/**
- * @swagger
- * /clients/{clientid}/jobs/{jobid}/changes/{changeid}:
- *  patch:
- *      summary: Use to update change by id
- *      tags: [Changes]
- *      description: Update a change entry
- *      parameters:
- *        - in: path
- *          name: clientid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ClientID of data to update
- *        - in: path
- *          name: jobid
- *          schema: 
- *              type: int
- *          required: true
- *          description: JobID of data to update
- *        - in: path
- *          name: changeid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ChangeID of data to update
- *      responses:
- *          200:
- *              description: Updated change record
- *              content: 
- *                  application/json:
- *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Changes'
- *          404:
- *              description: Change record was not found
- */
+ /**
+  * @swagger
+  * /clients/{clientid}/jobs/{jobid}/changes:
+  *   patch:
+  *     summary: Use to update a change request
+  *     tags: [Changes]
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: array
+  *             items:
+  *               $ref: '#/components/schemas/UpdateChange'
+  *     responses:
+  *       200:
+  *         description: Updated change request
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: array
+  *               items:
+  *                 $ref: '#/components/schemas/Changes'
+  */
 router.patch('/:changeid', checkReach, dboperations.update_change)
 
  /**
