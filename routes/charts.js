@@ -65,14 +65,17 @@ router.use(pubip().getIpInfoMiddleware);
  *          required: true
  *          description: ChartID of data to find
  *      responses:
- *          202:
+ *          200:
  *              description: Found chart
  *              content: 
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Charts'
+ *                          type: object
+ *                          properties:
+ *                            Charts:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Charts'
  *          404:
  *              description: Chart record was not found
  */
@@ -84,23 +87,62 @@ router.get("/:chartid", checkReach, dboperations.one_chart);
   *   patch:
   *     summary: Use to update a chart
   *     tags: [Charts]
+  *     parameters:
+  *       - in: path
+  *         name: clientid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: ClientID of data to find
+  *       - in: path
+  *         name: jobid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: JobID of data to find
+  *       - in: path
+  *         name: facilityid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: FacilityID of data to find
+  *       - in: path
+  *         name: specid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: SpecID of data to find
+  *       - in: path
+  *         name: chartid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: ChartID of data to find
   *     requestBody:
   *       required: true
   *       content:
   *         application/json:
   *           schema:
-  *             type: array
-  *             items:
-  *               $ref: '#/components/schemas/UpdateChartBody'
+  *             type: object
+  *             properties:
+  *               Charts:
+  *                 type: array
+  *                 items:
+  *                   $ref: '#/components/schemas/UpdateChartBody'
   *     responses:
   *       200:
   *         description: Updated chart
   *         content:
   *           application/json:
   *             schema:
-  *               type: array
-  *               items:
-  *                 $ref: '#/components/schemas/Charts'
+  *               type: object
+  *               properties:
+  *                 Charts:
+  *                   type: array
+  *                   items:
+  *                     $ref: '#/components/schemas/Charts'
+  *       404:
+  *         description: Not found
   */
 router.patch("/:chartid", checkReach, dboperations.update_chart);
 
@@ -130,56 +172,58 @@ router.patch("/:chartid", checkReach, dboperations.update_chart);
   */
 router.post("/", checkReach, authLvl, dboperations.create_chart);
 
-/**
- * @swagger
- * /clients/{clientid}/jobs/{jobid}/facilities/{facilityid}/specs/{specid}/charts/{chartid}:
- *  delete:
- *      summary: Use to delete chart by id
- *      tags: [Charts]
- *      description: Delete a chart entry
- *      parameters:
- *        - in: path
- *          name: clientid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ClientID of data to delete
- *        - in: path
- *          name: jobid
- *          schema: 
- *              type: int
- *          required: true
- *          description: JobID of data to delete
- *        - in: path
- *          name: facilityid
- *          schema: 
- *              type: int
- *          required: true
- *          description: FacilityID of data to delete
- *        - in: path
- *          name: specid
- *          schema: 
- *              type: int
- *          required: true
- *          description: SpecID of data to delete
- *        - in: path
- *          name: chartid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ChartID of data to delete
- *      responses:
- *          202:
- *              description: Deleted chart
- *              content: 
- *                  application/json:
- *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Charts'
- *          404:
- *              description: Chart record was not found
- */
+ /**
+  * @swagger
+  * /clients/{clientid}/jobs/{jobid}/facilities/{facilityid}/specs/{specid}/charts/{chartid}:
+  *   delete:
+  *     summary: Use to delete a chart
+  *     tags: [Charts]
+  *     parameters:
+  *       - in: path
+  *         name: clientid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: ClientID of data to find
+  *       - in: path
+  *         name: jobid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: JobID of data to find
+  *       - in: path
+  *         name: facilityid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: FacilityID of data to find
+  *       - in: path
+  *         name: specid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: SpecID of data to find
+  *       - in: path
+  *         name: chartid
+  *         schema: 
+  *             type: int
+  *         required: true
+  *         description: ChartID of data to find
+  *     responses:
+  *       202:
+  *         description: Deleted chart entry
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 Charts:
+  *                   type: array
+  *                   items:
+  *                     $ref: '#/components/schemas/DeleteChartResponse'
+  *       404:
+  *         description: Not found
+  */
 router.delete("/:chartid", checkReach, authLvl, dboperations.delete_chart);
 
 module.exports = router;
