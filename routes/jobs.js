@@ -21,6 +21,7 @@ const processRoutes = require('./processes')
 const workflowRoutes = require('./workflows')
 const facilityRoutes = require('./facilities')
 const orderRoutes = require('./orders')
+const changeRoutes = require('./changes')
 
 //controller
 const dboperations = require('../controllers/jobs')
@@ -40,6 +41,7 @@ router.use('/:jobid/orbipays', orbipayRoutes) //convert to be a job of Client ra
 router.use('/:jobid/proofs', proofRoutes)
 router.use('/:jobid/processes', processRoutes)
 router.use('/:jobid/workflows', workflowRoutes)
+router.use('/:jobid/changes', changeRoutes)
 
 /**
  * @swagger
