@@ -188,14 +188,61 @@ module.exports = yup
   .object()
   .required()
   .shape({
-    Charts: yup.array().of(
+    Changes: yup.array().of(
       yup.object().shape({
-        SpecID: yup.number().integer().required('SpecID is required.'),
-        SourceField: yup.string().required('SourceField for the change is required'),
-        ConsumptionText: yup
-          .string()
-          .required('Consumption Text to be displayed with the change is required.'),
-        UsageField: yup.string().required('Usage field for the change is required'),
+        JobID: yup.number().integer().required('SpecID is required.'),
+        Status: yup.number().integer().default(1),
+        RequestedBy: yup.number().integer().required('Requesting users id is required'),
+        ChangeType: yup.number().integer().default(1),
+        FacilitySpecific: yup.boolean().default(false),
+        FacilityID: yup
+          .number()
+          .integer()
+          .nullable()
+          .when('FacilitySpecific', {
+            is: true,
+            then: yup
+              .number()
+              .integer()
+              .required('FacilityID is required when FacilitySpecific is true'),
+            otherwise: yup
+              .number()
+              .integer()
+              .nullable()
+              .default(null),
+          }),
+        DueDate: yup.date(),
+        Description: yup.string().required('A simple explanation of the changes being requested is required'),
+        ProofRequested: yup.boolean().default(false),
+        Attachment: yup.string().nullable(),
+        EstimatedHours: yup.number().default(1),
+        TemporaryChange: yup.boolean().default(false),
+        StartDate: yup
+            .string()
+            .nullable()
+            .when('TemporaryChange', {
+              is: true,
+              then: yup
+                .string()
+                .required('StartDate is required when TemporaryChange is true'),
+              otherwise: yup
+                .string()
+                .nullable()
+                .default(null),
+            }),
+        EndDate: yup
+            .string()
+            .nullable()
+            .when('TemporaryChange', {
+              is: true,
+              then: yup
+                .string()
+                .required('EndDate is required when TemporaryChange is true'),
+              otherwise: yup
+                .string()
+                .nullable()
+                .default(null),
+            })
       })
-    ),
+    )
   })
