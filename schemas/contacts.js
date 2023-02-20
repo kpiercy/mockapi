@@ -1,4 +1,5 @@
 const yup = require('yup')
+const phoneRegExp = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
 /**
  * @swagger
@@ -38,6 +39,9 @@ const yup = require('yup')
  *     CreateContactsBody:
  *       type: object
  *       properties:
+ *         JobID:
+ *           type: int
+ *           description: JobID for the contact to be created for
  *         Active:
  *           type: boolean
  *           description: Whether the contact is active or not
@@ -104,3 +108,25 @@ const yup = require('yup')
  *         ID: 9999
  *         Active: false
  */
+
+module.exports = yup
+  .object()
+  .required()
+  .shape({
+    Contacts: yup.array().of(
+      yup.object().shape({
+        JobID: yup.number().integer().required('JobID is required.'),
+        Active: yup
+          .boolean()
+          .default(false)
+          .required('Active is required, default to false otherwise.'),
+        ContactType: yup.number().integer().required('ContactType is required'),
+        FirstName: yup.string().required('FirstName is required'),
+        LastName: yup.string().required('LastName is required'),
+        Phone: yup.string()
+            .matches(phoneRegExp, 'Please enter properly formatted phone number')
+            .nullable(),
+        Email: yup.email().required('Email is required')
+      })
+    ),
+  })
