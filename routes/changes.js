@@ -19,19 +19,192 @@ const dboperations = require('../controllers/changes')
 router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 
-//get all changes for this job
-router.get("/", checkReach, dboperations.all_changes);
+ /**
+  * @swagger
+  * tags:
+  *   name: Changes
+  *   description: 
+  */
 
-//get single change for this job by id
+
+/**
+ * @swagger
+ * /clients/{clientid}/jobs/{jobid}/changes:
+ *  get:
+ *      summary: Use to find changes by jobid
+ *      tags: [Changes]
+ *      description: Find changes by job
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *      responses:
+ *          200:
+ *              description: Found change records
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Changes'
+ *          404:
+ *              description: Change record was not found
+ */
+router.get('/', checkReach, dboperations.all_changes)
+
+/**
+ * @swagger
+ * /clients/{clientid}/jobs/{jobid}/changes/{changeid}:
+ *  get:
+ *      summary: Use to find change by id
+ *      tags: [Changes]
+ *      description: Find a chart entry
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *        - in: path
+ *          name: changeid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ChangeID of data to find
+ *      responses:
+ *          200:
+ *              description: Found change record
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Changes'
+ *          404:
+ *              description: Change record was not found
+ */
 router.get('/:changeid', checkReach, dboperations.one_change)
 
-//update existing based on provided fields or create if not found
+/**
+ * @swagger
+ * /clients/{clientid}/jobs/{jobid}/changes/{changeid}:
+ *  patch:
+ *      summary: Use to update change by id
+ *      tags: [Changes]
+ *      description: Update a change entry
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to update
+ *        - in: path
+ *          name: jobid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: JobID of data to update
+ *        - in: path
+ *          name: changeid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ChangeID of data to update
+ *      responses:
+ *          200:
+ *              description: Updated change record
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Changes'
+ *          404:
+ *              description: Change record was not found
+ */
 router.patch('/:changeid', checkReach, dboperations.update_change)
 
-//create new change by job
+ /**
+  * @swagger
+  * /clients/{clientid}/jobs/{jobid}/changes:
+  *   post:
+  *     summary: Use to create one or more changes
+  *     tags: [Changes]
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: array
+  *             items:
+  *               $ref: '#/components/schemas/CreateChangeBody'
+  *     responses:
+  *       200:
+  *         description: List of created changes
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: array
+  *               items:
+  *                 $ref: '#/components/schemas/Changes'
+  */
 router.post('/', checkReach, authLvl, dboperations.create_change)
 
-//delete change for this job
+/**
+ * @swagger
+ * /clients/{clientid}/jobs/{jobid}/changes/{changeid}:
+ *  delete:
+ *      summary: Use to delete change by id
+ *      tags: [Changes]
+ *      description: Delete a change entry
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *        - in: path
+ *          name: changeid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ChangeID of data to find
+ *      responses:
+ *          200:
+ *              description: Found change record
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/DeleteChangeResponse'
+ *          404:
+ *              description: Change record was not found
+ */
 router.delete('/:changeid', checkReach, authLvl, dboperations.delete_change)
 
 module.exports = router
