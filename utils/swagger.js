@@ -4,6 +4,7 @@ const { version } = require('../package.json')
 const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
 
 const swaggerOptions = {
+  failOnErrors: true,
   definition: {
     openapi: '3.0.0',
     info: {
@@ -30,11 +31,11 @@ const swaggerOptions = {
       ],
       servers: [
         {
-          url: 'http://localhost:${port}/api/v1/docs',
+          url: 'http://localhost:5000/',
           description: 'DEV',
         },
         {
-          url: 'https://eliteps-rest.azurewebsites.net/api/v1',
+          url: 'https://eliteps-rest.azurewebsites.net/',
           description: 'PROD',
         },
       ],
