@@ -21,153 +21,102 @@ router.use(pubip().getIpInfoMiddleware);
 
 /**
  * @swagger
- *   /clients/{clientid}/invoices/{invoiceid}/credits:
- *     get:
- *       tags:
- *         - Credits
- *       summary: Get all credits by invoiceid
- *       description: Get all credits by invoiceid
- *       operationId: getAllCreditsByInvoiceid
- *       requestBody:
- *         content:
- *           text/plain:
- *             example: ''
- *       responses:
- *         '200':
- *           description: '200'
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   Credits:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         Amount:
- *                           type: number
- *                           example: 25
- *                         AppliedToCustomer:
- *                           type: string
- *                           example: zAdena
- *                         CreditPercentage:
- *                           type: number
- *                           example: 0
- *                         GUID:
- *                           type: string
- *                           example: 6355B3EF-24DC-4556-B705-4BA3CB23DBF6
- *                         Invoice_GUID:
- *                           type: string
- *                           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber:
- *                           type: string
- *                           example: '456789'
- *                     example:
- *                       - Amount: 25
- *                         AppliedToCustomer: zAdena
- *                         CreditPercentage: 0
- *                         GUID: 6355B3EF-24DC-4556-B705-4BA3CB23DBF6
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *                       - Amount: 25
- *                         AppliedToCustomer: zAdena
- *                         CreditPercentage: 0
- *                         GUID: 32421F30-5AEA-4844-AF6A-24FE516B01E7
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *                       - Amount: 25
- *                         AppliedToCustomer: some other customer
- *                         CreditPercentage: 0
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *               examples:
- *                 '200':
- *                   value:
- *                     Credits:
- *                       - Amount: 25
- *                         AppliedToCustomer: zAdena
- *                         CreditPercentage: 0
- *                         GUID: 6355B3EF-24DC-4556-B705-4BA3CB23DBF6
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *                       - Amount: 25
- *                         AppliedToCustomer: zAdena
- *                         CreditPercentage: 0
- *                         GUID: 32421F30-5AEA-4844-AF6A-24FE516B01E7
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *                       - Amount: 25
- *                         AppliedToCustomer: some other customer
- *                         CreditPercentage: 0
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
+ * /clients/{clientid}/invoices/{invoiceid}/credits:
+ *  get:
+ *      summary: Get all credits by invoiceid
+ *      tags: [Credits]
+ *      description: Find all credits by invoiceid
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: invoiceid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: InvoiceID of data to find
+ *        - in: path
+ *          name: paginate
+ *          schema: 
+ *              type: string
+ *              example: true
+ *          required: false
+ *          description: Whether to paginate the results or not
+ *        - in: path
+ *          name: page
+ *          schema: 
+ *              type: string
+ *              example: 1
+ *          required: false
+ *          description: Which page to retrieve/currently viewing
+ *        - in: path
+ *          name: limit
+ *          schema: 
+ *              type: string
+ *              example: 1
+ *          required: false
+ *          description: Limit response to this amount per page
+ *      responses:
+ *          200:
+ *              description: Found credits
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              Credits:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Credit'
+ *          404:
+ *              description: No credits found for invoiceid
  */
 router.get("/", checkReach, dboperations.all_credits);
 
 /**
  * @swagger
- *   /clients/{clientid}/invoices/{invoiceid}/credits/{creditid}:
- *     get:
- *       tags:
- *         - Credits
- *       summary: Get credit by creditid
- *       description: Get credit by creditid
- *       operationId: getCreditByCreditid
- *       requestBody:
- *         content:
- *           text/plain:
- *             example: ''
- *       responses:
- *         '200':
- *           description: '200'
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   Credits:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         Amount:
- *                           type: number
- *                           example: 25
- *                         AppliedToCustomer:
- *                           type: string
- *                           example: some other customer
- *                         CreditPercentage:
- *                           type: number
- *                           example: 0
- *                         GUID:
- *                           type: string
- *                           example: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID:
- *                           type: string
- *                           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber:
- *                           type: string
- *                           example: '456789'
- *                     example:
- *                       - Amount: 25
- *                         AppliedToCustomer: some other customer
- *                         CreditPercentage: 0
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *               examples:
- *                 '200':
- *                   value:
- *                     Credits:
- *                       - Amount: 25
- *                         AppliedToCustomer: some other customer
- *                         CreditPercentage: 0
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
+ * /clients/{clientid}/invoices/{invoiceid}/credits/{creditid}:
+ *  get:
+ *      summary: Get credit by id
+ *      tags: [Credits]
+ *      description: Find credit by id
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: invoiceid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: InvoiceID of data to find
+ *        - in: path
+ *          name: creditid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: CreditID of data to find
+ *      responses:
+ *          200:
+ *              description: Found credit
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              Credits:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Credit'
+ *          404:
+ *              description: No credit found by id
  */
 router.get("/:creditid", checkReach, dboperations.one_credit);
 
@@ -175,108 +124,52 @@ router.get("/:creditid", checkReach, dboperations.one_credit);
  * @swagger
  *   /clients/{clientid}/invoices/{invoiceid}/credits/{creditid}:
  *     patch:
- *       tags:
- *         - Credits
- *       summary: Update credit by creditid
- *       description: Update credit by creditid
- *       operationId: updateCreditByCreditid
- *       requestBody:
- *         content:
- *           application/json:
+ *         summary: Update credit by id
+ *         tags: [Credits]
+ *         parameters:
+ *           - name: clientid
+ *             in: path
+ *             required: true
  *             schema:
- *               type: object
- *               properties:
- *                 Credits:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       Amount:
- *                         type: number
- *                         example: 0
- *                       OrderNumber:
- *                         type: string
- *                         example: '188999'
- *                       Percentage:
- *                         type: number
- *                         example: 25
- *                   example:
- *                     - Amount: 0
- *                       OrderNumber: '188999'
- *                       Percentage: 25
- *             example:
- *               Credits:
- *                 - Amount: 0
- *                   OrderNumber: '188999'
- *                   Percentage: 25
- *       responses:
- *         '200':
- *           description: '200'
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   Credits:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         Amount:
- *                           type: number
- *                           example: 0
- *                         AppliedTo:
- *                           type: string
- *                           example: some other customer
- *                         GUID:
- *                           type: string
- *                           example: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID:
- *                           type: string
- *                           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber:
- *                           type: string
- *                           example: '188999'
- *                         Percentage:
- *                           type: number
- *                           example: 25
- *                     example:
- *                       - Amount: 0
- *                         AppliedTo: some other customer
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '188999'
- *                         Percentage: 25
- *               examples:
- *                 '200':
- *                   value:
- *                     Credits:
- *                       - Amount: 0
- *                         AppliedTo: some other customer
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '188999'
- *                         Percentage: 25
- *     parameters:
- *       - name: clientid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: de33ba44-dbd3-4b52-9a7e-0a031b8872c7
- *         description: can be individual or parent client id
- *       - name: invoiceid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *       - name: creditid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: 0b431641-97d3-4858-9e14-98c1eb196d13
+ *               type: int
+ *               example: 101
+ *           - name: invoiceid
+ *             in: path
+ *             required: true
+ *             schema:
+ *               type: int
+ *               example: 300
+ *           - name: creditid
+ *             in: path
+ *             required: true
+ *             schema:
+ *               type: int
+ *               example: 35
+ *         requestBody:
+ *             required: true
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                         type: object
+ *                         properties:
+ *                             Credits:
+ *                                 type: array
+ *                                 items:
+ *                                     $ref: '#/components/schemas/UpdateCreditsBody'
+ *         responses:
+ *             200:
+ *                 description: Updated credit
+ *                 content: 
+ *                     application/json:
+ *                         schema:
+ *                             type: object
+ *                             properties:
+ *                                 Credits:
+ *                                     type: array
+ *                                     items:
+ *                                         $ref: '#/components/schemas/Credit'
+ *             404:
+ *                 description: Credit record was not found
  */
 router.patch("/:creditid", checkReach, dboperations.update_credit);
 
@@ -284,112 +177,44 @@ router.patch("/:creditid", checkReach, dboperations.update_credit);
  * @swagger
  *   /clients/{clientid}/invoices/{invoiceid}/credits:
  *     post:
- *       tags:
- *         - Credits
- *       summary: Create credits for invoice
- *       description: Create credits for invoice
- *       operationId: createCreditsForInvoice
- *       requestBody:
- *         content:
- *           application/json:
+ *         summary: Create one or more credits
+ *         tags: [Credits]
+ *         parameters:
+ *           - name: clientid
+ *             in: path
+ *             required: true
  *             schema:
- *               type: object
- *               properties:
- *                 Credits:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       Amount:
- *                         type: number
- *                         example: 25
- *                       ApplyToCustomer:
- *                         type: string
- *                         example: zAdena
- *                       CreditPercentage:
- *                         type: number
- *                         example: 0
- *                       Invoice_GUID:
- *                         type: string
- *                         example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                       OrderNumber:
- *                         type: string
- *                         example: '456789'
- *                   example:
- *                     - Amount: 25
- *                       ApplyToCustomer: zAdena
- *                       CreditPercentage: 0
- *                       Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                       OrderNumber: '456789'
- *             example:
- *               Credits:
- *                 - Amount: 25
- *                   ApplyToCustomer: zAdena
- *                   CreditPercentage: 0
- *                   Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                   OrderNumber: '456789'
- *       responses:
- *         '201':
- *           description: '200'
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   Credits:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         Amount:
- *                           type: number
- *                           example: 25
- *                         AppliedToCustomer:
- *                           type: string
- *                           example: zAdena
- *                         CreditPercentage:
- *                           type: number
- *                           example: 0
- *                         GUID:
- *                           type: string
- *                           example: 6355B3EF-24DC-4556-B705-4BA3CB23DBF6
- *                         Invoice_GUID:
- *                           type: string
- *                           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber:
- *                           type: string
- *                           example: '456789'
- *                     example:
- *                       - Amount: 25
- *                         AppliedToCustomer: zAdena
- *                         CreditPercentage: 0
- *                         GUID: 6355B3EF-24DC-4556-B705-4BA3CB23DBF6
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *               examples:
- *                 '200':
- *                   value:
- *                     Credits:
- *                       - Amount: 25
- *                         AppliedToCustomer: zAdena
- *                         CreditPercentage: 0
- *                         GUID: 6355B3EF-24DC-4556-B705-4BA3CB23DBF6
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '456789'
- *     parameters:
- *       - name: clientid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: de33ba44-dbd3-4b52-9a7e-0a031b8872c7
- *         description: can be individual or parent client id
- *       - name: invoiceid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
+ *               type: int
+ *               example: 101
+ *           - name: invoiceid
+ *             in: path
+ *             required: true
+ *             schema:
+ *               type: int
+ *               example: 300
+ *         requestBody:
+ *             required: true
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                         type: object
+ *                         properties:
+ *                             Credits:
+ *                                 type: array
+ *                                 items:
+ *                                     $ref: '#/components/schemas/CreateCreditsBody'
+ *         responses:
+ *             201:
+ *                 description: Created credits
+ *                 content: 
+ *                     application/json:
+ *                         schema:
+ *                             type: object
+ *                             properties:
+ *                                 Credits:
+ *                                     type: array
+ *                                     items:
+ *                                         $ref: '#/components/schemas/Credit'
  */
 router.post("/", checkReach, dboperations.create_credit);
 
@@ -397,63 +222,41 @@ router.post("/", checkReach, dboperations.create_credit);
  * @swagger
  *   /clients/{clientid}/invoices/{invoiceid}/credits/{creditid}:
  *     delete:
- *       tags:
- *         - Credits
- *       summary: Delete credit by creditid
- *       description: Delete credit by creditid
- *       operationId: deleteCreditByCreditid
- *       requestBody:
- *         content:
- *           text/plain:
- *             example: ''
- *       responses:
- *         '200':
- *           description: '200'
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   Credits:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         Active:
- *                           type: boolean
- *                           example: false
- *                         Amount:
- *                           type: number
- *                           example: 0
- *                         GUID:
- *                           type: string
- *                           example: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID:
- *                           type: string
- *                           example: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber:
- *                           type: string
- *                           example: '188999'
- *                         Percentage:
- *                           type: number
- *                           example: 25
- *                     example:
- *                       - Active: false
- *                         Amount: 0
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '188999'
- *                         Percentage: 25
- *               examples:
- *                 '200':
- *                   value:
- *                     Credits:
- *                       - Active: false
- *                         Amount: 0
- *                         GUID: 0B431641-97D3-4858-9E14-98C1EB196D13
- *                         Invoice_GUID: AE069568-FDEB-4B17-BCCA-F8D2248B9BF2
- *                         OrderNumber: '188999'
- *                         Percentage: 25
+ *         summary: Delete credit by id
+ *         tags: [Credits]
+ *         parameters:
+ *           - name: clientid
+ *             in: path
+ *             required: true
+ *             schema:
+ *               type: int
+ *               example: 101
+ *           - name: invoiceid
+ *             in: path
+ *             required: true
+ *             schema:
+ *               type: int
+ *               example: 300
+ *           - name: creditid
+ *             in: path
+ *             required: true
+ *             schema:
+ *               type: int
+ *               example: 35
+ *         responses:
+ *             202:
+ *                 description: Deleted credit
+ *                 content: 
+ *                     application/json:
+ *                         schema:
+ *                             type: object
+ *                             properties:
+ *                                 Credits:
+ *                                     type: array
+ *                                     items:
+ *                                         $ref: '#/components/schemas/DeleteCreditResponse'
+ *             404:
+ *                 description: Credit record was not found
  */
 router.delete("/:creditid", checkReach, authLvl, dboperations.delete_credit);
 

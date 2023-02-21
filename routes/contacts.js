@@ -169,7 +169,7 @@ router.get('/:contactid', checkReach, dboperations.one_contact)
  *                                     items:
  *                                         $ref: '#/components/schemas/Contact'
  *             404:
- *                 description: Chart record was not found
+ *                 description: Contact record was not found
  */
 router.patch('/:contactid', checkReach, dboperations.update_contact)
 
