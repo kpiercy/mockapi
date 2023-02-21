@@ -142,6 +142,17 @@ router.get('/:downloadid', checkReach, dboperations.one_download)
  *             schema:
  *               type: int
  *               example: 35
+ *         requestBody:
+ *             required: true
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                         type: object
+ *                         properties:
+ *                             Downloads:
+ *                                 type: array
+ *                                 items:
+ *                                     $ref: '#/components/schemas/UpdateDownloadsBody'
  *         responses:
  *             200:
  *                 description: Updated download
