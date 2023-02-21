@@ -3,6 +3,459 @@ const phoneRegExp = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 const urlRegExp =
   /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Facility:
+ *       type: object
+ *       properties:
+ *         ID:
+ *           type: int
+ *           description: The public id of the facility
+ *         JobID:
+ *           type: int
+ *           description: The JobID for the facility
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *         Facility:
+ *           type: string
+ *           description: Facility name
+ *         MinimumBalance:
+ *           type: number
+ *           format: double
+ *           description: Minimum balance for statement generation
+ *         InsuranceTransferLanguage:
+ *           type: string
+ *           description: Descriptor to use for insurance transfers
+ *         PatientTransferLanguage:
+ *           type: string
+ *           desciption: Descriptor to use for patient transfers
+ *       example:
+ *         ID: 60
+ *         JobID: 300
+ *         Active: true
+ *         Facility: SomeFacility
+ *         MinimumBalance: 25.50
+ *         InsuranceTransferLanguage: 
+ *         PatientTransferLanguage:
+ *     FacilityWithSpec:
+ *       type: object
+ *       properties:
+ *         ID:
+ *           type: int
+ *           description: The public id of the facility
+ *         JobID:
+ *           type: int
+ *           description: The JobID for the facility
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *         Facility:
+ *           type: string
+ *           description: Facility name
+ *         MinimumBalance:
+ *           type: number
+ *           format: double
+ *           description: Minimum balance for statement generation
+ *         InsuranceTransferLanguage:
+ *           type: string
+ *           description: Descriptor to use for insurance transfers
+ *         PatientTransferLanguage:
+ *           type: string
+ *           desciption: Descriptor to use for patient transfers
+ *         Specs:
+ *           type: object
+ *           properties:
+ *              ID:
+ *                  type: int
+ *                  description: Public id for the facility spec
+ *              Software:
+ *                  type: string
+ *                  description: Software the facility uses
+ *       example:
+ *         ID: 60
+ *         JobID: 300
+ *         Active: true
+ *         Facility: SomeFacility
+ *         MinimumBalance: 25.50
+ *         InsuranceTransferLanguage: 
+ *         PatientTransferLanguage:
+ *         Specs:
+ *              ID: 45
+ *              Software: EPIC
+ *     CreateFacilitiesWithSpecsBody:
+ *       type: object
+ *       properties:
+ *         JobID:
+ *           type: int
+ *           description: The JobID for the facility
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *         Facility:
+ *           type: string
+ *           description: Facility name
+ *         MinimumBalance:
+ *           type: number
+ *           format: double
+ *           description: Minimum balance for statement generation
+ *         InsuranceTransferLanguage:
+ *           type: string
+ *           description: Descriptor to use for insurance transfers
+ *         PatientTransferLanguage:
+ *           type: string
+ *           desciption: Descriptor to use for patient transfers
+ *         Specs:
+ *           type: object
+ *           properties:
+ *              type: object
+ *              properties:
+ *              Software:
+ *                  type: string
+ *                  description: Software the facility uses
+ *              APIAvailable:
+ *                  type: boolean
+ *                  description: Whether the client has an api available to retrieve data
+ *              APIDocumentation:
+ *                  type: string
+ *                  description: Site where client API Docs can be found
+ *              ExtractErrors:
+ *                  type: boolean
+ *                  description: Whether the client wants errors extracted and remainder of file processed
+ *              HoldErrors:
+ *                  type: boolean
+ *                  description: Whether client wants file held with errors and not processed
+ *              CrosswalkProvided:
+ *                  type: boolean
+ *                  description: Whether the client provided a data crosswalk
+ *              DataFileProvided:
+ *                  type: boolean
+ *                  description: Whether client provided a data file
+ *              PDFFileProvided:
+ *                  type: boolean
+ *                  description: Whether client provided pdf file in lieu of data file
+ *              LockboxIntegration:
+ *                  type: boolean
+ *                  description: Whether client has lockbox integration
+ *              LockboxBank:
+ *                  type: string
+ *                  description: Name of bank to be used for lockbox integration
+ *              LockboxAddress:
+ *                  type: string
+ *                  description: City State and ZIP of bank being used for lockbox
+ *              ClientProvidedSpecSheet:
+ *                  type: boolean
+ *                  description: Whether the client provided a spec sheet for the file
+ *              Channels:
+ *                type: object
+ *                properties:
+ *                  AmericanExpressAccepted:
+ *                    type: boolean
+ *                    description: Whether facility accepts AmericanExpress
+ *                  DiscoverAccepted:
+ *                    type: boolean
+ *                    description: Whether facility accepts Discover
+ *                  VisaAccepted:
+ *                    type: boolean
+ *                    description: Whether facility accepts Visa
+ *                  MasterCardAccepted:
+ *                    type: boolean
+ *                    description: Whether facility accepts MasterCard
+ *                  OtherAccepted:
+ *                    type: string
+ *                    description: Other payment form accepted
+ *                  MailPayments:
+ *                    type: boolean
+ *                    description: Whether allows mailing of payments
+ *                  MailTo:
+ *                    type: string
+ *                    description: Where payments should be mailed to
+ *                  PhonePayments:
+ *                    type: boolean
+ *                    description: Whether allows pay by phone
+ *                  PhoneLocal:
+ *                    type: string
+ *                    description: Local phone to call for payments
+ *                  PhoneTollFree:
+ *                    type: string
+ *                    description: Toll free phone for payments
+ *                  IVRPayments:
+ *                    type: boolean
+ *                    description: Whether facility allows payments by IVR
+ *                  IVRPhone:
+ *                    type: string
+ *                    description: Phone number for making IVR payments
+ *                  OnlinePayments:
+ *                    type: boolean
+ *                    description: Whether facility accepts payments online
+ *                  PaySite:
+ *                    type: string
+ *                    description: Site where payments can be made
+ *                  OtherPayChannels:
+ *                    type: string
+ *                    description: Site where payments can be made
+ *              Logos:
+ *                type: object
+ *                properties:
+ *                  Location:
+ *                    type: string
+ *                    description: local location where the file can be found
+ *              Reports:
+ *                type: object
+ *                properties:
+ *                  SummaryReport:
+ *                    type: boolean
+ *                    description: Whether facility gets SummaryReports sent
+ *                  MovesReport:
+ *                    type: boolean
+ *                    description: Whether facility gets MovesReports sent
+ *                  SuppressionReport:
+ *                    type: boolean
+ *                    description: Whether facility gets SuppressionReports sent
+ *                  UndeliverablesReport:
+ *                    type: boolean
+ *                    description: Whether facility gets UndeliverablesReports sent
+ *                  NonCassReport:
+ *                    type: boolean
+ *                    description: Whether facility gets NonCassReports sent
+ *                  FacilityReport:
+ *                    type: boolean
+ *                    description: Whether facility gets FacilityReports sent
+ *                  FacilityPDFs:
+ *                    type: boolean
+ *                    description: Whether facility gets FacilityPDFs sent
+ *                  PrintPDFs:
+ *                    type: boolean
+ *                    description: Whether facility gets PrintPDFs sent
+ *                  AnomalyReport:
+ *                    type: boolean
+ *                    description: Whether facility gets AnomalyReports sent
+ *                  MonthlySummaryReport:
+ *                    type: boolean
+ *                    description: Whether facility gets MonthlySummaryReports sent
+ *       example:
+ *         JobID: 300
+ *         Active: true
+ *         Facility: SomeFacility
+ *         MinimumBalance: 25.50
+ *         InsuranceTransferLanguage: 
+ *         PatientTransferLanguage:
+ *         Specs:
+ *               Software: EPIC
+ *               APIAvailable: true
+ *               APIDocumentation: https://facility.com/api/docs
+ *               ExtractErrors: true
+ *               HoldErrors: false
+ *               DataCrosswalkProvided: true
+ *               DataFileProvided: true
+ *               PDFFileProvided: false
+ *               LockboxIntegration: false
+ *               LockboxBank: 
+ *               LockboxAddress: 
+ *               ClientProvidedSpecSheet: true
+ *               Channels:
+ *                     AmericanExpressAccepted: true
+ *                     VisaAccepted: true
+ *                     MasterCardAccepted: true
+ *                     DiscoverAccepted: true
+ *                     OtherAccepted:
+ *                     MailPayments: true
+ *                     MailTo: 4300 S Madison St, Muncie, IN 47302
+ *                     PhonePayments: true
+ *                     PhoneLocal: 765-347-5555
+ *                     PhoneTollFree: 800-555-1111
+ *                     IVRPayments: false
+ *                     IVRPhone: 
+ *                     OnlinePayments: true
+ *                     PaySite: https://facility.com/payus
+ *                     OtherPayChannels: 
+ *               Reports:
+ *                     SummaryReport: true
+ *                     MovesReport: true
+ *                     Suppressionreport: true
+ *                     UndeliverablesReport: true
+ *                     NonCassReport: true
+ *                     FacilityReport: false
+ *                     FacilityPDFs: false
+ *                     PrintPDFs: false
+ *                     AnomalyReport: true
+ *                     MonthlySummaryReport: false
+ *               Logos:
+ *                     Location: C:\clients\P\PFS_zAdena\Logos\
+ *     CreateFacilityBody:
+ *       type: object
+ *       properties:
+ *         JobID:
+ *           type: int
+ *           description: The JobID for the facility
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *         Facility:
+ *           type: string
+ *           description: Facility name
+ *         MinimumBalance:
+ *           type: number
+ *           format: double
+ *           description: Minimum balance for statement generation
+ *         InsuranceTransferLanguage:
+ *           type: string
+ *           description: Descriptor to use for insurance transfers
+ *         PatientTransferLanguage:
+ *           type: string
+ *           desciption: Descriptor to use for patient transfers
+ *       example:
+ *         JobID: 300
+ *         Active: true
+ *         Facility: SomeFacility
+ *         MinimumBalance: 25.50
+ *         InsuranceTransferLanguage: 
+ *         PatientTransferLanguage:
+ *     UpdateFacilitiesBody:
+ *       type: object
+ *       properties:
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *         Facility:
+ *           type: string
+ *           description: Facility name
+ *         MinimumBalance:
+ *           type: number
+ *           format: double
+ *           description: Minimum balance for statement generation
+ *         InsuranceTransferLanguage:
+ *           type: string
+ *           description: Descriptor to use for insurance transfers
+ *         PatientTransferLanguage:
+ *           type: string
+ *           desciption: Descriptor to use for patient transfers
+ *       example:
+ *         Active: true
+ *         Facility: SomeFacility
+ *         MinimumBalance: 25.50
+ *         InsuranceTransferLanguage: 
+ *         PatientTransferLanguage:
+ *     CreateFacilitiesWithSpecsResponse:
+ *       type: object
+ *       properties:
+ *         ID:
+ *           type: int
+ *           description: The public id of the facility
+ *         JobID:
+ *           type: int
+ *           description: The JobID for the facility
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *         Facility:
+ *           type: string
+ *           description: Facility name
+ *         Specs:
+ *           type: object
+ *           properties:
+ *              type: object
+ *              properties:
+ *              ID:
+ *                  type: int
+ *                  description: SpecID generated during post
+ *              Software:
+ *                  type: string
+ *                  description: Software the facility uses
+ *              APIAvailable:
+ *                  type: boolean
+ *                  description: Whether the client has an api available to retrieve data
+ *              APIDocumentation:
+ *                  type: string
+ *                  description: Site where client API Docs can be found
+ *              ExtractErrors:
+ *                  type: boolean
+ *                  description: Whether the client wants errors extracted and remainder of file processed
+ *              HoldErrors:
+ *                  type: boolean
+ *                  description: Whether client wants file held with errors and not processed
+ *              CrosswalkProvided:
+ *                  type: boolean
+ *                  description: Whether the client provided a data crosswalk
+ *              DataFileProvided:
+ *                  type: boolean
+ *                  description: Whether client provided a data file
+ *              PDFFileProvided:
+ *                  type: boolean
+ *                  description: Whether client provided pdf file in lieu of data file
+ *              LockboxIntegration:
+ *                  type: boolean
+ *                  description: Whether client has lockbox integration
+ *              LockboxBank:
+ *                  type: string
+ *                  description: Name of bank to be used for lockbox integration
+ *              LockboxAddress:
+ *                  type: string
+ *                  description: City State and ZIP of bank being used for lockbox
+ *              ClientProvidedSpecSheet:
+ *                  type: boolean
+ *                  description: Whether the client provided a spec sheet for the file
+ *              Channels:
+ *                type: object
+ *                properties:
+ *                  ID:
+ *                    type: int
+ *                    description: ChannelID generated during post
+ *              Logos:
+ *                type: object
+ *                properties:
+ *                  ID:
+ *                    type: int
+ *                    description: LogoID generated during post
+ *              Reports:
+ *                type: object
+ *                properties:
+ *                  ID:
+ *                    type: int
+ *                    description: ReportReqID generated during post
+ *       example:
+ *         ID: 60
+ *         JobID: 300
+ *         Active: true
+ *         Facility: SomeFacility
+ *         MinimumBalance: 25.50
+ *         InsuranceTransferLanguage: 
+ *         PatientTransferLanguage:
+ *         Specs:
+ *               Software: EPIC
+ *               APIAvailable: true
+ *               APIDocumentation: https://facility.com/api/docs
+ *               ExtractErrors: true
+ *               HoldErrors: false
+ *               DataCrosswalkProvided: true
+ *               DataFileProvided: true
+ *               PDFFileProvided: false
+ *               LockboxIntegration: false
+ *               LockboxBank: 
+ *               LockboxAddress: 
+ *               ClientProvidedSpecSheet: true
+ *               Channels:
+ *                     ID: 40 
+ *               Reports:
+ *                     ID: 97
+ *               Logos:
+ *                     ID: 450
+ *     DeleteFacilityResponse:
+ *       type: object
+ *       properties:
+ *         ID:
+ *           type: int
+ *           description: Public id fo the facility to be deleted
+ *         Active:
+ *           type: boolean
+ *           description: Whether the facility is active or not
+ *       example:
+ *         ID: 60
+ *         Active: false
+ */
+
 module.exports = yup
   .object()
   .required()
@@ -45,7 +498,7 @@ module.exports = yup
               ),
             otherwise: yup.string().nullable(),
           }),
-          LockboxCSZ: yup.string().when(
+          LockboxAddress: yup.string().when(
             "LockboxIntegration",
               {
                 is: true,
@@ -67,6 +520,8 @@ module.exports = yup
             FacilityReport: yup.boolean().default(false),
             FacilityPDFs: yup.boolean().default(false),
             PrintPDFs: yup.boolean().default(false),
+            AnomalyReport: yup.boolean().default(true),
+            MonthlySummaryReport: yup.boolean().default(false),
           }),
           Channels: yup.object().shape({
             AmericanExpress: yup.boolean().default(true),
