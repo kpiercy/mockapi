@@ -53,9 +53,12 @@ router.use(pubip().getIpInfoMiddleware)
  *              content: 
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Changes'
+ *                          type: object 
+ *                          properties:
+ *                              Changes:
+ *                                 type: array
+ *                                 items:
+ *                                    $ref: '#/components/schemas/Changes'
  *          404:
  *              description: Change record was not found
  */
@@ -93,9 +96,12 @@ router.get('/', checkReach, dboperations.all_changes)
  *              content: 
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Changes'
+ *                          type: object 
+ *                          properties:
+ *                              Changes:
+ *                                 type: array
+ *                                 items:
+ *                                    $ref: '#/components/schemas/Changes'
  *          404:
  *              description: Change record was not found
  */
@@ -112,18 +118,24 @@ router.get('/:changeid', checkReach, dboperations.one_change)
   *       content:
   *         application/json:
   *           schema:
-  *             type: array
-  *             items:
-  *               $ref: '#/components/schemas/UpdateChange'
+  *             type: object
+  *             properties:
+  *               Changes:
+  *                 type: array
+  *                 items:
+  *                   $ref: '#/components/schemas/UpdateChange'
   *     responses:
   *       200:
   *         description: Updated change request
   *         content:
   *           application/json:
   *             schema:
-  *               type: array
-  *               items:
-  *                 $ref: '#/components/schemas/Changes'
+  *               type: object
+  *               properties:
+  *                 Changes:
+  *                   type: array
+  *                   items: 
+  *                     $ref: '#/components/schemas/Changes'
   */
 router.patch('/:changeid', checkReach, dboperations.update_change)
 
@@ -138,18 +150,24 @@ router.patch('/:changeid', checkReach, dboperations.update_change)
   *       content:
   *         application/json:
   *           schema:
-  *             type: array
-  *             items:
-  *               $ref: '#/components/schemas/CreateChangeBody'
+  *             type: object
+  *             properties:
+  *               Changes:
+  *                 type: array
+  *                 items:
+  *                   $ref: '#/components/schemas/CreateChangeBody'
   *     responses:
   *       200:
   *         description: List of created changes
   *         content:
   *           application/json:
   *             schema:
-  *               type: array
-  *               items:
-  *                 $ref: '#/components/schemas/Changes'
+  *               type: object
+  *               properties:
+  *                 Changes:
+  *                   type: array
+  *                   items: 
+  *                     $ref: '#/components/schemas/Changes'
   */
 router.post('/', checkReach, authLvl, dboperations.create_change)
 
@@ -185,9 +203,12 @@ router.post('/', checkReach, authLvl, dboperations.create_change)
  *              content: 
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/DeleteChangeResponse'
+ *                          type: object 
+ *                          properties:
+ *                              Changes:
+ *                                 type: array
+ *                                 items:
+ *                                    $ref: '#/components/schemas/Changes'
  *          404:
  *              description: Change record was not found
  */
