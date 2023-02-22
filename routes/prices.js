@@ -20,7 +20,7 @@ const dboperations = require("../controllers/prices");
 //router options and children
 router.use(pubip().getIpInfoMiddleware);
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
-
+ 
 /**
  * @swagger
  * /clients/{clientid}/contracts/{contractid}/prices:

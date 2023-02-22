@@ -24,7 +24,7 @@ const yup = require('yup')
  *           format: double
  *           description: Whether the contract is active or not
  *       example:
- *         ID: 30
+ *         ID: 3100
  *         ClientID: 101
  *         ContractID: 230
  *         Service: Additional Pages
