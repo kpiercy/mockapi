@@ -279,3 +279,30 @@
  *         JobID: 99
  *         Active: false
  */
+
+  module.exports = yup
+    .object()
+    .required()
+    .shape({
+      Processes: yup.array().of(
+        yup.object().shape({
+          JobID: yup.number().integer().required('Client_GUID is required.'),
+          Active: yup.boolean().default(false),
+          ProcessIn: yup.string().required('local directory to ProcessIn is required'),
+          ArchiveTo: yup.string().required('local directory to ArchiveTo is required'),
+          WaitBeforeProcessing: yup.number().integer().default(0),
+          ParseMessage: yup.string().required('ParseMessage is required'),
+          PrintMessage: yup.string().nullable(),
+          MasterEnabled: yup.boolean().default(false),
+          TimeBased: yup.boolean().default(false),
+          TimeRan: yup.string().nullable(),
+          DaysProcessed: yup.number().integer().default(1234567),
+          ReadyForProcessing: yup.boolean().default(false),
+          ChainJob: yup.boolean().default(false),
+          AutomateMoves: yup.boolean().default(false),
+          GoMasterReady: yup.boolean().default(false),
+          RunOncePerDay: yup.boolean().default(false),
+          RanToday: yup.boolean().default(false)
+        })
+      ),
+    })
