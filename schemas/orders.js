@@ -133,3 +133,28 @@ const yup = require('yup')
  *         ID: 9999
  *         Active: false 
  */
+
+
+  module.exports = yup
+    .object()
+    .required()
+    .shape({
+      Orders: yup.array().of(
+        yup.object().shape({
+            JobID: yup.number().integer().required('Client_GUID is required.'),
+            OrderTemplate: yup.string().required('OrderTemplate is required'),
+            CurrentOrder: yup.string().default('0'),
+            TemplateVersionID: yup.number().integer().default(0),
+            BillingType: yup
+                .number()
+                .integer()
+                .required(
+                'BillingType is required, 1 for MailProcessing or 2 for AdditionalPg billing'
+                ),
+            OrdersAutomated: yup.boolean().default(false),
+            PreviousOrder: yup.string().default('0'),
+            NextOrder: yup.string().default('0'),
+            InvoicesAutomated: yup.boolean().default(false)
+        })
+      ),
+    })
