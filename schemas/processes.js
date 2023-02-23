@@ -296,7 +296,7 @@
           MasterEnabled: yup.boolean().default(false),
           TimeBased: yup.boolean().default(false),
           TimeRan: yup.string().nullable(),
-          DaysProcessed: yup.number().integer().default(1234567),
+          DaysProcessed: yup.string().default('1234567'),
           ReadyForProcessing: yup.boolean().default(false),
           ChainJob: yup.boolean().default(false),
           AutomateMoves: yup.boolean().default(false),
