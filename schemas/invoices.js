@@ -141,7 +141,7 @@ const multiEmailRegExp =
  *         StartDate: 2022-12-30 12:00:00'
  *         EndDate: 2023-01-30 12:00:00'
  *         Customer: PFS zAdena
- *         EmailInvoiceTo: gwatson@eliteps.com, lwatson@eliteps.com
+ *         EmailInvoicesTo: gwatson@eliteps.com, lwatson@eliteps.com
  *         TotalStatements: 2.000
  *         TotalNCOA: 2.000
  *         NCOASell: 0.000
@@ -295,7 +295,7 @@ const multiEmailRegExp =
  *         StartDate: 2022-12-30 12:00:00'
  *         EndDate: 2023-01-30 12:00:00'
  *         Customer: PFS zAdena
- *         EmailInvoiceTo: gwatson@eliteps.com, lwatson@eliteps.com
+ *         EmailInvoicesTo: gwatson@eliteps.com, lwatson@eliteps.com
  *         TotalStatements: 2.000
  *         TotalNCOA: 2.000
  *         NCOASell: 0.000
@@ -441,7 +441,7 @@ const multiEmailRegExp =
  *         StartDate: 2022-12-30 12:00:00'
  *         EndDate: 2023-01-30 12:00:00'
  *         Customer: PFS zAdena
- *         EmailInvoiceTo: gwatson@eliteps.com, lwatson@eliteps.com
+ *         EmailInvoicesTo: gwatson@eliteps.com, lwatson@eliteps.com
  *         TotalStatements: 2.000
  *         TotalNCOA: 2.000
  *         NCOASell: 0.000
@@ -489,6 +489,34 @@ const multiEmailRegExp =
           OrderID: yup.number().integer().required('OrderID is required.'),
           OrderNumber: yup.string().required('OrderNumber is required.'),
           Project: yup.string().required('Project is required.'),
+          StartDate: yup.date().required('StartDate is required'),
+          EndDate: yup.date().required('EndDate is required'),
+          Customer: yup.string().required('Customer name is required'),
+          EmailInvoicesTo: yup
+            .string()
+            .matches(multiEmailRegExp, 'Please enter valid emails separated by commas'),
+          TotalStatements: yup.number().positive().required('TotalStatements is required'),
+          TotalNCOA: yup.number().positive().default(0.0),
+          NCOASell: yup.number().positive().default(0.0),
+          TotalSimplex: yup.number().positive().default(0.0),
+          SimplexSell: yup.number().positive().default(0.0),
+          TotalDuplex: yup.number().positive().default(0.0),
+          DuplexSell: yup.number().positive().default(0.0),
+          TotalAddtlpgs: yup.number().positive().default(0.0),
+          AddtlpgsSell: yup.number().positive().default(0.0),
+          TotalPaper: yup.number().positive().default(0.0),
+          PaperSell: yup.number().positive().default(0.0),
+          TotalOutgoing: yup.number().positive().default(0.0),
+          OutgoingSell: yup.number().positive().default(0.0),
+          TotalReturns: yup.number().positive().default(0.0),
+          ReturnsSell: yup.number().positive().default(0.0),
+          TotalHandInsert: yup.number().positive().default(0.0),
+          HandInsertSell: yup.number().positive().default(0.0),
+          TotalEpay: yup.number().positive().default(0.0),
+          EpaySell: yup.number().positive().default(0.0),
+          TotalPostage: yup.number().positive().default(0.0),
+          TotalServices: yup.number().positive().default(0.0),
+          TotalTaxes: yup.number().positive().default(0.0)
         })
       ),
     })
