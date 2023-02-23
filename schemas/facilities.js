@@ -64,16 +64,11 @@ const urlRegExp =
  *           description: Descriptor to use for insurance transfers
  *         PatientTransferLanguage:
  *           type: string
- *           desciption: Descriptor to use for patient transfers
+ *           description: Descriptor to use for patient transfers
  *         Specs:
- *           type: object
- *           properties:
- *              ID:
- *                  type: int
- *                  description: Public id for the facility spec
- *              Software:
- *                  type: string
- *                  description: Software the facility uses
+ *           type: array
+ *           items:
+ *              $ref: '#/components/schemas/Spec'
  *       example:
  *         ID: 60
  *         JobID: 300
@@ -83,8 +78,8 @@ const urlRegExp =
  *         InsuranceTransferLanguage: 
  *         PatientTransferLanguage:
  *         Specs:
- *              ID: 45
- *              Software: EPIC
+ *              - ID: 45
+ *                Software: EPIC
  *     CreateFacilitiesWithSpecsBody:
  *       type: object
  *       properties:
@@ -108,133 +103,52 @@ const urlRegExp =
  *           type: string
  *           desciption: Descriptor to use for patient transfers
  *         Specs:
- *           type: object
- *           properties:
+ *           type: array
+ *           items:
  *              type: object
  *              properties:
- *              Software:
- *                  type: string
- *                  description: Software the facility uses
- *              APIAvailable:
- *                  type: boolean
- *                  description: Whether the client has an api available to retrieve data
- *              APIDocumentation:
- *                  type: string
- *                  description: Site where client API Docs can be found
- *              ExtractErrors:
- *                  type: boolean
- *                  description: Whether the client wants errors extracted and remainder of file processed
- *              HoldErrors:
- *                  type: boolean
- *                  description: Whether client wants file held with errors and not processed
- *              CrosswalkProvided:
- *                  type: boolean
- *                  description: Whether the client provided a data crosswalk
- *              DataFileProvided:
- *                  type: boolean
- *                  description: Whether client provided a data file
- *              PDFFileProvided:
- *                  type: boolean
- *                  description: Whether client provided pdf file in lieu of data file
- *              LockboxIntegration:
- *                  type: boolean
- *                  description: Whether client has lockbox integration
- *              LockboxBank:
- *                  type: string
- *                  description: Name of bank to be used for lockbox integration
- *              LockboxAddress:
- *                  type: string
- *                  description: City State and ZIP of bank being used for lockbox
- *              ClientProvidedSpecSheet:
- *                  type: boolean
- *                  description: Whether the client provided a spec sheet for the file
- *              Channels:
- *                type: object
- *                properties:
- *                  AmericanExpressAccepted:
- *                    type: boolean
- *                    description: Whether facility accepts AmericanExpress
- *                  DiscoverAccepted:
- *                    type: boolean
- *                    description: Whether facility accepts Discover
- *                  VisaAccepted:
- *                    type: boolean
- *                    description: Whether facility accepts Visa
- *                  MasterCardAccepted:
- *                    type: boolean
- *                    description: Whether facility accepts MasterCard
- *                  OtherAccepted:
+ *                Software:
  *                    type: string
- *                    description: Other payment form accepted
- *                  MailPayments:
+ *                    description: Software the facility uses
+ *                APIAvailable:
  *                    type: boolean
- *                    description: Whether allows mailing of payments
- *                  MailTo:
+ *                    description: Whether the client has an api available to retrieve data
+ *                APIDocumentation:
  *                    type: string
- *                    description: Where payments should be mailed to
- *                  PhonePayments:
+ *                    description: Site where client API Docs can be found
+ *                ExtractErrors:
  *                    type: boolean
- *                    description: Whether allows pay by phone
- *                  PhoneLocal:
+ *                    description: Whether the client wants errors extracted and remainder of file processed
+ *                HoldErrors:
+ *                    type: boolean
+ *                    description: Whether client wants file held with errors and not processed
+ *                CrosswalkProvided:
+ *                    type: boolean
+ *                    description: Whether the client provided a data crosswalk
+ *                DataFileProvided:
+ *                    type: boolean
+ *                    description: Whether client provided a data file
+ *                PDFFileProvided:
+ *                    type: boolean
+ *                    description: Whether client provided pdf file in lieu of data file
+ *                LockboxIntegration:
+ *                    type: boolean
+ *                    description: Whether client has lockbox integration
+ *                LockboxBank:
  *                    type: string
- *                    description: Local phone to call for payments
- *                  PhoneTollFree:
+ *                    description: Name of bank to be used for lockbox integration
+ *                LockboxAddress:
  *                    type: string
- *                    description: Toll free phone for payments
- *                  IVRPayments:
+ *                    description: City State and ZIP of bank being used for lockbox
+ *                ClientProvidedSpecSheet:
  *                    type: boolean
- *                    description: Whether facility allows payments by IVR
- *                  IVRPhone:
- *                    type: string
- *                    description: Phone number for making IVR payments
- *                  OnlinePayments:
- *                    type: boolean
- *                    description: Whether facility accepts payments online
- *                  PaySite:
- *                    type: string
- *                    description: Site where payments can be made
- *                  OtherPayChannels:
- *                    type: string
- *                    description: Site where payments can be made
- *              Logos:
- *                type: object
- *                properties:
- *                  Location:
- *                    type: string
- *                    description: local location where the file can be found
- *              Reports:
- *                type: object
- *                properties:
- *                  SummaryReport:
- *                    type: boolean
- *                    description: Whether facility gets SummaryReports sent
- *                  MovesReport:
- *                    type: boolean
- *                    description: Whether facility gets MovesReports sent
- *                  SuppressionReport:
- *                    type: boolean
- *                    description: Whether facility gets SuppressionReports sent
- *                  UndeliverablesReport:
- *                    type: boolean
- *                    description: Whether facility gets UndeliverablesReports sent
- *                  NonCassReport:
- *                    type: boolean
- *                    description: Whether facility gets NonCassReports sent
- *                  FacilityReport:
- *                    type: boolean
- *                    description: Whether facility gets FacilityReports sent
- *                  FacilityPDFs:
- *                    type: boolean
- *                    description: Whether facility gets FacilityPDFs sent
- *                  PrintPDFs:
- *                    type: boolean
- *                    description: Whether facility gets PrintPDFs sent
- *                  AnomalyReport:
- *                    type: boolean
- *                    description: Whether facility gets AnomalyReports sent
- *                  MonthlySummaryReport:
- *                    type: boolean
- *                    description: Whether facility gets MonthlySummaryReports sent
+ *                    description: Whether the client provided a spec sheet for the file
+ *                Channels:
+ *                  $ref: '#/components/schemas/Channel'
+ *                Logos:
+ *                  $ref: '#/components/schemas/Logo'
+ *                Reports:
+ *                  $ref: '#/components/schemas/Report'
  *       example:
  *         JobID: 300
  *         Active: true
