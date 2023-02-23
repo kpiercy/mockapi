@@ -195,3 +195,44 @@
  *         MultiServerID: 
  *         MultiRemoteDirectory:
  */
+
+
+module.exports = yup.object().shape({
+  Returns: yup.array().of(
+    yup.object().shape({
+      SpecID: yup.number().integer().required('SpecID is required.'),
+      RemoteDirectory: yup.string().required('RemoteDirectory is required'),
+      Mask: yup.string().required('File Mask is required'),
+      AdditionalTask: yup.string().nullable().default(null),
+      Password: yup.string().nullable().default(null),
+      LocalDirectory: yup.string().required('LocalDirectory is required'),
+      ServerID: yup.number().integer().required('ServerID is required')
+        .oneOf([0,1,2,3,4,5,6,7,8,9,10]),
+      TimeBased: yup.boolean().default(false),
+      TimeToReturn: yup.string().nullable().default(null),
+      DaysToReturn: yup.string().default('1234567'),
+      Type: yup.number().integer()
+        .oneOf([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]),
+      ReturnZipName: yup.string().nullable().default(null),
+      MultiUpload: yup.boolean().default(false),
+      MultiServerID: yup.number().integer()
+        .when('MultiUpload', {
+            is: true,
+            then: yup
+                .number()
+                .integer()
+                .oneOf([0,1,2,3,4,5,6,7,8,9,10])
+                .required('MultiServerID is required when MultiUpload is true'),
+            otherwise: yup.number().integer().nullable().default(null)
+        }),
+      MultiRemoteDirectory: yup.string()
+        .when('MultiUpload', {
+            is: true,
+            then: yup
+                .string()
+                .required('MultiRemoteDirectory is required when MultiUpload is true'),
+            otherwise: yup.string().nullable().default(null)
+        })
+    })
+  ),
+})
