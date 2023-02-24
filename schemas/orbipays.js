@@ -109,6 +109,7 @@ const yup = require('yup')
  *       example:
  *         ID: 9999
  *         JobID: 101
+ *         Name: zAdena Daily Balance
  *         RunMode: 1
  *         LocalDirectory: C:\clients\P\PFS_zAdenaDBF\
  *         PartnerID: "831259358"
@@ -240,6 +241,7 @@ const yup = require('yup')
  *           description: the serverid to use for uploading reports
  *       example:
  *         JobID: 101
+ *         Name: zAdena Daily Balance
  *         RunMode: 1
  *         LocalDirectory: C:\clients\P\PFS_zAdenaDBF\
  *         PartnerID: "831259358"
@@ -364,6 +366,7 @@ const yup = require('yup')
  *           type: int
  *           description: the serverid to use for uploading reports
  *       example:
+ *         Name: zAdena Daily Balance
  *         RunMode: 1
  *         LocalDirectory: C:\clients\P\PFS_zAdenaDBF\
  *         PartnerID: "831259358"
