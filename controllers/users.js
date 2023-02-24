@@ -227,7 +227,7 @@ const update_user = async (req, res, next) => {
 }
 
 const delete_client_users = async (req, res, next) => {
-  const client = req.body.clientid
+  const client = req.params.clientid
   console.log('Clientid provided for RevokeAPIAccess call: ' + client)
   try {
     let pool = await sql.connect(configJobData)
