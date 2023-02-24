@@ -21,291 +21,224 @@ router.use(pubip().getIpInfoMiddleware);
 
 /**
  * @swagger
- *   /clients/{clientid}/jobs/{jobid}/workflows:
- *     get:
- *       tags:
- *         - Workflows
- *       summary: /
- *       description: /
- *       operationId: '2'
- *       parameters:
- *         - name: paginate
- *           in: query
- *           schema:
- *             type: string
- *             example: 'true'
- *         - name: page
- *           in: query
- *           schema:
- *             type: string
- *             example: '1'
- *         - name: limit
- *           in: query
- *           schema:
- *             type: string
- *             example: '1'
- *       responses:
- *         '200':
- *           description: ''
+ * /clients/{clientid}/jobs/{jobid}/workflows:
+ *  get:
+ *      summary: Get all workflows by jobid
+ *      tags: [Workflows]
+ *      description: Finds all workflows for job
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *      responses:
+ *          200:
+ *              description: Found workflow(s)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Workflows:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Workflow'
+ *          404:
+ *              description: No workflows found for job
  */
 router.get("/", checkReach, dboperations.all_workflows);
 
 /**
  * @swagger
- *   /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
- *     get:
- *       tags:
- *         - Workflows
- *       summary: /:workflowid
- *       description: /:workflowid
- *       operationId: workflowid
- *       responses:
- *         '200':
- *           description: ''
+ * /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
+ *  get:
+ *      summary: Get workflow by id
+ *      tags: [Workflows]
+ *      description: Finds single workflow by id
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *        - in: path
+ *          name: workflowid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: WorkflowID of data to find
+ *      responses:
+ *          200:
+ *              description: Found workflow
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Workflows:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Workflow'
+ *          404:
+ *              description: No workflow found by id
  */
 router.get("/:workflowid", checkReach, dboperations.one_workflow);
 
 /**
  * @swagger
- *   /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
- *     patch:
- *       tags:
- *         - Workflows
- *       summary: /:workflowid
- *       description: /:workflowid
- *       operationId: workflowid1
- *       requestBody:
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 Workflows:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       AlacritiEnabled:
- *                         type: boolean
- *                         example: true
- *                       BatchInSetsOf:
- *                         type: number
- *                         example: 2000
- *                       Design:
- *                         type: string
- *                         example: PFS_Adena.ptk
- *                       FacilityPDFReturnEnabled:
- *                         type: boolean
- *                         example: false
- *                       PaperlessEnabled:
- *                         type: boolean
- *                         example: true
- *                       PriintToPath:
- *                         type: string
- *                         example: UPDATED\\inmuneliterds\c$\colorfilestoprint\
- *                       PrintPDFReturnEnabled:
- *                         type: boolean
- *                         example: true
- *                       RunMode:
- *                         type: string
- *                         example: IDK
- *                       SubprocessReqd:
- *                         type: boolean
- *                         example: true
- *                       TableUpdate:
- *                         type: boolean
- *                         example: false
- *                       UNCPath:
- *                         type: string
- *                         example: \\INMUNELITERDS\C$\Clients\P\PFS_Adena_UPDATED\
- *                       UseStoredProc:
- *                         type: boolean
- *                         example: false
- *                   example:
- *                     - AlacritiEnabled: true
- *                       BatchInSetsOf: 2000
- *                       Design: PFS_Adena.ptk
- *                       FacilityPDFReturnEnabled: false
- *                       PaperlessEnabled: true
- *                       PriintToPath: UPDATED\\inmuneliterds\c$\colorfilestoprint\
- *                       PrintPDFReturnEnabled: true
- *                       RunMode: IDK
- *                       SubprocessReqd: true
- *                       TableUpdate: false
- *                       UNCPath: \\INMUNELITERDS\C$\Clients\P\PFS_Adena_UPDATED\
- *                       UseStoredProc: false
- *             example:
- *               Workflows:
- *                 - AlacritiEnabled: true
- *                   BatchInSetsOf: 2000
- *                   Design: PFS_Adena.ptk
- *                   FacilityPDFReturnEnabled: false
- *                   PaperlessEnabled: true
- *                   PriintToPath: UPDATED\\inmuneliterds\c$\colorfilestoprint\
- *                   PrintPDFReturnEnabled: true
- *                   RunMode: IDK
- *                   SubprocessReqd: true
- *                   TableUpdate: false
- *                   UNCPath: \\INMUNELITERDS\C$\Clients\P\PFS_Adena_UPDATED\
- *                   UseStoredProc: false
- *       responses:
- *         '200':
- *           description: ''
- *     parameters:
- *       - name: clientid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: de33ba44-dbd3-4b52-9a7e-0a031b8872c7
- *       - name: jobid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: 664c6b5e-334e-4368-988e-167e02c34ec9
- *       - name: workflowid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
+ * /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
+ *  patch:
+ *      summary: Update workflow by id
+ *      tags: [Workflows]
+ *      description: Update single workflow by id
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to update
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID of data to update
+ *        - in: path
+ *          name: workflowid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: WorkflowID of data to update
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                Workflows:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/UpdateWorkflowsBody'
+ *      responses:
+ *          200:
+ *              description: Updated workflow
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Workflows:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Workflow'
+ *          404:
+ *              description: No workflow found to update by id
  */
 router.patch("/:workflowid", checkReach, dboperations.update_workflow);
 
 /**
  * @swagger
- *   /clients/{clientid}/jobs/{jobid}/workflows:
- *     post:
- *       tags:
- *         - Workflows
- *       summary: /
- *       description: /
- *       operationId: '1'
- *       requestBody:
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 Workflows:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       AlacritiEnabled:
- *                         type: boolean
- *                         example: false
- *                       BatchInSetsOf:
- *                         type: number
- *                         example: 2000
- *                       DataSource:
- *                         type: string
- *                         example: ''
- *                       Design:
- *                         type: string
- *                         example: PFS_Adena.ptk
- *                       FacilityPDFReturnEnabled:
- *                         type: boolean
- *                         example: false
- *                       Job_GUID:
- *                         type: string
- *                         example: 664C6B5E-334E-4368-988E-167E02C34EC9
- *                       PaperlessEnabled:
- *                         type: boolean
- *                         example: false
- *                       PriintToPath:
- *                         type: string
- *                         example: \\inmuneliterds\c$\colorfilestoprint\
- *                       PrintPDFReturnEnabled:
- *                         type: boolean
- *                         example: false
- *                       RunMode:
- *                         type: string
- *                         example: Hold
- *                       StoredProc:
- *                         type: string
- *                         example: ''
- *                       SubprocessReqd:
- *                         type: boolean
- *                         example: false
- *                       TableName:
- *                         type: string
- *                         example: ''
- *                       TableUpdate:
- *                         type: boolean
- *                         example: false
- *                       UNCPath:
- *                         type: string
- *                         example: \\INMUNELITERDS\C$\Clients\P\PFS_Adena\
- *                       UseStoredProc:
- *                         type: boolean
- *                         example: false
- *                   example:
- *                     - AlacritiEnabled: false
- *                       BatchInSetsOf: 2000
- *                       DataSource: ''
- *                       Design: PFS_Adena.ptk
- *                       FacilityPDFReturnEnabled: false
- *                       Job_GUID: 664C6B5E-334E-4368-988E-167E02C34EC9
- *                       PaperlessEnabled: false
- *                       PriintToPath: \\inmuneliterds\c$\colorfilestoprint\
- *                       PrintPDFReturnEnabled: false
- *                       RunMode: Hold
- *                       StoredProc: ''
- *                       SubprocessReqd: false
- *                       TableName: ''
- *                       TableUpdate: false
- *                       UNCPath: \\INMUNELITERDS\C$\Clients\P\PFS_Adena\
- *                       UseStoredProc: false
- *             example:
- *               Workflows:
- *                 - AlacritiEnabled: false
- *                   BatchInSetsOf: 2000
- *                   DataSource: ''
- *                   Design: PFS_Adena.ptk
- *                   FacilityPDFReturnEnabled: false
- *                   Job_GUID: 664C6B5E-334E-4368-988E-167E02C34EC9
- *                   PaperlessEnabled: false
- *                   PriintToPath: \\inmuneliterds\c$\colorfilestoprint\
- *                   PrintPDFReturnEnabled: false
- *                   RunMode: Hold
- *                   StoredProc: ''
- *                   SubprocessReqd: false
- *                   TableName: ''
- *                   TableUpdate: false
- *                   UNCPath: \\INMUNELITERDS\C$\Clients\P\PFS_Adena\
- *                   UseStoredProc: false
- *       responses:
- *         '200':
- *           description: ''
- *     parameters:
- *       - name: clientid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: de33ba44-dbd3-4b52-9a7e-0a031b8872c7
- *       - name: jobid
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *           example: 664c6b5e-334e-4368-988e-167e02c34ec9
+ * /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
+ *  post:
+ *      summary: Create one or more workflows for job
+ *      tags: [Workflows]
+ *      description: Creates workflow records
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID to assign workflow to
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID to assign workflow to
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                Workflows:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/CreateWorkflowsBody'
+ *      responses:
+ *          201:
+ *              description: Created workflow(s)
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Workflows:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Workflow'
  */
 router.post("/", checkReach, authLvl, dboperations.create_workflow);
 
 /**
  * @swagger
- *   /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
- *     delete:
- *       tags:
- *         - Workflows
- *       summary: /:workflowid
- *       description: /:workflowid
- *       operationId: workflowid2
- *       responses:
- *         '200':
- *           description: ''
+ * /clients/{clientid}/jobs/{jobid}/workflows/{workflowid}:
+ *  delete:
+ *      summary: Delete workflow by id
+ *      tags: [Workflows]
+ *      description: Delete single workflow by id
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to delete
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID of data to delete
+ *        - in: path
+ *          name: workflowid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: WorkflowID of data to delete
+ *      responses:
+ *          202:
+ *              description: Deleted workflow
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Workflows:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/DeleteWorkflowsResponse'
+ *          404:
+ *              description: No workflow found to delete by id
  */
 router.delete("/:workflowid", checkReach, authLvl, dboperations.delete_workflow);
 
