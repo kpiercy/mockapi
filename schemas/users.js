@@ -9,19 +9,60 @@ const yup = require("yup");
  *      properties:
  *        ID:
  *          type: integer
+ *          description: public id of a user
+ *        ParentID:
+ *          type: integer
+ *          description: public parentid user is assigned to
  *        ClientID:
  *          type: integer
+ *          description: public clientid user is assigned to
  *        Active:
  *          type: boolean
+ *          description: whether or not the user is active
  *        Username:
  *          type: string
+ *          description: username assigned to user, typically first portion of email
  *        PermissionLvl:
  *          type: string
+ *          description: description of user's access level
  *      example:
  *        ID: 100
+ *        ParentID: 30
  *        ClientID: 9999
  *        Active: true
  *        Username: yourusername
+ *        PermissionLvl: Standard
+ *    CreateUsersBody:
+ *      type: object
+ *      properties:
+ *        ParentID:
+ *          type: integer
+ *          description: public parentid user is assigned to
+ *        ClientID:
+ *          type: integer
+ *          description: public clientid user is assigned to
+ *        Active:
+ *          type: boolean
+ *          description: whether or not the user is active
+ *        Email:
+ *          type: string
+ *          description: email address of user
+ *        Username:
+ *          type: string
+ *          description: username assigned to user, typically first portion of email
+ *        Password:
+ *          type: string
+ *          description: plain text of password to encrypt and store for verification
+ *        PermissionLvl:
+ *          type: int
+ *          description: permission type id to assign to user
+ *      example:
+ *        ParentID: 30
+ *        ClientID: 9999
+ *        Active: true
+ *        Email: yourusername@somedomain.com
+ *        Username: yourusername
+ *        Password: strongP45sw0rdH3re!
  *        PermissionLvl: 3
  *    UsersLoginBody:
  *      type: object
@@ -32,7 +73,7 @@ const yup = require("yup");
  *          type: password
  *      example:
  *        username: yourusername
- *        password: yourpassword
+ *        password: strongP45sw0rdH3re!
  *    UsersLoginResponse:
  *      type: object
  *      properties:
@@ -53,7 +94,7 @@ const yup = require("yup");
  *      example:
  *        accessExpiresIn: 30min
  *        client: 9999
- *        parent: 20
+ *        parent: 30
  *        permissions: Standard
  *        refreshExpiresIn: 8hrs
  *        refreshToken: refreshjwt
@@ -65,7 +106,7 @@ const yup = require("yup");
  *          type: string
  *          required: true
  *      example:
- *        token: yourCurrentAccessToken
+ *        token: yourCurrentRefreshToken
  *    UsersRefreshResponse:
  *      type: object
  *      properties:
@@ -73,6 +114,30 @@ const yup = require("yup");
  *          type: string
  *      example:
  *        accessToken: aNewAccessToken
+ *    DeleteUsersResponse:
+ *      type: object
+ *      properties:
+ *        ID:
+ *          type: integer
+ *          description: public id of a user
+ *        ParentID:
+ *          type: integer
+ *          description: public parentid user is assigned to
+ *        ClientID:
+ *          type: integer
+ *          description: public clientid user is assigned to
+ *        Active:
+ *          type: boolean
+ *          description: whether or not the user is active
+ *        Username:
+ *          type: string
+ *          description: username assigned to user, typically first portion of email
+ *      example:
+ *        ID: 100
+ *        ParentID: 30
+ *        ClientID: 9999
+ *        Active: false
+ *        Username: yourusername
  */
 
 module.exports = yup.object().shape({
