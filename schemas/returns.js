@@ -1,3 +1,5 @@
+const yup = require('yup')
+
 /**
  * @swagger
  * components:
