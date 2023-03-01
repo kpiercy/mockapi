@@ -1,0 +1,48 @@
+name: Feature Request
+description: Let us know of a feature/enhancement you'd like to see
+title: "[Feature]: "
+labels: ["feature"]
+assignees:
+  - kpiercy
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time help us improve!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: feature-desc
+    attributes:
+      label: Description
+      description: Feature/enhancement being requested
+      placeholder: Tell us what you would like to see!
+      value: "Bigger, better awesomeness from all the things!"
+    validations:
+      required: true
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Type
+      description: Choose which type of enhancement you are requesting
+      options:
+        - Documentation
+        - New route
+        - Error handling
+        - other
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
