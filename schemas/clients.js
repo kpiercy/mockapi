@@ -198,7 +198,7 @@ const yup = require('yup');
 module.exports = yup.object().shape({
     Clients: yup.array().of(
         yup.object().shape({
-            Parent_GUID: yup.string().uuid(),
+            ParentID: yup.string().uuid(),
             Name: yup.string().trim().required('ClientName is a required field.'),
             Active: yup.boolean().required().default(false),
             ERPID: yup.number().integer().default(0),
