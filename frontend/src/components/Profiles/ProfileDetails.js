@@ -11,7 +11,7 @@ const ProfileDetails = ({ profile }) => {
   //     return
   //   }
 
-  //   const response = await fetch('http://localhost:4000/api/v1/clients/users/me', {
+  //   const response = await fetch('http://localhost:5000/api/v1/clients/users/me', {
   //     method: 'GET',
   //     headers: {
   //       Authorization: `Bearer ${user.token}`,
@@ -31,12 +31,12 @@ const ProfileDetails = ({ profile }) => {
     <div className="data-cards">
       <h4>{profile.Username}</h4>
       <p>
-        <strong>User_GUID: </strong>
-        {profile.GUID}
+        <strong>ID: </strong>
+        {profile.ID}
       </p>
       <p>
         <strong>ERP ID: </strong>
-        {profile.Client_GUID}
+        {profile.ClientID}
       </p>
       <p>
         <strong>PermissionLvl: </strong>

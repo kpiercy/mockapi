@@ -35,12 +35,12 @@ const User = () => {
       } else if (user.permissions.toLowerCase() === 'parent') {
         var clientid = user.parent.toLowerCase()
       } else if (user.permissions.toLowerCase() === 'admin') {
-        var clientid = '6a0ad3cb-d41e-492c-8b48-970060a22136'
+        var clientid = '4'
       } else {
         var clientid = null
       }
 
-      const response = await fetch('http://localhost:4000/api/v1/clients/' + clientid +  '/users', {
+      const response = await fetch('http://localhost:5000/api/v1/clients/' + clientid +  '/users', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -67,8 +67,8 @@ const User = () => {
       </Box>
       <div className="row data-col-header">
         <div className="col-lg-2">Username</div>
-        <div className="col-lg-2">GUID</div>
-        <div className="col-lg-2">Client_GUID</div>
+        <div className="col-lg-2">ID</div>
+        <div className="col-lg-2">ClientID</div>
         <div className="col-lg-2">Active</div>
         <div className="col-lg-2">PermissionLvl</div>
         <div className="col-lg-2">

@@ -31,7 +31,7 @@ const AddUserForm = () => {
     const { user } = useAuthContext()
 
     const postData = async(query)=>{
-        let res = await fetch("http://localhost:4000/api/v1/clients/users", {
+        let res = await fetch("http://localhost:5000/api/v1/clients/users", {
             method: "POST",
             headers: {
             Authorization: `Bearer ${user.token}`,
@@ -52,7 +52,7 @@ const AddUserForm = () => {
 
     return (
         <Box m='20px'>
-            <Header title='Create User' subtitle='Create a new user for the specified Client_GUID' />
+            <Header title='Create User' subtitle='Create a new user for the specified ClientID' />
 
             <Formik
                 onSubmit={ async (values) => {
@@ -78,13 +78,13 @@ const AddUserForm = () => {
                                 fullWidth
                                 variant='filled'
                                 type='text'
-                                label='Client_GUID'
+                                label='ClientID'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.Client_GUID}
-                                name='Client_GUID'
-                               errors={!!touched.Client_GUID && !!errors.Client_GUID}
-                                helpertext={touched.Client_GUID && errors.Client_GUID}
+                                value={values.ClientID}
+                                name='ClientID'
+                               errors={!!touched.ClientID && !!errors.ClientID}
+                                helpertext={touched.ClientID && errors.ClientID}
                                 sx={{ gridColumn: 'span 2' }}
                             />
                             <TextField 
@@ -144,11 +144,11 @@ const AddUserForm = () => {
                                 <option value="" label='Permission Level'>
                                     Select a permission level{" "}
                                 </option>
-                                <option value='94dbbb6d-1e17-4769-9ebe-ddfe745cd01f' label='Standard'>
+                                <option value='3' label='Standard'>
                                     {" "}
                                     Standard
                                 </option>
-                                <option value='20b746a8-dd10-4a5b-8902-71b1d3874336' label='Parent'>
+                                <option value='2' label='Parent'>
                                     {" "}
                                     Parent
                                 </option>

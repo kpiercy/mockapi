@@ -5,29 +5,36 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Header from '../ui/global/Header'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
+// import { Clients } from '../../../../schemas/clients'
+// const clientSchema = { Clients }
+
 const clientSchema = yup.object().shape({
-    Parent_GUID: yup.string().uuid(),
-    ClientName: yup.string().trim().required('ClientName is a required field.'),
-    Active: yup.boolean().required().default(false),
-    ErpID: yup.number().integer().default(0),
-    ErpParentID: yup.number().integer().default(0),
-    ErpCode: yup.string().trim().default('0'),
-    ErpSvcCode: yup.string().trim().default('0'),
-    ErpPostageCode: yup.string().trim().default('0'),
-    Type: yup.string()
-        .oneOf(['DirectClient', 'ChannelPartner', 'NonProfit', 'AdHoc'])
-        .default('DirectClient')
-        .required('Please enter DirectClient, ChannelPartner, NonProfit or AdHoc'),
-    Term: yup.string()
-        .oneOf(['NET10', 'NET30', 'NET60', 'NET90'])
-        .default('NET30')
-        .required('Please enter NET10, NET30, NET60, or NET90.'),
-    PostageCost: yup.number().default(0.481),
-    PostagePrice: yup.number().default(0.510),
-    AllInOneInvoicing: yup.boolean().default(false),
-    ZeroSellHiding: yup.boolean().default(true),
-    BulkBillEnabled: yup.boolean().default(false)
-})
+    Clients: yup.array().of(
+        yup.object().shape({
+            ParentID: yup.string().uuid(),
+            Name: yup.string().trim().required('ClientName is a required field.'),
+            Active: yup.boolean().required().default(false),
+            ERPID: yup.number().integer().default(0),
+            ERPParentID: yup.number().integer().default(0),
+            ERPCode: yup.string().trim().default('0'),
+            ERPSvcsCode: yup.string().trim().default('0'),
+            ERPPostageCode: yup.string().trim().default('0'),
+            Type: yup.string()
+                .oneOf(['DirectClient', 'ChannelPartner', 'NonProfit', 'AdHoc'])
+                .default('DirectClient')
+                .required('Please enter DirectClient, ChannelPartner, NonProfit or AdHoc'),
+            Term: yup.string()
+                .oneOf(['NET10', 'NET30', 'NET60', 'NET90'])
+                .default('NET30')
+                .required('Please enter NET10, NET30, NET60, or NET90.'),
+            PostageCost: yup.number().default(0.497),
+            PostagePrice: yup.number().default(0.510),
+            AllInOneInvoicing: yup.boolean().default(false),
+            ZeroSellHiding: yup.boolean().default(true),
+            BulkBillEnabled: yup.boolean().default(false)
+        })
+    )
+});
 
 const initialValues = {
     Parent_GUID: "",
@@ -52,7 +59,7 @@ const AddClientForm = () => {
     const { user } = useAuthContext()
 
     const postData = async(query)=>{
-        let res = await fetch("http://localhost:4000/api/v1/clients", {
+        let res = await fetch("http://localhost:5000/api/v1/clients", {
             method: "POST",
             headers: {
             Authorization: `Bearer ${user.token}`,
@@ -99,28 +106,34 @@ const AddClientForm = () => {
                                 fullWidth
                                 variant='filled'
                                 type='text'
-                                label='Client_GUID'
+                                label='ParentID'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.Client_GUID}
-                                name='Client_GUID'
-                               errors={!!touched.Client_GUID && !!errors.Client_GUID}
-                                helpertext={touched.Client_GUID && errors.Client_GUID}
+                                value={values.ParentID}
+                                name='ParentID'
+                               errors={!!touched.ParentID && !!errors.ParentID}
+                                helpertext={touched.ParentID && errors.ParentID}
                                 sx={{ gridColumn: 'span 2' }}
                             />
+                            {errors.ParentID && 
+                            touched.ParentID 
+                            && <p className={"error"}>{errors.ParentID}</p>}
                             <TextField 
                                 fullWidth
                                 variant='filled'
                                 type='text'
-                                label='Email'
+                                label='Name'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.Email}
-                                name='Email'
-                               errors={!!touched.Email && !!errors.Email}
-                                helpertext={touched.Email && errors.Email}
+                                value={values.Name}
+                                name='Name'
+                               errors={!!touched.Name && !!errors.Name}
+                                helpertext={touched.Name && errors.Name}
                                 sx={{ gridColumn: 'span 2' }}
                             />
+                            {errors.Name && 
+                            touched.Name 
+                            && <p className={"error"}>{errors.Name}</p>}
                             <TextField 
                                 fullWidth
                                 variant='filled'

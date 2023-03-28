@@ -20,12 +20,12 @@ const UserDetails = ({ auser }) => {
     } else if (user.permissions.toLowerCase() === 'parent') {
       var clientid = user.parent.toLowerCase()
     } else if (user.permissions.toLowerCase() === 'admin') {
-      var clientid = '6a0ad3cb-d41e-492c-8b48-970060a22136'
+      var clientid = '4'
     } else {
       var clientid = null
     }
 
-    const response = await fetch('http://localhost:4000/api/v1/clients/' + clientid + '/users/' + auser.GUID, {
+    const response = await fetch('http://localhost:5000/api/v1/clients/' + clientid + '/users/' + auser.ID, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -52,13 +52,13 @@ const UserDetails = ({ auser }) => {
     } else if (user.permissions.toLowerCase() === 'parent') {
       var clientid = user.parent.toLowerCase()
     } else if (user.permissions.toLowerCase() === 'admin') {
-      var clientid = '6a0ad3cb-d41e-492c-8b48-970060a22136'
+      var clientid = '4'
     } else {
       var clientid = null
     }
 
     const response = await fetch(
-      'http://localhost:4000/api/v1/clients/' + clientid + '/users/',
+      'http://localhost:5000/api/v1/clients/' + clientid + '/users/',
       {
         method: 'PATCH',
         headers: {
@@ -84,8 +84,8 @@ const UserDetails = ({ auser }) => {
     <div className="container-fluid">
       <div className="row data-row">
         <div className="col-lg-2">{auser.Username}</div>
-        <div className="col-lg-2">{auser.GUID}</div>
-        <div className="col-lg-2">{auser.Client_GUID}</div>
+        <div className="col-lg-2">{auser.ID}</div>
+        <div className="col-lg-2">{auser.ClientID}</div>
         <div className="col-lg-2">{auser.Active.toString()}</div>
         <div className="col-lg-2">{auser.PermissionLvl}</div>
         <div className="col-lg-2">

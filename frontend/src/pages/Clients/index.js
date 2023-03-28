@@ -22,7 +22,7 @@ const Clients = () => {
         var clientid = user.parent.toLowerCase()
       }
       else if (user.permissions.toLowerCase() === 'admin') {
-        var clientid = '6a0ad3cb-d41e-492c-8b48-970060a22136'
+        var clientid = '4'
       }
       else {
         var clientid = null
@@ -55,10 +55,10 @@ const Clients = () => {
       </Box>
       <div className="row data-col-header">
         <div className="col-lg-2">Name</div>
-        <div className="col-lg-2">GUID</div>
+        <div className="col-lg-2">ID</div>
         <div className="col-lg-2">Status</div>
-        <div className="col-lg-2">ERP_ID</div>
-        <div className="col-lg-2">ERP_Parent_ID</div>
+        <div className="col-lg-2">ERPID</div>
+        <div className="col-lg-2">ERPParentID</div>
         <div className="col-lg-2">
           <Link to="/clients/create" className="data-add-item">
             <IconButton>
@@ -70,7 +70,7 @@ const Clients = () => {
       <div className="clients">
         <div className="data-cards">
           {clients &&
-            clients.Clients.map((client) => <ClientDetails key={client.GUID} client={client} />)}
+            clients.Clients.map((client) => <ClientDetails key={client.ID} client={client} />)}
         </div>
       </div>
     </Box>

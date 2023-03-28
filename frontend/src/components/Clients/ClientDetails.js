@@ -15,7 +15,7 @@ const ClientDetails = ({ client }) => {
         return
       }
 
-    const response = await fetch('http://localhost:5000/api/v1/clients/' + client.GUID, {
+    const response = await fetch('http://localhost:5000/api/v1/clients/' + client.ID, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -37,7 +37,7 @@ const ClientDetails = ({ client }) => {
       return
     }
 
-    const response = await fetch('http://localhost:5000/api/v1/clients/' + client.GUID, {
+    const response = await fetch('http://localhost:5000/api/v1/clients/' + client.ID, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -61,12 +61,12 @@ const ClientDetails = ({ client }) => {
     <div className="container-fluid">
       <div className="row data-row">
         <div className="col-lg-2">{client.Name}</div>
-        <div className="col-lg-2">{client.GUID}</div>
+        <div className="col-lg-2">{client.ID}</div>
         <div className="col-lg-2">{client.Status}</div>
-        <div className="col-lg-2">{client.ERP_GUID}</div>
-        <div className="col-lg-2">{client.ERP_Parent_GUID}</div>
+        <div className="col-lg-2">{client.ERPID}</div>
+        <div className="col-lg-2">{client.ERPParentID}</div>
         <div className="col-lg-2">
-          <IconButton className={handleInspect}>
+          <IconButton onClick={handleInspect}>
             <SearchOutlined className="modify-details-icon" />
           </IconButton>
           <IconButton onClick={handleUpdate}>
