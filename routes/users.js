@@ -13,7 +13,8 @@ const authLvl = require('../middleware/authLvl')
 const authAccess = require('../middleware/access')
 const authIP = require('../middleware/ipAccess')
 const validateDto = require('../middleware/validateDto')
-const userDto = require("../schemas/users");
+const userDto = require('../schemas/users')
+
 
 //controller
 const dboperations = require('../controllers/users')
