@@ -24,6 +24,8 @@ router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
 router.use("/:invoiceid/credits", creditRoutes);
 router.use("/:invoiceid/deposits", depositRoutes);
+
+//router.get('/clients/{clientid}/invoices', checkReach, dboperations.getSageInv)
  
 /**
  * @swagger

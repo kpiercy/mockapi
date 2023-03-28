@@ -6,6 +6,7 @@ const ApiError = require('../utils/api-error')
 const sql = require('mssql/msnodesqlv8')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+//const https = require('https')
 
 //create invoice
 const create_invoice = async (req, res, next) => {
@@ -94,6 +95,14 @@ const delete_invoice = async (req, res, next) => {
     next(ApiError.internal(err))
     console.log({ Error: err.message })
   }
+}
+
+const getSageInv = async(req, res, next) => {
+  //build URL from internally stored vars
+  const url = 'builtURL'
+  https.get(url, (response, next) => {
+    console.log(response)
+  })
 }
 
 module.exports = {
