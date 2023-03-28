@@ -25,7 +25,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
 
-      const response = await fetch('http://localhost:4000/api/v1/clients/users/me', {
+      const response = await fetch('http://localhost:5000/api/v1/clients/users/me', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${user.token}`,
