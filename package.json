@@ -14,11 +14,9 @@
   },
   "dependencies": {
     "@xmldom/xmldom": "github:xmldom/xmldom",
-    "axios": ">=0.21.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "create-react-app": "^5.0.1",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.8",
     "express": "^4.17.1",
@@ -37,14 +35,10 @@
     "mssql": "^7.3.0",
     "multer": ">=1.4.5-lts.1",
     "nodemailer": "^6.7.2",
-    "passport": "^0.6.0",
-    "passport-azure-ad": "^4.3.4",
     "path": "^0.12.7",
-    "speakeasy": "^2.0.0",
     "swagger-jsdoc": "^6.2.7",
     "swagger-ui-express": "^4.6.0",
     "tar": "^6.1.11",
-    "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
