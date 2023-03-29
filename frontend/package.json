@@ -44,6 +44,7 @@
       "not op_mini all"
     ],
     "development": [
+      "last 1 edge version",
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
@@ -58,7 +59,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "url": "^0.11.0",
-    "webpack": "^5.75.0"
+    "webpack": "^5.76.3"
   },
   "browser": {
     "async_hooks": false
