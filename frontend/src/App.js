@@ -8,11 +8,13 @@ import Dashboard from './components/ui/dashboard'
 import Sidebar from './components/ui/global/Sidebar'
 import AddUserForm from './components/forms/AddUser'
 import AddClientForm from './components/forms/AddClient'
+import UpdateClientForm from './components/forms/UpdateClient'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Clients from './pages/Clients'
 import Users from './pages/Users'
 import Jobs from './pages/Jobs'
+import Invoices from './pages/Invoices'
 import Reports from './pages/Reports'
 import Kbase from './pages/KBase'
 import Settings from './pages/Settings'
@@ -44,7 +46,16 @@ function App() {
                 path="/clients/create"
                 element={user ? <AddClientForm /> : <Navigate to="/login" />}
               />
-              <Route path="/jobs" element={user ? <Jobs /> : <Navigate to="/login" />} />
+              <Route
+                path="/clients/:clientid/update"
+                element={user ? <UpdateClientForm /> : <Navigate to="/login" />}
+              />
+              {/* <Route
+                path="/clients/:clientid"
+                element={user ? <ClientDetail /> : <Navigate to="/login" />}
+              /> */}
+              <Route path="/clients/:clientid/jobs" element={user ? <Jobs /> : <Navigate to="/login" />} />
+              <Route path="/clients/:clientid/invoices" element={user ? <Invoices /> : <Navigate to="/login" />} />
               <Route path="/reports" element={user ? <Reports /> : <Navigate to="/login" />} />
               <Route path="/kbase" element={user ? <Kbase /> : <Navigate to="/login" />} />
               <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
