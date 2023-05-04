@@ -6,13 +6,14 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../../theme";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+import CodeIcon from '@mui/icons-material/Code';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -96,28 +97,21 @@ const Sidebar = () => {
             <Item
               title="Profile"
               to="/profile"
-              icon={<PersonOutlinedIcon />}
+              icon={<AccountCircleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Clients"
               to="/clients"
-              icon={<PeopleOutlinedIcon />}
+              icon={<GroupsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Users"
               to="/users"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Jobs"
-              to="/jobs"
-              icon={<WorkOutlineOutlinedIcon />}
+              icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -132,6 +126,13 @@ const Sidebar = () => {
               title="KBase"
               to="/kbase"
               icon={<HelpOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Docs"
+              to="/docs"
+              icon={<CodeIcon />}
               selected={selected}
               setSelected={setSelected}
             />
