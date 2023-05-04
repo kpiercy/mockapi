@@ -65,6 +65,46 @@ router.post('/', publimiter, authenticateToken, authAccess, authIP, authLvl, val
 
 /**
  * @swagger
+ * /clients:
+ *  get:
+ *      summary: Use to get all clients
+ *      tags: [Clients]
+ *      description: Retrieve all clients in system
+ *      parameters:
+ *        - in: query
+ *          name: paginate
+ *          schema:
+ *              type: boolean
+ *          required: false
+ *          description: Enable pagination of results
+ *        - in: query
+ *          name: page
+ *          schema:
+ *              type: string
+ *          required: false
+ *          default: 1
+ *          description: Page number to view
+ *        - in: query
+ *          name: limit
+ *          schema:
+ *              type: string
+ *          default: 1
+ *          required: false
+ *          description:
+ *      responses:
+ *          200:
+ *              description: List of clients
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Client'
+ */
+router.get('/', publimiter, authenticateToken, authAccess, authIP, checkReach, dboperations.clients_all)
+
+/**
+ * @swagger
  * /clients/{clientid}:
  *  get:
  *      summary: Use to get client by clientid
@@ -163,6 +203,6 @@ router.patch('/:clientid', publimiter, authenticateToken, authAccess, authIP, au
  *                              $ref: '#/components/schemas/DeleteClientsResponse'
  *                              
  */
-router.delete('/', publimiter, authenticateToken, authAccess, authIP, authLvl, dboperations.clients_delete)
+router.delete('/:clientid', publimiter, authenticateToken, authAccess, authIP, authLvl, dboperations.clients_delete)
 
 module.exports = router
