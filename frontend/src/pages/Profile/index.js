@@ -53,7 +53,7 @@ const Profile = () => {
       <div className="profiles">
         <div className="data-cards">
           {profiles &&
-            profiles.Users.map((profile) => <ProfileDetails key={profile.GUID} profile={profile} />)}
+            profiles.Users.map((profile) => <ProfileDetails key={profile.ID} profile={profile} />)}
         </div>
       </div>
     </Box>
