@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { ClientContextProvider } from './contexts/ClientContext'
 import { ProfileContextProvider } from './contexts/ProfileContext'
 import { UserContextProvider } from './contexts/UserContext'
+import { JobContextProvider } from './contexts/JobContext'
+import { InvoiceContextProvider } from './contexts/InvoiceContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -18,7 +20,11 @@ root.render(
           <ClientContextProvider>
             <ProfileContextProvider>
               <UserContextProvider>
-                <App />
+                <JobContextProvider>
+                  <InvoiceContextProvider>
+                    <App />
+                  </InvoiceContextProvider>
+                </JobContextProvider>
               </UserContextProvider>
             </ProfileContextProvider>
           </ClientContextProvider>
