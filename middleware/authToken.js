@@ -1,51 +1,36 @@
 require('dotenv').config()
-const jwt = require('express-jwt')
-const jwks = require('jwks-rsa')
+const jwt = require('jsonwebtoken')
 const ApiError = require('../utils/api-error')
 
 async function authenticateToken(req, res, next){
 
-    jwt({
-      secret: jwks.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 60,
-        jwksUri: 'https://eliteps.us.auth0.com/.well-known/jwks.json',
-      }),
-      audience: 'http://localhost:5000',
-      issuer: 'https://eliteps.us.auth0.com',
-      algorithms: ['RS256'],
+    let y = req.headers["authorization"];
+    if ( y == null ) {
+        y = req.body.token;
+        cert = process.env.REFRESH_TOKEN_SECRET;
+    } else {
+        const authHeader = req.headers["authorization"];
+        y = authHeader && authHeader.split(" ")[1];
+        cert = process.env.ACCESS_TOKEN_SECRET;
+    }
+
+    const token = y;
+    const secret = cert;
+
+    if (token == null) return res.status(401)
+
+    jwt.verify(token, secret,  (err, user) => {
+        if (err) {
+            console.log(err)
+            next(ApiError.forbidden(err))
+        } else {
+            req.user = user
+            console.log("AuthTokenMW: authToken verified");
+            const { _id } = jwt.verify(token, secret);
+
+            next()
+        }
     })
-
-    next()
-
-    // let y = req.headers["authorization"];
-    // if ( y == null ) {
-    //     y = req.body.token;
-    //     cert = process.env.REFRESH_TOKEN_SECRET;
-    // } else {
-    //     const authHeader = req.headers["authorization"];
-    //     y = authHeader && authHeader.split(" ")[1];
-    //     cert = process.env.ACCESS_TOKEN_SECRET;
-    // }
-
-    // const token = y;
-    // const secret = cert;
-
-    // if (token == null) return res.status(401)
-
-    // jwt.verify(token, secret,  (err, user) => {
-    //     if (err) {
-    //         console.log(err)
-    //         next(ApiError.forbidden(err))
-    //     } else {
-    //         req.user = user
-    //         console.log("AuthTokenMW: authToken verified");
-    //         const { _id } = jwt.verify(token, secret);
-
-    //         next()
-    //     }
-    // })
 
     // try {
     //     const { _id } = jwt.verify(token, secret)
