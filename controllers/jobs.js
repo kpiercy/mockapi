@@ -5,7 +5,21 @@ const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
 const ApiError = require('../utils/api-error')
 const sql = require('mssql/msnodesqlv8')
 
+
 const all_jobs = async (req, res, next) => {
+  //console.log('dbops_jobs.all_jobs was reached')
+  try {
+    let pool = await sql.connect(configJobData)
+    let job = await pool.request().execute('GetAllJobs')
+
+    res.json(JSON.parse(job.recordset[0]['JSON_F52E2B61-18A1-11d1-B105-00805F49916B']))
+  } catch (err) {
+    next(ApiError.internal(err))
+    console.log({ Error: err.message })
+  }
+}
+
+const all_client_jobs = async (req, res, next) => {
   //console.log('dbops_jobs.all_jobs was reached')
   const clientid = req.params.clientid
   try {
@@ -75,7 +89,7 @@ const jobs_delete = async (req, res, next) => {
 }
 
 module.exports = {
-  all_jobs,
+  all_client_jobs,
   one_job,
   jobs_create,
   jobs_delete,

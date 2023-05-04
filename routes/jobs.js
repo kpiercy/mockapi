@@ -72,7 +72,7 @@ router.use('/:jobid/changes', changeRoutes)
  *          404:
  *              description: Job record was not found
  */
-router.get('/', checkReach, dboperations.all_jobs) //authLvl????
+router.get('/', authLvl, checkReach, dboperations.all_client_jobs) //authLvl????
 
 /**
  * @swagger
