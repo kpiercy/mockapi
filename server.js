@@ -20,6 +20,7 @@ const configJobData = require(`./config/db-${process.env.NODE_ENV}`)
 const publimiter = require('./middleware/publimiter')
 const authenticateToken = require('./middleware/authToken')
 const authAccess = require('./middleware/access')
+const authLvl = require('./middleware/authLvl')
 const authIP = require('./middleware/ipAccess')
 const apiErrorHandler = require('./utils/api-error-handler')
 const swagger = require('./utils/swagger')
@@ -134,7 +135,7 @@ app.use('/api/v1/services', serviceRoutes) //crud
 //   authIP,
 //   priceRoutes
 // ) //cru
-// app.use('/api/v1/clients/jobs', publimiter, authenticateToken, authAccess, authIP, jobRoutes)
+app.use('/api/v1/clients/jobs', publimiter, authenticateToken, authLvl, authAccess, authIP, jobRoutes)
 // app.use(
 //   '/api/v1/clients/jobs/proofs',
 //   publimiter,
