@@ -29,6 +29,7 @@
     "fs-extra": "^10.1.0",
     "gitignore": "^0.7.0",
     "got": "^12.1.0",
+    "helmet": "^6.1.5",
     "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^2.1.5",
     "morgan": "^1.10.0",
