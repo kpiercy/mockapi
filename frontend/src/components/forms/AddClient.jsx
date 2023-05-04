@@ -80,7 +80,7 @@ const AddClientForm = () => {
 
     return (
         <Box m='20px'>
-            <Header title='Create Client' subtitle='Create a new client.' />
+            <Header title='Create Client' subtitle='Create a new Client' />
 
             <Formik
                 onSubmit={ async (values) => {
@@ -105,7 +105,7 @@ const AddClientForm = () => {
                             <TextField 
                                 fullWidth
                                 variant='filled'
-                                type='text'
+                                type='integer'
                                 label='ParentID'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -115,9 +115,6 @@ const AddClientForm = () => {
                                 helpertext={touched.ParentID && errors.ParentID}
                                 sx={{ gridColumn: 'span 2' }}
                             />
-                            {errors.ParentID && 
-                            touched.ParentID 
-                            && <p className={"error"}>{errors.ParentID}</p>}
                             <TextField 
                                 fullWidth
                                 variant='filled'
@@ -131,80 +128,199 @@ const AddClientForm = () => {
                                 helpertext={touched.Name && errors.Name}
                                 sx={{ gridColumn: 'span 2' }}
                             />
-                            {errors.Name && 
-                            touched.Name 
-                            && <p className={"error"}>{errors.Name}</p>}
                             <TextField 
                                 fullWidth
                                 variant='filled'
                                 type='text'
-                                label='Username'
+                                label='Status'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.Username}
-                                name='Username'
-                               errors={!!touched.Username && !!errors.Username}
-                                helpertext={touched.Username && errors.Username}
+                                value={values.Status}
+                                name='Status'
+                               errors={!!touched.Status && !!errors.Status}
+                                helpertext={touched.Status && errors.Status}
+                                sx={{ gridColumn: 'span 2' }}
+                            />
+                            <TextField 
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='ERPID'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.ERPID}
+                                name='ERPID'
+                               errors={!!touched.ERPID && !!errors.ERPID}
+                                helpertext={touched.ERPID && errors.ERPID}
                                 sx={{ gridColumn: 'span 4' }}
                             />
                             <TextField 
                                 fullWidth
                                 variant='filled'
                                 type='text'
-                                label='Password'
+                                label='ERPParentID'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.Password}
-                                name='Password'
-                               errors={!!touched.Password && !!errors.Password}
-                                helpertext={touched.Password && errors.Password}
+                                value={values.ERPParentID}
+                                name='ERPParentID'
+                               errors={!!touched.ERPParentID && !!errors.ERPParentID}
+                                helpertext={touched.ERPParentID && errors.ERPParentID}
+                                sx={{ gridColumn: 'span 4' }}
+                            />
+                            <TextField 
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='ERPCode'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.ERPCode}
+                                name='ERPCode'
+                               errors={!!touched.ERPCode && !!errors.ERPCode}
+                                helpertext={touched.ERPCode && errors.ERPCode}
+                                sx={{ gridColumn: 'span 4' }}
+                            />
+                            <TextField 
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='ERPSvcsCode'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.ERPSvcsCode}
+                                name='ERPSvcsCode'
+                               errors={!!touched.ERPSvcsCode && !!errors.ERPSvcsCode}
+                                helpertext={touched.ERPSvcsCode && errors.ERPSvcsCode}
+                                sx={{ gridColumn: 'span 4' }}
+                            />
+                            <TextField 
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='ERPPosCode'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.ERPPosCode}
+                                name='ERPPosCode'
+                               errors={!!touched.ERPPosCode && !!errors.ERPPosCode}
+                                helpertext={touched.ERPPosCode && errors.ERPPosCode}
                                 sx={{ gridColumn: 'span 4' }}
                             />
                             <Field 
                                 component='select'
-                                id='permissionlvl'
+                                id='type'
                                 multiple={false}
                                 fullWidth
                                 variant='filled'
-                                label='PermissionLvl'
+                                label='Type'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.PermissionLvl}
-                                name='PermissionLvl'
-                               errors={!!touched.PermissionLvl && !!errors.PermissionLvl}
-                                helpertext={touched.PermissionLvl && errors.PermissionLvl}
+                                value={values.Type}
+                                name='Type'
+                               errors={!!touched.Type && !!errors.Type}
+                                helpertext={touched.Type && errors.Type}
                                 sx={{ gridColumn: 'span 4' }}
                             >
-                                <option value="" label='Permission Level'>
-                                    Select a permission level{" "}
+                                <option value="" label='Type'>
+                                    Select a client type{" "}
                                 </option>
-                                <option value='94dbbb6d-1e17-4769-9ebe-ddfe745cd01f' label='Standard'>
+                                <option value='DirectClient' label='Direct Client'>
                                     {" "}
-                                    Standard
+                                    Direct Cleint
                                 </option>
-                                <option value='20b746a8-dd10-4a5b-8902-71b1d3874336' label='Parent'>
+                                <option value='ChannelPartner' label='Channel Partner'>
                                     {" "}
-                                    Parent
+                                    Channel Partner
+                                </option>
+                                <option value='NonProfit' label='Non-Profit'>
+                                    {" "}
+                                    Non-Profit
+                                </option>
+                                <option value='AdHoc' label='Ad Hoc'>
+                                    {" "}
+                                    Ad Hoc
                                 </option>
                             </Field>
                             <Field 
                                 component='select'
-                                id='apiaccess'
+                                id='term'
+                                multiple={false}
+                                fullWidth
+                                variant='filled'
+                                label='Term'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.Term}
+                                name='Term'
+                               errors={!!touched.Term && !!errors.Term}
+                                helpertext={touched.Term && errors.Term}
+                                sx={{ gridColumn: 'span 4' }}
+                            >
+                                <option value="" label='Term'>
+                                    Select client terms{" "}
+                                </option>
+                                <option value='NET10' label='NET 10'>
+                                    {" "}
+                                    NET 10
+                                </option>
+                                <option value='NET30' label='NET 30'>
+                                    {" "}
+                                    NET 30
+                                </option>
+                                <option value='NET60' label='NET 60'>
+                                    {" "}
+                                    NET 60
+                                </option>
+                                <option value='NET90' label='NET 90'>
+                                    {" "}
+                                    NET 90
+                                </option>
+                            </Field>
+                            <Field 
+                                component='select'
+                                id='taxable'
                                 multiple={false}
                                 fullWidth
                                 variant='filled'
                                 type='text'
-                                label='APIAccess'
+                                label='Taxable'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.APIAccess}
-                                name='APIAccess'
-                               errors={!!touched.ApiAccess && !!errors.ApiAccess}
-                                helpertext={touched.ApiAccess && errors.ApiAccess}
+                                value={values.Taxable}
+                                name='Taxable'
+                               errors={!!touched.Taxable && !!errors.Taxable}
+                                helpertext={touched.Taxable && errors.Taxable}
                                 sx={{ gridColumn: 'span 2' }}
                             >
-                                <option value="" label='Set Active'>
-                                    Select Active status for the user{" "}
+                                <option value="" label='Set Taxable Status'>
+                                    Select Taxable status for the client{" "}
+                                </option>
+                                <option value={false} label='False'>
+                                    False{" "}
+                                </option>
+                                <option value={true} label='True'>
+                                    {" "}
+                                    True
+                                </option>
+                            </Field>
+                            <Field 
+                                component='select'
+                                id='taxexempt'
+                                multiple={false}
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='TaxExempt'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.TaxExempt}
+                                name='TaxExempt'
+                               errors={!!touched.TaxExempt && !!errors.TaxExempt}
+                                helpertext={touched.TaxExempt && errors.TaxExempt}
+                                sx={{ gridColumn: 'span 2' }}
+                            >
+                                <option value="" label='Set TaxExempt Status'>
+                                    Is client tax exempt?{" "}
                                 </option>
                                 <option value={false} label='False'>
                                     False{" "}
@@ -217,16 +333,110 @@ const AddClientForm = () => {
                             <TextField 
                                 fullWidth
                                 variant='filled'
-                                type='text'
-                                label='AllowableIP'
+                                type='decimal'
+                                label='PostageCost'
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                value={values.AllowableIP}
-                                name='AllowableIP'
-                               errors={!!touched.AllowableIP && !!errors.AllowableIP}
-                                helpertext={touched.AllowableIP && errors.AllowableIP}
+                                value={values.PostageCost}
+                                name='PostageCost'
+                               errors={!!touched.PostageCost && !!errors.PostageCost}
+                                helpertext={touched.PostageCost && errors.PostageCost}
                                 sx={{ gridColumn: 'span 2' }}
                             />
+                            <TextField 
+                                fullWidth
+                                variant='filled'
+                                type='decimal'
+                                label='PostagePrice'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.PostagePrice}
+                                name='PostagePrice'
+                               errors={!!touched.PostagePrice && !!errors.PostagePrice}
+                                helpertext={touched.PostagePrice && errors.PostagePrice}
+                                sx={{ gridColumn: 'span 2' }}
+                            />
+                            <Field 
+                                component='select'
+                                id='aioinvoicing'
+                                multiple={false}
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='AllInOneInvoicing'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.AllInOneInvoicing}
+                                name='AllInOneInvoicing'
+                               errors={!!touched.AllInOneInvoicing && !!errors.AllInOneInvoicing}
+                                helpertext={touched.AllInOneInvoicing && errors.AllInOneInvoicing}
+                                sx={{ gridColumn: 'span 2' }}
+                            >
+                                <option value="" label='Set All In One Invoicing'>
+                                    Combine postage and services on one invoice?{" "}
+                                </option>
+                                <option value={false} label='False'>
+                                    False{" "}
+                                </option>
+                                <option value={true} label='True'>
+                                    {" "}
+                                    True
+                                </option>
+                            </Field>
+                            <Field 
+                                component='select'
+                                id='zerosellhiding'
+                                multiple={false}
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='ZeroSellHiding'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.ZeroSellHiding}
+                                name='ZeroSellHiding'
+                               errors={!!touched.ZeroSellHiding && !!errors.ZeroSellHiding}
+                                helpertext={touched.ZeroSellHiding && errors.ZeroSellHiding}
+                                sx={{ gridColumn: 'span 2' }}
+                            >
+                                <option value="" label='Set Zero Sell Hiding'>
+                                    Hide cost only items from invoices?{" "}
+                                </option>
+                                <option value={false} label='False'>
+                                    False{" "}
+                                </option>
+                                <option value={true} label='True'>
+                                    {" "}
+                                    True
+                                </option>
+                            </Field>
+                            <Field 
+                                component='select'
+                                id='bulkbillenabled'
+                                multiple={false}
+                                fullWidth
+                                variant='filled'
+                                type='text'
+                                label='BulkBillEnabled'
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.BulkBillEnabled}
+                                name='BulkBillEnabled'
+                               errors={!!touched.BulkBillEnabled && !!errors.BulkBillEnabled}
+                                helpertext={touched.BulkBillEnabled && errors.BulkBillEnabled}
+                                sx={{ gridColumn: 'span 2' }}
+                            >
+                                <option value="" label='Set Bulk Billing'>
+                                    Enabled Bulk Billing for client invoices?{" "}
+                                </option>
+                                <option value={false} label='False'>
+                                    False{" "}
+                                </option>
+                                <option value={true} label='True'>
+                                    {" "}
+                                    True
+                                </option>
+                            </Field>
                         </Box>
                         <Box display="flex" justifyContent="end" mt="20px">
                             <Button type="submit" color="secondary" variant="contained" disabled={isSubmitting} >
