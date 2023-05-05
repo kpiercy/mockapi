@@ -48,16 +48,12 @@ const DownloadList = ({ download }) => {
   return (
     <div className="container-fluid">
       <div className="row data-row">
-        <div className="col-lg-1">{download.RemoteDirectory}</div>
+        <div className="col-lg-2">{download.RemoteDirectory}</div>
         <div className="col-lg-1">{download.ID}</div>
         <div className="col-lg-1">{download.Mask}</div>
-        <div className="col-lg-1">{download.LocalDirectory}</div>
+        <div className="col-lg-2">{download.LocalDirectory}</div>
         <div className="col-lg-1">{download.Server}</div>
         <div className="col-lg-1">{download.IgnoreMask}</div>
-        <div className="col-lg-1">{download.Timestamped}</div>
-        <div className="col-lg-1">{download.Renamed}</div>
-        <div className="col-lg-1">{download.NewFilename}</div>
-        <div className="col-lg-1">{download.AppendValue}</div>
         <div className="col-lg-1">{download.Convert}</div>
         <div className="col-lg-1" >
           <Link to={`/clients/${clientid}/jobs/${jobid}/downloads/${download.ID}`}>
