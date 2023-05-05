@@ -13,28 +13,37 @@ import { JobContextProvider } from './contexts/JobContext'
 import { InvoiceContextProvider } from './contexts/InvoiceContext'
 import { ContactContextProvider } from './contexts/ContactContext'
 import { DownloadContextProvider } from './contexts/DownloadContext'
+import { ProcessContextProvider } from './contexts/ProcessContext'
+import { WorkflowContextProvider } from './contexts/WorkflowContext'
+import { FacilityContextProvider } from './contexts/FacilityContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <BrowserRouter>
-          <ClientContextProvider>
-            <ProfileContextProvider>
-              <UserContextProvider>
-                <JobContextProvider>
-                  <InvoiceContextProvider>
-                    <ContactContextProvider>
-                      <DownloadContextProvider>
-                        <App />
-                      </DownloadContextProvider>
-                    </ContactContextProvider>
-                  </InvoiceContextProvider>
-                </JobContextProvider>
-              </UserContextProvider>
-            </ProfileContextProvider>
-          </ClientContextProvider>
-      </BrowserRouter>
-    </AuthContextProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <AuthContextProvider>
+            <BrowserRouter>
+                <ClientContextProvider>
+                    <ProfileContextProvider>
+                        <UserContextProvider>
+                            <JobContextProvider>
+                                <InvoiceContextProvider>
+                                    <ContactContextProvider>
+                                        <DownloadContextProvider>
+                                            <ProcessContextProvider>
+                                                <WorkflowContextProvider>
+                                                    <FacilityContextProvider>
+                                                        <App />
+                                                    </FacilityContextProvider>
+                                                </WorkflowContextProvider>
+                                            </ProcessContextProvider>
+                                        </DownloadContextProvider>
+                                    </ContactContextProvider>
+                                </InvoiceContextProvider>
+                            </JobContextProvider>
+                        </UserContextProvider>
+                    </ProfileContextProvider>
+                </ClientContextProvider>
+            </BrowserRouter>
+        </AuthContextProvider>
+    </React.StrictMode>
 )
