@@ -119,7 +119,8 @@ input.error {
 
 .data-cards p {
   margin: 0;
-  font-size: 0.9em;
+  font-size: 1.0em;
+  margin-bottom: 5px;
   color: var(--primary);
 }
 
