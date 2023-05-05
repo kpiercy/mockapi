@@ -18,6 +18,8 @@ import Invoices from './pages/Invoices'
 import Reports from './pages/Reports'
 import Kbase from './pages/KBase'
 import Settings from './pages/Settings'
+import Contacts from './pages/Contacts'
+import Downloads from './pages/Downloads'
 
 function App() {
   const { user } = useAuthContext()
@@ -54,8 +56,18 @@ function App() {
                 path="/clients/:clientid"
                 element={user ? <ClientDetail /> : <Navigate to="/login" />}
               /> */}
-              <Route path="/clients/:clientid/jobs" element={user ? <Jobs /> : <Navigate to="/login" />} />
-              <Route path="/clients/:clientid/invoices" element={user ? <Invoices /> : <Navigate to="/login" />} />
+              <Route 
+                path="/clients/:clientid/jobs" 
+                element={user ? <Jobs /> : <Navigate to="/login" />} />
+              <Route 
+                path="/clients/:clientid/jobs/:jobid/contacts" 
+                element={user ? <Contacts /> : <Navigate to="/login" />} />
+              <Route 
+                path="/clients/:clientid/jobs/:jobid/downloads" 
+                element={user ? <Downloads /> : <Navigate to="/login" />} />
+              <Route 
+                path="/clients/:clientid/invoices" 
+                element={user ? <Invoices /> : <Navigate to="/login" />} />
               <Route path="/reports" element={user ? <Reports /> : <Navigate to="/login" />} />
               <Route path="/kbase" element={user ? <Kbase /> : <Navigate to="/login" />} />
               <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />

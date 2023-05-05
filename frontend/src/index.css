@@ -81,6 +81,7 @@ input.error {
 
 .data-row {
   margin: 0 0 15px 0;
+  word-wrap: break-word;
 }
 
 .data-col-header {

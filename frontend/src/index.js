@@ -11,6 +11,8 @@ import { ProfileContextProvider } from './contexts/ProfileContext'
 import { UserContextProvider } from './contexts/UserContext'
 import { JobContextProvider } from './contexts/JobContext'
 import { InvoiceContextProvider } from './contexts/InvoiceContext'
+import { ContactContextProvider } from './contexts/ContactContext'
+import { DownloadContextProvider } from './contexts/DownloadContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -22,7 +24,11 @@ root.render(
               <UserContextProvider>
                 <JobContextProvider>
                   <InvoiceContextProvider>
-                    <App />
+                    <ContactContextProvider>
+                      <DownloadContextProvider>
+                        <App />
+                      </DownloadContextProvider>
+                    </ContactContextProvider>
                   </InvoiceContextProvider>
                 </JobContextProvider>
               </UserContextProvider>
