@@ -40,38 +40,49 @@ const Downloads = () => {
   }, [dispatch, user]) //
 
   return (
-    <Box m="20px">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Downloads" />
+      <Box m="20px">
+          <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+          >
+              <Header title="Downloads" />
+              {/* <Box display="flex" justifyContent="end" mt="20px">
+                  <Button
+                      href="/downloads/create"
+                      color="secondary"
+                      variant="contained"
+                  >
+                      Create Download
+                  </Button>
+              </Box> */}
+          </Box>
+          <div className="row data-col-header">
+              <div className="col-lg-2">RemoteDirectory</div>
+              <div className="col-lg-1">ID</div>
+              <div className="col-lg-1">Mask</div>
+              <div className="col-lg-2">LocalDirectory</div>
+              <div className="col-lg-1">Server</div>
+              <div className="col-lg-1">IgnoreMask</div>
+              <div className="col-lg-1">Convert</div>
+              <div className="col-lg-1">Links</div>
+              <div className="col-lg-1">
+                  <Link to="/downloads/create" className="data-add-item">
+                      <IconButton>
+                          <AddIcon />
+                      </IconButton>
+                  </Link>
+              </div>
+          </div>
+          <div className="clients">
+              <div className="data-cards">
+                  {downloads &&
+                      downloads.Downloads.map((download) => (
+                          <DownloadList key={download.ID} download={download} />
+                      ))}
+              </div>
+          </div>
       </Box>
-      <div className="row data-col-header">
-        <div className="col-md-1">RemoteDirectory</div>
-        <div className="col-md-1">ID</div>
-        <div className="col-md-1">Mask</div>
-        <div className="col-md-1">LocalDirectory</div>
-        <div className="col-md-1">Server</div>
-        <div className="col-md-1">IgnoreMask</div>
-        <div className="col-md-1">Timestamped</div>
-        <div className="col-md-1">Ranamed</div>
-        <div className="col-md-1">NewFilename</div>
-        <div className="col-md-1">AppendValue</div>
-        <div className="col-md-1">Convert</div>
-        <div className="col-md-1">Links</div>
-        <div className="col-md-1">
-          <Link to="/downloads/create" className="data-add-item">
-            <IconButton>
-              <AddIcon />
-            </IconButton>
-          </Link>
-        </div>
-      </div>
-      <div className="clients">
-        <div className="data-cards">
-          {downloads &&
-            downloads.Downloads.map((download) => <DownloadList key={download.ID} download={download} />)}
-        </div>
-      </div>
-    </Box>
   )
 }
 
