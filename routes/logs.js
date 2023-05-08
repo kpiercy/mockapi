@@ -19,7 +19,8 @@ const dboperations = require('../controllers/logs')
 
 //CHILD ROUTING
 
-
+//ROUTES
+router.get('/', publimiter, authenticateToken, authAccess, authIP, checkReach, dboperations.find_logs)
 
 
 module.exports = router;
