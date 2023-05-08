@@ -23,6 +23,7 @@ import Downloads from './pages/Downloads'
 import Processes from './pages/Processes'
 import Workflows from './pages/Workflows'
 import Facilities from './pages/Facilities'
+import ReturnLogs from './pages/ReturnLogs'
 import Returns from './pages/Returns'
 
 function App() {
@@ -152,6 +153,16 @@ function App() {
                               element={
                                   user ? (
                                       <Facilities />
+                                  ) : (
+                                      <Navigate to="/login" />
+                                  )
+                              }
+                          />
+                          <Route
+                              path="/clients/:clientid/jobs/:jobid/returns/logs"
+                              element={
+                                  user ? (
+                                      <ReturnLogs />
                                   ) : (
                                       <Navigate to="/login" />
                                   )

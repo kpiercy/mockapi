@@ -17,6 +17,7 @@ import { ProcessContextProvider } from './contexts/ProcessContext'
 import { WorkflowContextProvider } from './contexts/WorkflowContext'
 import { FacilityContextProvider } from './contexts/FacilityContext'
 import { ReturnContextProvider } from './contexts/ReturnContext'
+import { ReturnLogContextProvider } from './contexts/ReturnLogContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -33,9 +34,11 @@ root.render(
                                             <ProcessContextProvider>
                                                 <WorkflowContextProvider>
                                                     <FacilityContextProvider>
-                                                        <ReturnContextProvider>
-                                                            <App />
-                                                        </ReturnContextProvider>
+                                                        <ReturnLogContextProvider>
+                                                            <ReturnContextProvider>
+                                                                <App />
+                                                            </ReturnContextProvider>
+                                                        </ReturnLogContextProvider>
                                                     </FacilityContextProvider>
                                                 </WorkflowContextProvider>
                                             </ProcessContextProvider>
