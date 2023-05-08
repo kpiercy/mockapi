@@ -64,7 +64,7 @@ const FacilityList = ({ facility }) => {
                 <div className="col-lg-2">{facility.Facility}</div>
                 <div className="col-lg-1">{facility.ID}</div>
                 <div className="col-lg-1">{facility.Active}</div>
-                <div className="col-lg-1">{facility.MinBalance}</div>
+                <div className="col-lg-1">{facility.MinimumBalance.toString()}</div>
                 <div className="col-lg-2">
                     {facility.InsuranceTransferLanguage}
                 </div>
