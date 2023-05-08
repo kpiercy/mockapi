@@ -102,6 +102,43 @@ router.get("/:returnid", checkReach, dboperations.one_return);
 
 /**
  * @swagger
+ * /clients/{clientid}/jobs/{jobid}/returns/logs:
+ *  get:
+ *      summary: Get return logs
+ *      tags: [Returns]
+ *      description: Finds logs for all returns
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: ClientID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema: 
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *      responses:
+ *          200:
+ *              description: Found return logs
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Returns:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/ReturnLog'
+ *          404:
+ *              description: Return logs not found for jobid specified
+ */
+router.get('/logs', checkReach, authLvl, dboperations.find_logs)
+
+/**
+ * @swagger
  * /clients/{clientid}/jobs/{jobid}/returns/{returnid}:
  *  patch:
  *      summary: Update return by id

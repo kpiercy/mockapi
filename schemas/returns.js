@@ -196,6 +196,46 @@ const yup = require('yup')
  *         MultiUpload: false
  *         MultiServerID: 
  *         MultiRemoteDirectory:
+ *     ReturnLog:
+ *       type: object
+ *       properties:
+ *         ID:
+ *           type: integer
+ *           description: Public ID of the log record
+ *         JobID:
+ *           type: integer
+ *           description: Public JobID of the log record
+ *         RunSeq:
+ *           type: integer
+ *           description: RunSeq of the returns sent
+ *         Status:
+ *           type: string
+ *           description: Status of the report return
+ *         Type:
+ *           type: integer
+ *           description: Type of report returned
+ *         TriggeredAt:
+ *           type: string
+ *           description: Datetime the report return was triggered
+ *         ReportUploaded:
+ *           type: boolean
+ *           description: Whether the report was successfully uploaded or not
+ *         RemoteDirectory:
+ *           type: string
+ *           description: The directory where the report was uploaded to
+ *         UploadTimestamp:
+ *           type: string
+ *           description: Timestamp the specific report type for the job was uploaded
+ *       example:
+ *         ID: 1
+ *         JobID: 6
+ *         RunSeq: 111
+ *         Status: ReturnVerified
+ *         Type: 4
+ *         TriggeredAt: 2023-05-01 10:10:00
+ *         ReportUploaded: true
+ *         RemoteDirectory: /PFS/Adena/Reports/
+ *         UploadTimestamp: 2023-05-01 10:25:30
  */
 
 
