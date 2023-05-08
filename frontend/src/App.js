@@ -23,6 +23,7 @@ import Downloads from './pages/Downloads'
 import Processes from './pages/Processes'
 import Workflows from './pages/Workflows'
 import Facilities from './pages/Facilities'
+import Returns from './pages/Returns'
 
 function App() {
   const { user } = useAuthContext()
@@ -151,6 +152,16 @@ function App() {
                               element={
                                   user ? (
                                       <Facilities />
+                                  ) : (
+                                      <Navigate to="/login" />
+                                  )
+                              }
+                          />
+                          <Route
+                              path="/clients/:clientid/jobs/:jobid/returns"
+                              element={
+                                  user ? (
+                                      <Returns />
                                   ) : (
                                       <Navigate to="/login" />
                                   )

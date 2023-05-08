@@ -16,6 +16,7 @@ import { DownloadContextProvider } from './contexts/DownloadContext'
 import { ProcessContextProvider } from './contexts/ProcessContext'
 import { WorkflowContextProvider } from './contexts/WorkflowContext'
 import { FacilityContextProvider } from './contexts/FacilityContext'
+import { ReturnContextProvider } from './contexts/ReturnContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -32,7 +33,9 @@ root.render(
                                             <ProcessContextProvider>
                                                 <WorkflowContextProvider>
                                                     <FacilityContextProvider>
-                                                        <App />
+                                                        <ReturnContextProvider>
+                                                            <App />
+                                                        </ReturnContextProvider>
                                                     </FacilityContextProvider>
                                                 </WorkflowContextProvider>
                                             </ProcessContextProvider>
