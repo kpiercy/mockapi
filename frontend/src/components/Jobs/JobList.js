@@ -87,7 +87,7 @@ const JobList = ({ job }) => {
               <LocationOnOutlinedIcon className="modify-details-icon"/>
             </IconButton>
           </Link>
-          <Link to={`/clients/${clientid}/jobs/${job.ID}/returns`} state={{ clientid: clientid, jobid: job.ID }}>
+          <Link to={`/clients/${clientid}/jobs/${job.ID}/returns/logs`} state={{ clientid: clientid, jobid: job.ID }}>
             <IconButton>
               <FileUploadOutlinedIcon className="modify-details-icon"/>
             </IconButton>
