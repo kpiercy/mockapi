@@ -71,6 +71,7 @@ const versionRoutes = require('./routes/versions')
 const insertRoutes = require('./routes/inserts')
 const messageRoutes = require('./routes/messages')
 const logoRoutes = require('./routes/logos')
+const logRoutes = require('./routes/logs')
 
 //CORS
 app.use((req, res, next) => {
@@ -93,6 +94,7 @@ swagger(app, process.env.PORT)
 //app.use('/', indexRoutes)
 app.use('/api/v1/clients', clientRoutes) //crud
 app.use('/api/v1/services', serviceRoutes) //crud
+app.use('/api/v1/logs', logRoutes) //crud
 
 //STATIC URL ENDPOINTS
 // app.use(
