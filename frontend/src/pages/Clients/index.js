@@ -49,35 +49,50 @@ const Clients = () => {
   }, [dispatch, user]) //
 
   return (
-    <Box m="20px">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Clients" />
+      <Box m="20px">
+          <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+          >
+              <Header title="Clients" />
+              {/* <Box display="flex" justifyContent="end" mt="20px">
+                  <Button
+                      href="/clients/create"
+                      color="secondary"
+                      variant="contained"
+                  >
+                      Create Client
+                  </Button>
+              </Box> */}
+          </Box>
+          <div className="row data-col-header">
+              <div className="col-lg-1">Name</div>
+              <div className="col-lg-1">ID</div>
+              <div className="col-lg-1">Status</div>
+              <div className="col-lg-1">ParentID</div>
+              <div className="col-lg-1">ERPID</div>
+              <div className="col-lg-1">ERPParentID</div>
+              <div className="col-lg-1">ERPCode</div>
+              <div className="col-lg-1">Type</div>
+              <div className="col-lg-1">Links</div>
+              <div className="col-lg-1">
+                  <Link to="/clients/create" className="data-add-item">
+                      <IconButton>
+                          <AddIcon />
+                      </IconButton>
+                  </Link>
+              </div>
+          </div>
+          <div className="clients">
+              <div className="data-cards">
+                  {clients &&
+                      clients.Clients.map((client) => (
+                          <ClientList key={client.ID} client={client} />
+                      ))}
+              </div>
+          </div>
       </Box>
-      <div className="row data-col-header">
-        <div className="col-lg-1">Name</div>
-        <div className="col-lg-1">ID</div>
-        <div className="col-lg-1">Status</div>
-        <div className="col-lg-1">ParentID</div>
-        <div className="col-lg-1">ERPID</div>
-        <div className="col-lg-1">ERPParentID</div>
-        <div className="col-lg-1">ERPCode</div>
-        <div className="col-lg-1">Type</div>
-        <div className="col-lg-1">Links</div>
-        <div className="col-lg-1">
-          <Link to="/clients/create" className="data-add-item">
-            <IconButton>
-              <AddIcon />
-            </IconButton>
-          </Link>
-        </div>
-      </div>
-      <div className="clients">
-        <div className="data-cards">
-          {clients &&
-            clients.Clients.map((client) => <ClientList key={client.ID} client={client} />)}
-        </div>
-      </div>
-    </Box>
   )
 }
 
