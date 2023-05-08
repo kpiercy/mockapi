@@ -38,10 +38,7 @@ const ReturnList = ({ upload }) => {
         const json = await response.json()
 
         if (response.ok) {
-            alert(
-                upload.ID +
-                    ' was deactivated'
-            )
+            alert(upload.ID + ' was deactivated')
             setReturns(json)
             //dispatch({type: 'SET_RETURNS', payload: json})
         }
@@ -68,7 +65,11 @@ const ReturnList = ({ upload }) => {
                 <div className="col-lg-1">
                     <Link
                         to={`/clients/${clientid}/jobs/${jobid}/returns?type=${upload.type}`}
-                        state={{ clientid: clientid, jobid: jobid, type: upload.type }}
+                        state={{
+                            clientid: clientid,
+                            jobid: jobid,
+                            type: upload.type,
+                        }}
                     >
                         <IconButton>
                             <WorkHistoryOutlinedIcon className="modify-details-icon" />
