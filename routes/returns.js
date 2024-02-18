@@ -1,104 +1,23 @@
-require("dotenv").config();
+require('dotenv').config()
 
-const express = require("express");
-const router = express.Router({ mergeParams: true });
-const pubip = require("express-ip");
+const express = require('express')
+const router = express.Router({ mergeParams: true })
+const pubip = require('express-ip')
 
 //additional middleware
-const authLvl = require("../middleware/authLvl");
-const checkReach = require("../middleware/reachlimiter");
+const authLvl = require('../middleware/authLvl')
+const checkReach = require('../middleware/reachlimiter')
 
 //child routes
 
-
 //controller
-const dboperations = require("../controllers/returns");
+const dboperations = require('../controllers/returns')
 
 //model
 
 //router options and children
-router.use(pubip().getIpInfoMiddleware);
+router.use(pubip().getIpInfoMiddleware)
 //router.all('*', publimiter, authenticateToken, authAccess, authIP) //instantiated by clients parent router and called once url is reconciled
-
-/**
- * @swagger
- * /clients/{clientid}/jobs/{jobid}/returns:
- *  get:
- *      summary: Get returns by jobid
- *      tags: [Returns]
- *      description: Finds returns by jobid
- *      parameters:
- *        - in: path
- *          name: clientid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ClientID or ParentID of data to find
- *        - in: path
- *          name: jobid
- *          schema: 
- *              type: int
- *          required: true
- *          description: JobID of data to find
- *      responses:
- *          200:
- *              description: Found returns
- *              content: 
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                            Returns:
- *                              type: array
- *                              items:
- *                                $ref: '#/components/schemas/Return'
- *          404:
- *              description: Return records was not found for Job
- */
-router.get("/", checkReach, dboperations.all_returns);
-
-/**
- * @swagger
- * /clients/{clientid}/jobs/{jobid}/returns/{returnid}:
- *  get:
- *      summary: Get return by id
- *      tags: [Returns]
- *      description: Finds return by id
- *      parameters:
- *        - in: path
- *          name: clientid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ClientID or ParentID of data to find
- *        - in: path
- *          name: jobid
- *          schema: 
- *              type: int
- *          required: true
- *          description: JobID of data to find
- *        - in: path
- *          name: returnid
- *          schema: 
- *              type: int
- *          required: true
- *          description: ReturnID of data to find
- *      responses:
- *          200:
- *              description: Found return
- *              content: 
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                            Returns:
- *                              type: array
- *                              items:
- *                                $ref: '#/components/schemas/Return'
- *          404:
- *              description: Return records was not found
- */
-router.get("/:returnid", checkReach, dboperations.one_return);
 
 /**
  * @swagger
@@ -110,20 +29,20 @@ router.get("/:returnid", checkReach, dboperations.one_return);
  *      parameters:
  *        - in: path
  *          name: clientid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: ClientID of data to find
  *        - in: path
  *          name: jobid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: JobID of data to find
  *      responses:
  *          200:
  *              description: Found return logs
- *              content: 
+ *              content:
  *                  application/json:
  *                      schema:
  *                          type: object
@@ -135,7 +54,87 @@ router.get("/:returnid", checkReach, dboperations.one_return);
  *          404:
  *              description: Return logs not found for jobid specified
  */
-router.get('/logs', checkReach, authLvl, dboperations.find_logs)
+router.get('/logs', dboperations.find_logs)
+
+/**
+ * @swagger
+ * /clients/{clientid}/jobs/{jobid}/returns:
+ *  get:
+ *      summary: Get returns by jobid
+ *      tags: [Returns]
+ *      description: Finds returns by jobid
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID or ParentID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *      responses:
+ *          200:
+ *              description: Found returns
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Returns:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Return'
+ *          404:
+ *              description: Return records was not found for Job
+ */
+router.get('/', checkReach, dboperations.all_returns)
+
+/**
+ * @swagger
+ * /clients/{clientid}/jobs/{jobid}/returns/{returnid}:
+ *  get:
+ *      summary: Get return by id
+ *      tags: [Returns]
+ *      description: Finds return by id
+ *      parameters:
+ *        - in: path
+ *          name: clientid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ClientID or ParentID of data to find
+ *        - in: path
+ *          name: jobid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: JobID of data to find
+ *        - in: path
+ *          name: returnid
+ *          schema:
+ *              type: int
+ *          required: true
+ *          description: ReturnID of data to find
+ *      responses:
+ *          200:
+ *              description: Found return
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                            Returns:
+ *                              type: array
+ *                              items:
+ *                                $ref: '#/components/schemas/Return'
+ *          404:
+ *              description: Return records was not found
+ */
+router.get('/:returnid', checkReach, dboperations.one_return)
 
 /**
  * @swagger
@@ -147,19 +146,19 @@ router.get('/logs', checkReach, authLvl, dboperations.find_logs)
  *      parameters:
  *        - in: path
  *          name: clientid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: ClientID or ParentID of data to find
  *        - in: path
  *          name: jobid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: JobID of data to find
  *        - in: path
  *          name: returnid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: ReturnID of data to find
@@ -177,7 +176,7 @@ router.get('/logs', checkReach, authLvl, dboperations.find_logs)
  *      responses:
  *          200:
  *              description: Updated return
- *              content: 
+ *              content:
  *                  application/json:
  *                      schema:
  *                          type: object
@@ -189,7 +188,7 @@ router.get('/logs', checkReach, authLvl, dboperations.find_logs)
  *          404:
  *              description: Return record was not found
  */
-router.patch("/:returnid", checkReach, authLvl, dboperations.update_return);
+router.patch('/:returnid', checkReach, authLvl, dboperations.update_return)
 
 /**
  * @swagger
@@ -201,13 +200,13 @@ router.patch("/:returnid", checkReach, authLvl, dboperations.update_return);
  *      parameters:
  *        - in: path
  *          name: clientid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: ClientID or ParentID of data to find
  *        - in: path
  *          name: jobid
- *          schema: 
+ *          schema:
  *              type: int
  *          required: true
  *          description: JobID of data to find
@@ -225,7 +224,7 @@ router.patch("/:returnid", checkReach, authLvl, dboperations.update_return);
  *      responses:
  *          201:
  *              description: Created returns
- *              content: 
+ *              content:
  *                  application/json:
  *                      schema:
  *                          type: object
@@ -235,9 +234,8 @@ router.patch("/:returnid", checkReach, authLvl, dboperations.update_return);
  *                              items:
  *                                $ref: '#/components/schemas/Return'
  */
-router.post("/", checkReach, authLvl, dboperations.create_return);
-
+router.post('/', checkReach, authLvl, dboperations.create_return)
 
 //router.delete("/:returnid", checkReach, authLvl, dboperations.delete_return);
 
-module.exports = router;
+module.exports = router

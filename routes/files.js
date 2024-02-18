@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const router = express.Router({mergeParams: true})
 const pubip = require('express-ip')
-const sql = require('mssql/msnodesqlv8')
+const sql = require('mssql')
 
 
 //additional middleware

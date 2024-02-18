@@ -63,12 +63,12 @@ const Returns = () => {
             </Box>
             <div className="row data-col-header">
                 <div className="col-lg-1">ID</div>
-                <div className="col-lg-2">RemoteDirectory</div>
+                <div className="col-lg-2">RemoteDir</div>
                 <div className="col-lg-1">Mask</div>
-                <div className="col-lg-2">LocalDirectory</div>
+                <div className="col-lg-2">LocalDir</div>
                 <div className="col-lg-1">Server</div>
                 <div className="col-lg-1">Type</div>
-                <div className="col-lg-1">ReturnZipName</div>
+                <div className="col-lg-1">ZipName</div>
                 <div className="col-lg-1">Links</div>
                 <div className="col-lg-1">
                     <Link to="/returns/create" className="data-add-item">

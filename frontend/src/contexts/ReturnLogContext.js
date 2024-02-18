@@ -2,20 +2,20 @@ import { createContext, useReducer } from 'react'
 
 export const ReturnLogContext = createContext()
 
-export const returnlogReducer = (state, action) => {
+export const logReducer = (state, action) => {
     switch (action.type) {
-        case 'SET_RETURNLOGS':
+        case 'SET_LOGS':
             return {
-                returnlogs: action.payload,
+                logs: action.payload,
             }
-        case 'CREATE_RETURNLOGS':
+        case 'CREATE_LOGS':
             return {
-                returnlogs: [action.payload, ...state.returnlogs],
+                logs: [action.payload, ...state.logs],
             }
-        case 'DELETE_RETURNLOGS':
+        case 'DELETE_LOGS':
             return {
-                returnlogs: state.returnlogs.filter(
-                    (w) => w.returnlogid !== action.payload.returnlogid
+                logs: state.logs.filter(
+                    (w) => w.logid !== action.payload.logid
                 ),
             }
         default:
@@ -24,11 +24,11 @@ export const returnlogReducer = (state, action) => {
 }
 
 export const ReturnLogContextProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(returnlogReducer, {
-        returnlogs: null,
+    const [state, dispatch] = useReducer(logReducer, {
+        logs: null,
     })
 
-    returnlog (
+    return (
         <ReturnLogContext.Provider value={{ ...state, dispatch }}>
             {children}
         </ReturnLogContext.Provider>

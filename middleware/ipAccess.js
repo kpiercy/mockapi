@@ -1,4 +1,4 @@
-const sql = require('mssql/msnodesqlv8')
+const sql = require('mssql')
 const nodemailer = require("nodemailer")
 const jwt = require('jsonwebtoken')
 const ApiError = require('../utils/api-error')

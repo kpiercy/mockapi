@@ -10,7 +10,7 @@ const logger = require('morgan')
 const fs = require('fs-extra')
 const path = require('path')
 const fileStreamRotator = require('file-stream-rotator')
-const sql = require('mssql/msnodesqlv8')
+const sql = require('mssql')
 const configJobData = require(`./config/db-${process.env.NODE_ENV}`)
 //const ejs = require('ejs')
 

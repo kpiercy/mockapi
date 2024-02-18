@@ -56,26 +56,13 @@ const ReturnList = ({ upload }) => {
         <div className="container-fluid">
             <div className="row data-row">
                 <div className="col-lg-1">{upload.ID}</div>
-                <div className="col-lg-2">{upload.RemoteDir}</div>
+                <div className="col-lg-2">{upload.RemoteDirectory}</div>
                 <div className="col-lg-1">{upload.Mask}</div>
-                <div className="col-lg-2">{upload.LocalDir}</div>
+                <div className="col-lg-2">{upload.LocalDirectory}</div>
                 <div className="col-lg-1">{upload.ServerID}</div>
                 <div className="col-lg-1">{upload.Type}</div>
                 <div className="col-lg-1">{upload.ReturnZipName}</div>
-                <div className="col-lg-1">
-                    <Link
-                        to={`/clients/${clientid}/jobs/${jobid}/returns?type=${upload.type}`}
-                        state={{
-                            clientid: clientid,
-                            jobid: jobid,
-                            type: upload.type,
-                        }}
-                    >
-                        <IconButton>
-                            <WorkHistoryOutlinedIcon className="modify-details-icon" />
-                        </IconButton>
-                    </Link>
-                </div>
+                <div className="col-lg-1"></div>
                 <div className="col-lg-1">
                     <Link
                         to={`/clients/${clientid}/jobs/${jobid}/returns/${upload.ID}`}

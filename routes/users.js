@@ -3,7 +3,7 @@ require('dotenv').config()
 //2FA notes: store pubIP to DB during registration/setup, if requesting pubIP does not match stored value, send email during /auth or /refresh to user email with link containing /me/confirm route and token that expires in 1 day, during /me/confirm route, append the new pubIp to their pubIp field, ALSO add windows scheduler script that reset each users "confirmed" status to false every xx days to make them redo 2FA
 
 const express = require('express')
-const pubip = require("express-ip");
+const pubip = require('express-ip')
 const router = express.Router({ mergeParams: true })
 
 //middleware
@@ -15,23 +15,22 @@ const authIP = require('../middleware/ipAccess')
 const validateDto = require('../middleware/validateDto')
 const userDto = require('../schemas/users')
 
-
 //controller
 const dboperations = require('../controllers/users')
 
 router.use(pubip().getIpInfoMiddleware)
 router.all('*', authlimiter)
 
- /**
-  * @swagger
-  * tags:
-  *   name: Users
-  *   description: 
-  */
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description:
+ */
 
 /**
  * @swagger
- *   /clients/users/login:
+ *   /api/v1/clients/users/login:
  *     post:
  *       tags:
  *         - Users
@@ -113,14 +112,14 @@ router.all('*', authlimiter)
  *               examples:
  *                 '405':
  *                   value:
- *                     error: 
+ *                     error:
  *                      message: Please enter proper credentials
  */
 router.post('/login', dboperations.user_auth)
 
 /**
  * @swagger
- *   /clients/users/refresh:
+ *   /api/v1/clients/users/refresh:
  *     post:
  *       tags:
  *         - Users
@@ -158,11 +157,17 @@ router.post('/login', dboperations.user_auth)
  *                     accessToken: >-
  *                       eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzI3NzA0ODcsImV4cCI6MTY3Mjc3MjI4N30.bEhO6IXTXq_B6UJEnVYhYPttJbdhGW5HT0k6ciQYe0Y
  */
-router.post('/refresh', authenticateToken, authAccess, authIP, dboperations.user_refresh)
+router.post(
+    '/refresh',
+    authenticateToken,
+    authAccess,
+    authIP,
+    dboperations.user_refresh
+)
 
 /**
  * @swagger
- *   /clients/users/me:
+ *   /api/v1/clients/users/me:
  *     get:
  *       tags:
  *         - Users
@@ -219,7 +224,7 @@ router.get('/me', authenticateToken, authAccess, authIP, dboperations.find_me)
 
 /**
  * @swagger
- *   /clients/{clientid}/users:
+ *   /api/v1/clients/{clientid}/users:
  *     get:
  *       tags:
  *         - Users
@@ -281,7 +286,7 @@ router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
 
 /**
  * @swagger
- *   /clients/users/{userid}:
+ *   /api/v1/clients/users/{userid}:
  *     get:
  *       tags:
  *         - Users
@@ -334,11 +339,18 @@ router.get('/', authenticateToken, authAccess, authIP, dboperations.find_users)
  *                         PermissionLvl: Parent
  *                         Username: someParent
  */
-router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.find_user)
+router.get(
+    '/:userid',
+    authenticateToken,
+    authLvl,
+    authAccess,
+    authIP,
+    dboperations.find_user
+)
 
 /**
  * @swagger
- *   /clients/users:
+ *   /api/v1/clients/users:
  *     post:
  *       tags:
  *         - Users
@@ -452,11 +464,18 @@ router.get('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperati
  *                   value:
  *                     Error: username already taken
  */
-router.post('/', authenticateToken, authAccess, authIP, validateDto(userDto), dboperations.create_users)
+router.post(
+    '/',
+    authenticateToken,
+    authAccess,
+    authIP,
+    validateDto(userDto),
+    dboperations.create_users
+)
 
 /**
  * @swagger
- *   /clients/users/{userid}:
+ *   /api/v1/clients/users/{userid}:
  *     patch:
  *       tags:
  *         - Users
@@ -500,11 +519,18 @@ router.post('/', authenticateToken, authAccess, authIP, validateDto(userDto), db
  *           type: integer
  *           example: 101
  */
-router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dboperations.update_user)
+router.patch(
+    '/:userid',
+    authenticateToken,
+    authLvl,
+    authAccess,
+    authIP,
+    dboperations.update_user
+)
 
 /**
  * @swagger
- *   /clients/users:
+ *   /api/v1/clients/users:
  *     delete:
  *       tags:
  *         - Users
@@ -557,11 +583,18 @@ router.patch('/:userid', authenticateToken, authLvl, authAccess, authIP, dbopera
  *                       - UserID: 102
  *                         Username: kpiercy123
  */
-router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.delete_client_users)
+router.delete(
+    '/',
+    authenticateToken,
+    authLvl,
+    authAccess,
+    authIP,
+    dboperations.delete_client_users
+)
 
 /**
  * @swagger
- *   /clients/{clientid}/users/{userid}:
+ *   /api/v1/clients/{clientid}/users/{userid}:
  *     delete:
  *       tags:
  *         - Users
@@ -618,10 +651,16 @@ router.delete('/', authenticateToken, authLvl, authAccess, authIP, dboperations.
  *           type: integer
  *           example: 102
  */
-router.delete('/:userid', authenticateToken, authAccess, authIP, dboperations.delete_user)
+router.delete(
+    '/:userid',
+    authenticateToken,
+    authAccess,
+    authIP,
+    dboperations.delete_user
+)
 
 /**
- * 
+ *
  */
 //router.get('/me/picture', authenticateToken, authAccess, authIP, dboperations.find_picture)
 
@@ -634,4 +673,4 @@ router.delete('/:userid', authenticateToken, authAccess, authIP, dboperations.de
 //     res.status(200).send('Successful')
 // })
 
-module.exports = router;
+module.exports = router

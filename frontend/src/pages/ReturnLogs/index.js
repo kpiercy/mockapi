@@ -3,16 +3,17 @@ import { tokens } from '../../theme'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import Header from '../../components/ui/global/Header'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useReturnLogContext } from '../../hooks/useReturnLogContext'
 import ReturnLogList from '../../components/Returns/ReturnLogList'
 import AddIcon from '@mui/icons-material/Add'
 
 const ReturnLogs = () => {
-    const [returnLogs, setReturnLogs] = useState(null)
+    const [logs, setLogs] = useState(null)
     const { dispatch } = useReturnLogContext()
     const { user } = useAuthContext()
     const { clientid, jobid } = useParams()
+    let navigate = useNavigate()
 
     useEffect(() => {
         const fetchReturnLogs = async () => {
@@ -21,7 +22,7 @@ const ReturnLogs = () => {
                     clientid +
                     '/jobs/' +
                     jobid +
-                    '/returns/logs?paginate=false',
+                    '/returns/logs',
                 {
                     method: 'GET',
                     headers: {
@@ -33,7 +34,8 @@ const ReturnLogs = () => {
             const json = await response.json()
 
             if (response.ok) {
-                setReturnLogs(json)
+                setLogs(json)
+                console.log(json)
                 //dispatch({ type: "SET_RETURNS", payload: json });
             }
         }
@@ -43,6 +45,11 @@ const ReturnLogs = () => {
         }
     }, [dispatch, user]) //
 
+    const routeChange = () => {
+        let path = `/clients/${clientid}/jobs/${jobid}/returns`
+        navigate(path)
+    }
+
     return (
         <Box m="20px">
             <Box
@@ -50,16 +57,16 @@ const ReturnLogs = () => {
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <Header title="Returns" />
+                <Header title="Returns Logs" />
                 <Box display="flex" justifyContent="end" mt="20px">
-                  <Button
-                      href="/clients/:clientid/jobs/:jobid/returns"
-                      color="secondary"
-                      variant="contained"
-                  >
-                      Return Settings
-                  </Button>
-              </Box>
+                    <Button
+                        onClick={routeChange}
+                        color="secondary"
+                        variant="contained"
+                    >
+                        Return Settings
+                    </Button>
+                </Box>
             </Box>
             <div className="row data-col-header">
                 <div className="col-lg-1">ID</div>
@@ -67,8 +74,8 @@ const ReturnLogs = () => {
                 <div className="col-lg-1">Status</div>
                 <div className="col-lg-1">Type</div>
                 <div className="col-lg-1">TriggeredAt</div>
-                <div className="col-lg-2">ReportUploaded</div>
-                <div className="col-lg-1">RemoteDirectory</div>
+                <div className="col-lg-2">RptUploaded</div>
+                <div className="col-lg-1">RemoteDir</div>
                 <div className="col-lg-1">UploadedAt</div>
                 <div className="col-lg-1">Links</div>
                 <div className="col-lg-1">
@@ -81,9 +88,9 @@ const ReturnLogs = () => {
             </div>
             <div className="clients">
                 <div className="data-cards">
-                    {returnLogs &&
-                        returnLogs.Logs.map((returnlog) => (
-                            <ReturnLogList key={returnlog.ID} returnlog={returnlog} />
+                    {logs &&
+                        logs.Logs.map((log) => (
+                            <ReturnLogList key={log.ID} log={log} />
                         ))}
                 </div>
             </div>

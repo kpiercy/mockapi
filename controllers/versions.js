@@ -3,7 +3,7 @@ require('dotenv').config()
 const configJobData = require(`../config/db-${process.env.NODE_ENV}`)
 const { baseUrl } = require(`../config/${process.env.NODE_ENV}`)
 const ApiError = require('../utils/api-error')
-const sql = require('mssql/msnodesqlv8')
+const sql = require('mssql')
 
 const all_versions = async (req, res, next) => {
   console.log('dbops_versions.all_versions was reached')

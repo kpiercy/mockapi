@@ -1,5 +1,5 @@
 require('dotenv').config()
-const sql = require('mssql/msnodesqlv8')
+const sql = require('mssql')
 const dboperations = require('../controllers/clients.js')
 const ApiError = require("../utils/api-error")
 const configJobData = require(`../config/${process.env.NODE_ENV}`)
