@@ -14,15 +14,16 @@ const UserDetails = ({ auser }) => {
     if (!user) {
       return
     }
+    var clientid;
 
     if (user.permissions.toLowerCase() === 'standard') {
-      var clientid = user.client.toLowerCase()
+      clientid = user.client.toLowerCase()
     } else if (user.permissions.toLowerCase() === 'parent') {
-      var clientid = user.parent.toLowerCase()
+      clientid = user.parent.toLowerCase()
     } else if (user.permissions.toLowerCase() === 'admin') {
-      var clientid = '4'
+      clientid = '4'
     } else {
-      var clientid = null
+      clientid = null
     }
 
     const response = await fetch('http://localhost:5000/api/v1/clients/' + clientid + '/users/' + auser.ID, {
@@ -46,15 +47,16 @@ const UserDetails = ({ auser }) => {
     if (!user) {
       return
     }
+    var clientid;
 
     if (user.permissions.toLowerCase() === 'standard') {
-      var clientid = user.client.toLowerCase()
+      clientid = user.client.toLowerCase()
     } else if (user.permissions.toLowerCase() === 'parent') {
-      var clientid = user.parent.toLowerCase()
+      clientid = user.parent.toLowerCase()
     } else if (user.permissions.toLowerCase() === 'admin') {
-      var clientid = '4'
+      clientid = '4'
     } else {
-      var clientid = null
+      clientid = null
     }
 
     const response = await fetch(
